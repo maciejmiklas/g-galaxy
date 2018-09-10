@@ -1,0 +1,6 @@
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+}
