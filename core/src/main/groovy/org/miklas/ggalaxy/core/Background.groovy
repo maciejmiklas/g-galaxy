@@ -1,4 +1,4 @@
-package org.miklas.pigeons.core
+package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.Disposable
 import groovy.transform.CompileStatic
 
-import static org.miklas.pigeons.core.Conf.X_RES
-import static org.miklas.pigeons.core.Conf.Y_RES
+import static Conf.X_RES
+import static Conf.Y_RES
 
 @CompileStatic
 class Background implements Renderable, Disposable {

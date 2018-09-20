@@ -1,9 +1,9 @@
-package org.miklas.pigeons.desktop
+package org.miklas.ggalaxy.desktop
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import org.miklas.pigeons.core.Conf
-import org.miklas.pigeons.core.Game
+import org.miklas.ggalaxy.core.Conf
+import org.miklas.ggalaxy.core.Game
 
 LwjglApplicationConfiguration config = new LwjglApplicationConfiguration()
 config.title = "Drop"

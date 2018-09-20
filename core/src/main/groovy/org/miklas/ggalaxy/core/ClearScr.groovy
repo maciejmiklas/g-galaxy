@@ -1,4 +1,4 @@
-package org.miklas.pigeons.core
+package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
