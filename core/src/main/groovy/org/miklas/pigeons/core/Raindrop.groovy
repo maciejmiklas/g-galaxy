@@ -1,29 +1,36 @@
-package org.miklas.drop.core
+package org.miklas.pigeons.core
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Disposable
 import groovy.transform.CompileStatic
 
-import static org.miklas.drop.core.Conf.X_RES
-import static org.miklas.drop.core.Conf.Y_RES
+import static Conf.X_RES
+import static Conf.Y_RES
 
 @CompileStatic
-class Raindrop {
+class Raindrop implements Renderable {
 
     static Texture IMG = [Gdx.files.internal("assets/drop.png")]
+    private final int WIDTH = 64
+    private final int HEIGHT = 64
 
     private Rectangle position
+    private Sprite sprite
 
     Raindrop() {
         position = [MathUtils.random(0, X_RES - 64), Y_RES, 64, 64]
+        sprite = [IMG, WIDTH, HEIGHT]
     }
 
-    void render(SpriteBatch batch) {
-        batch.draw IMG, position.x, position.y
+    @Override
+    void render(Batch batch) {
+        sprite.setPosition position.x, position.y
+        sprite.draw batch
     }
 
     boolean move() {
