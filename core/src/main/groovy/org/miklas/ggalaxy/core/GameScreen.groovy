@@ -6,34 +6,36 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Disposable
+import com.badlogic.gdx.utils.viewport.ScreenViewport
 import groovy.transform.CompileStatic
 
 import static Conf.X_RES
 import static Conf.Y_RES
 
 @CompileStatic
-class GgalaxyGame implements Screen {
+class GameScreen implements Screen {
 
-    OrthographicCamera camera
-    SpriteBatch batch
-    Music rainMusic
-    List<Disposable> disposable
-    List<Renderable> renderable
-    Raindrops raindrops
-    ClearScr clearScr
-    Bucket bucket
-    Background background
+    private OrthographicCamera camera
+    private SpriteBatch batch
+    private Music rainMusic
+    private List<Disposable> disposable
+    private Raindrops raindrops
+    private ClearScr clearScr
+    private Bucket bucket
+    private Background background
+    private Stage stage
 
-    GgalaxyGame() {
-        camera = []
+    GameScreen() {
         batch = []
         disposable = []
         clearScr = []
-        bucket = []
-        renderable = []
-        raindrops = [bucket: bucket]
         background = []
+        stage = [new ScreenViewport()]
+        camera = stage.getViewport().getCamera() as OrthographicCamera
+        bucket = [camera]
+        raindrops = [bucket]
 
         // load the drop sound effect and the rain clearScr "music"
         rainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/rain.mp3"))
@@ -48,18 +50,12 @@ class GgalaxyGame implements Screen {
         // spawn the first raindrop
         raindrops.spawnRaindrop()
 
-        disposable << bucket << raindrops << rainMusic << batch << Raindrop.disposable() << background
-        renderable = [clearScr, background, bucket, raindrops] as List<Renderable>
-    }
+        disposable << bucket << raindrops << rainMusic << batch << Raindrop.disposable() << background << stage
 
-    @Override
-    void dispose() {
-        disposable*.dispose()
-    }
-
-    @Override
-    void show() {
-
+        stage.addActor clearScr
+        stage.addActor background
+        stage.addActor bucket
+        stage.addActor raindrops
     }
 
     @Override
@@ -71,11 +67,22 @@ class GgalaxyGame implements Screen {
 
         // begin a new batch and draw the bucket and all drops
         batch.begin()
-        renderable.each { it.render(batch, camera) }
+        stage.act()
+        stage.draw()
         batch.end()
 
         // check if we need to create a new raindrop
         raindrops.spawnRaindrop()
+    }
+
+    @Override
+    void dispose() {
+        disposable*.dispose()
+    }
+
+    @Override
+    void show() {
+
     }
 
     @Override

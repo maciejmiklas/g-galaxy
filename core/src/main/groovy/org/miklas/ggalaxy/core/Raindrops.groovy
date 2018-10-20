@@ -2,21 +2,22 @@ package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.TimeUtils
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class Raindrops implements Disposable, Renderable {
+class Raindrops extends Actor implements Disposable {
 
     private List<Raindrop> raindrops = []
     private long lastDropTime = -1
     private Sound dropSound
     private Bucket bucket
 
-    Raindrops() {
+    Raindrops(Bucket bucket) {
+        this.bucket = bucket
         dropSound = Gdx.audio.newSound(Gdx.files.internal("assets/drop.wav"))
     }
 
@@ -32,8 +33,7 @@ class Raindrops implements Disposable, Renderable {
     }
 
     @Override
-    void render(Batch batch, Camera camera) {
-
+    void draw(Batch batch, float parentAlpha) {
         // move the raindrops, play sound effects
         raindrops.removeAll { drop ->
             boolean remove = false
@@ -46,7 +46,7 @@ class Raindrops implements Disposable, Renderable {
                 remove = true
             }
             if (!remove) {
-                drop.render batch, camera
+                drop.draw batch, parentAlpha
             }
             return remove
         }

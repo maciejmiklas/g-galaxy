@@ -3,18 +3,20 @@ package org.miklas.ggalaxy.core
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Camera
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Disposable
 import groovy.transform.CompileStatic
 
 import static Conf.X_RES
 
 @CompileStatic
-class Bucket implements Disposable, Renderable {
+class Bucket extends Actor implements Disposable {
 
     Rectangle position
 
@@ -23,9 +25,11 @@ class Bucket implements Disposable, Renderable {
     private final int WIDTH = 64
     private final int HEIGHT = 64
     private Sprite bucketSpr
+    private OrthographicCamera camera
 
-    Bucket() {
+    Bucket(OrthographicCamera camera) {
         touchPos = []
+        this.camera = camera
 
         // create a Rectangle to logically represent the bucket
         // note the division by floats, which is much faster than by ints in Groovy
@@ -36,7 +40,7 @@ class Bucket implements Disposable, Renderable {
     }
 
     @Override
-    void render(Batch batch, Camera camera) {
+    void draw(Batch batch, float parentAlpha) {
         // make sure the bucket stays within the screen bounds
         if (position.x < 0) {
             position.x = 0
@@ -46,13 +50,14 @@ class Bucket implements Disposable, Renderable {
             position.x = X_RES - WIDTH as float
         }
 
-        processUserInput camera
+        processUserInput()
 
         bucketSpr.setPosition position.x, position.y
         bucketSpr.draw batch
     }
 
-    private void processUserInput(Camera camera) {
+    private void processUserInput() {
+
         if (Gdx.input.touched) {
             touchPos.set Gdx.input.x, Gdx.input.y, 0
             camera.unproject touchPos

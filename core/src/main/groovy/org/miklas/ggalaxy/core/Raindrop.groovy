@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Disposable
 import groovy.transform.CompileStatic
 
@@ -13,7 +14,7 @@ import static Conf.X_RES
 import static Conf.Y_RES
 
 @CompileStatic
-class Raindrop implements Renderable {
+class Raindrop extends Actor {
 
     static Texture IMG = [Gdx.files.internal("assets/drop.png")]
     private final int WIDTH = 64
@@ -28,7 +29,7 @@ class Raindrop implements Renderable {
     }
 
     @Override
-    void render(Batch batch) {
+    void draw(Batch batch, float parentAlpha) {
         sprite.setPosition position.x, position.y
         sprite.draw batch
     }
