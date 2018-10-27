@@ -10,9 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Disposable
 import groovy.transform.CompileStatic
 
-import static Conf.X_RES
-import static Conf.Y_RES
-
 @CompileStatic
 class Raindrop extends Actor {
 
@@ -24,7 +21,7 @@ class Raindrop extends Actor {
     private Sprite sprite
 
     Raindrop() {
-        position = [MathUtils.random(0, X_RES - 64), Y_RES, 64, 64]
+        position = [MathUtils.random(0, Conf.SCR_WIDTH - 64), Conf.SCR_HEIGHT, 64, 64]
         sprite = [IMG, WIDTH, HEIGHT]
     }
 

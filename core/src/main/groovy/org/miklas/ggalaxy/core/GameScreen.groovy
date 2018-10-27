@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Disposable
-import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.badlogic.gdx.utils.viewport.StretchViewport
 import groovy.transform.CompileStatic
 
-import static Conf.X_RES
-import static Conf.Y_RES
+import static org.miklas.ggalaxy.core.Conf.SCR_HEIGHT
+import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
 
 @CompileStatic
 class GameScreen implements Screen {
@@ -23,7 +23,7 @@ class GameScreen implements Screen {
     private List<Disposable> disposable
     private Raindrops raindrops
     private ClearScr clearScr
-    private Bucket bucket
+    private Spaceship bucket
     private Background background
     private Stage stage
 
@@ -32,7 +32,7 @@ class GameScreen implements Screen {
         disposable = []
         clearScr = []
         background = []
-        stage = [new ScreenViewport()]
+        stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]
         camera = stage.getViewport().getCamera() as OrthographicCamera
         bucket = [camera]
         raindrops = [bucket]
@@ -45,7 +45,7 @@ class GameScreen implements Screen {
         // rainMusic.play()
 
         // create the camera and the SpriteBatch
-        camera.setToOrtho(false, X_RES, Y_RES)
+        camera.setToOrtho false, SCR_WIDTH, SCR_HEIGHT
 
         // spawn the first raindrop
         raindrops.spawnRaindrop()
@@ -65,7 +65,6 @@ class GameScreen implements Screen {
         camera.update()
         batch.projectionMatrix = camera.combined
 
-        // begin a new batch and draw the bucket and all drops
         batch.begin()
         stage.act()
         stage.draw()
@@ -82,11 +81,12 @@ class GameScreen implements Screen {
 
     @Override
     void show() {
-
+        Gdx.input.inputProcessor = stage
     }
 
     @Override
     void resize(int x, int y) {
+        stage.viewport.update x, y, true
     }
 
     @Override

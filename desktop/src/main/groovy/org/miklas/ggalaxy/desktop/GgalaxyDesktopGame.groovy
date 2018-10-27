@@ -7,6 +7,6 @@ import org.miklas.ggalaxy.core.GgalaxyGame
 
 LwjglApplicationConfiguration config = new LwjglApplicationConfiguration()
 config.title = "Drop"
-config.width = Conf.X_RES
-config.height = Conf.Y_RES
+config.width = Conf.SCR_WIDTH
+config.height = Conf.SCR_HEIGHT
 new LwjglApplication(new GgalaxyGame(), config)
