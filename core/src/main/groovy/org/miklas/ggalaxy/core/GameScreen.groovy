@@ -70,7 +70,7 @@ class GameScreen implements Screen {
         stage.draw()
         batch.end()
 
-        // check if we need to create a new raindrop
+        // pressed if we need to create a new raindrop
         raindrops.spawnRaindrop()
     }
 
