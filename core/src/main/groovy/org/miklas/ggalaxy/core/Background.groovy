@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.utils.Disposable
 
 import static org.miklas.ggalaxy.core.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
@@ -12,7 +11,7 @@ import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
 /**
  * Parallax Background.
  */
-class Background extends Actor implements Disposable {
+class Background extends Actor {
 
     private final Texture bgPink = [Gdx.files.internal("assets/background/space/Nebula Aqua-Pink.png")]
     private final Texture bgBlue = [Gdx.files.internal("assets/background/space/Nebula Blue.png")]
@@ -31,10 +30,6 @@ class Background extends Actor implements Disposable {
 
     private int speedX = 0
     private int scrollX = 0
-
-    @Override
-    void dispose() {
-    }
 
     Background() {
         layers*.setWrap Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat

@@ -8,9 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.utils.Disposable
 
-class Asteroid extends Actor {
+class Asteroid extends Actor implements Obstacle {
     private final static Sound CRASH_SOUND
 
     Mode mode = Mode.ACTIVE
@@ -18,7 +17,8 @@ class Asteroid extends Actor {
     private Animation<Sprite> animationExplosion
     private Animation<Sprite> animationNormal
     private float animationStateTime = 0.0f
-    private final Rectangle position = []
+    final Rectangle position = []
+    final Type type = Type.ASTEROID
     private AnimationFactory.Asset asteroid
     private AnimationFactory.Asset explosion
     private float explosionAdjustX = 0
@@ -38,7 +38,7 @@ class Asteroid extends Actor {
         reset()
     }
 
-    void draw(Batch batch, Rectangle other) {
+    void draw(Batch batch) {
         if (mode == Mode.INACTIVE) {
             return
         }
@@ -54,19 +54,6 @@ class Asteroid extends Actor {
         sprite.draw batch
         animationStateTime += Gdx.graphics.getDeltaTime()
         position.y -= Conf.ins.asteroid.move.speed * Gdx.graphics.deltaTime
-
-        if (mode == Mode.ACTIVE && position.overlaps(other)) {
-            CRASH_SOUND.play()
-            mode = Mode.EXPLODING
-            animationStateTime = 0.0f
-            position.x -= explosionAdjustX
-            position.y -= explosionAdjustY
-            animation = animationExplosion
-        }
-    }
-
-    static Disposable disposable() {
-        [dispose: { /*IMG.dispose() TODO*/ }] as Disposable
     }
 
     def reset() {
@@ -74,6 +61,21 @@ class Asteroid extends Actor {
         animation = animationNormal
         animationStateTime = 0.0f
         position.set MathUtils.random(0, Conf.SCR_WIDTH - asteroid.spriteWith), Conf.SCR_HEIGHT, asteroid.spriteWith, asteroid.spriteHeight
+    }
+
+    @Override
+    boolean collision(Rectangle other) {
+        mode == Mode.ACTIVE && position.overlaps(other)
+    }
+
+    @Override
+    void hit(Type other) {
+        CRASH_SOUND.play()
+        mode = Mode.EXPLODING
+        animationStateTime = 0.0f
+        position.x -= explosionAdjustX
+        position.y -= explosionAdjustY
+        animation = animationExplosion
     }
 
     enum Mode {

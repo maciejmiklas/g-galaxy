@@ -19,6 +19,7 @@ class GameScreen implements Screen {
     private final SpriteBatch batch = []
     private final Background background = []
     private final List<Disposable> disposable = []
+    private final CollisionDetection obstacles = []
 
     private final OrthographicCamera camera
     private final Asteroids asteroids
@@ -29,7 +30,8 @@ class GameScreen implements Screen {
         stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]
         camera = stage.getViewport().getCamera() as OrthographicCamera
         mainShip = [AnimationFactory.Asset.SHIP_2_BLUE, AnimationFactory.Asset.SHIP_2_RED]
-        asteroids = [mainShip]
+        asteroids = [obstacles]
+        obstacles << mainShip
 
         // create the camera and the SpriteBatch
         camera.setToOrtho false, SCR_WIDTH, SCR_HEIGHT
@@ -37,7 +39,7 @@ class GameScreen implements Screen {
         // spawn the first raindrop
         asteroids.spawn()
 
-        disposable << mainShip << asteroids << batch << Asteroid.disposable() << background << stage
+        disposable << batch << stage
 
         stage.addActor clearScr
         stage.addActor background
@@ -54,6 +56,7 @@ class GameScreen implements Screen {
 
         batch.begin()
         stage.act()
+        obstacles.detect()
         stage.draw()
         batch.end()
 

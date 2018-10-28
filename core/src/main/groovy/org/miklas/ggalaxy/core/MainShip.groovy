@@ -6,16 +6,16 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.utils.Disposable
 import groovy.transform.CompileStatic
 
 import static org.miklas.ggalaxy.core.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
 
 @CompileStatic
-class MainShip extends Actor implements Disposable {
+class MainShip extends Actor implements Obstacle {
 
     final Rectangle position
+    final Type type = Type.SHIP
     private final Animation<Sprite> animation
     private final AnimationFactory.Asset assetNormal
     private final AnimationFactory.Asset assetBoost
@@ -27,10 +27,6 @@ class MainShip extends Actor implements Disposable {
         this.assetBoost = assetBoost
         position = [SCR_WIDTH / 2f - assetNormal.spriteWith / 2f as float, 20, assetNormal.spriteWith, assetNormal.spriteHeight]
         animation = AnimationFactory.createAnimation(assetNormal, Animation.PlayMode.LOOP)
-    }
-
-    private void checkAnimation() {
-
     }
 
     @Override
@@ -70,8 +66,13 @@ class MainShip extends Actor implements Disposable {
     }
 
     @Override
-    void dispose() {
-        // TODO dispose sprites from animation
+    boolean collision(Rectangle other) {
+        return false
+    }
+
+    @Override
+    void hit(Type other) {
+
     }
 
     private enum Speed {
