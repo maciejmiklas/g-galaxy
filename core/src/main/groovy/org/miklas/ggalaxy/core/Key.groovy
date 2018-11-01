@@ -11,9 +11,11 @@ enum Key {
     DOWN(Input.Keys.DOWN, Input.Keys.S),
     LEFT(Input.Keys.LEFT, Input.Keys.A),
     RIGHT(Input.Keys.RIGHT, Input.Keys.D),
-    BOOST(Input.Keys.SPACE, Input.Keys.B)
+    BOOST(Input.Keys.SPACE, Input.Keys.B),
+    FIRE(Input.Keys.X)
 
     final int[] val
+
     Key(int ... val) {
         this.val = val
     }
@@ -36,7 +38,13 @@ enum Key {
         code.find { it.val.find { Gdx.input.isKeyPressed(it) } }
     }
 
-    void move(@ClosureParams(value = SimpleType, options = ['float']) Closure cl) {
+    void onFire(Closure cl) {
+        if (FIRE.pressed()) {
+            cl()
+        }
+    }
+
+    void onMove(@ClosureParams(value = SimpleType, options = ['float']) Closure cl) {
         if (!pressed()) {
             return
         }

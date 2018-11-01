@@ -6,27 +6,27 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
-import groovy.transform.CompileStatic
 
 import static org.miklas.ggalaxy.core.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
 
-@CompileStatic
 class MainShip extends Actor implements Obstacle {
 
     final Rectangle position
-    final Type type = Type.SHIP
+    final Type type = Type.MAIN_SHIP
     private final Animation<Sprite> animation
     private final AnimationFactory.Asset assetNormal
     private final AnimationFactory.Asset assetBoost
     private float animationStartTime = 0.0f
     private Speed speed
+    private MainCannon mainCannon
 
-    MainShip(AnimationFactory.Asset assetNormal, AnimationFactory.Asset assetBoost) {
+    MainShip(AnimationFactory.Asset assetNormal, AnimationFactory.Asset assetBoost, MainCannon mainCannon) {
         this.assetNormal = assetNormal
         this.assetBoost = assetBoost
+        this.mainCannon = mainCannon
         position = [SCR_WIDTH / 2f - assetNormal.spriteWith / 2f as float, 20, assetNormal.spriteWith, assetNormal.spriteHeight]
-        animation = AnimationFactory.createAnimation(assetNormal, Animation.PlayMode.LOOP)
+        animation = AnimationFactory.create(assetNormal, Animation.PlayMode.LOOP)
     }
 
     @Override
@@ -59,19 +59,23 @@ class MainShip extends Actor implements Obstacle {
     }
 
     private void processUserInput() {
-        Key.LEFT.move { position.x -= it }
-        Key.RIGHT.move { position.x += it }
-        Key.UP.move { position.y += it }
-        Key.DOWN.move { position.y -= it }
+        // TODO do we have to register closures on every invocation, would it be more efficient to register it once ?
+        Key.LEFT.onMove { position.x -= it }
+        Key.RIGHT.onMove { position.x += it }
+        Key.UP.onMove { position.y += it }
+        Key.DOWN.onMove { position.y -= it }
+        Key.FIRE.onFire {
+            mainCannon.fire position.x + assetNormal.conf.cannon.main.x as int, position.y + assetNormal.conf.cannon.main.y as int
+        }
     }
 
     @Override
-    boolean collision(Rectangle other) {
-        return false
+    boolean checkCollision(Obstacle other) {
+        position.overlaps(other.position)
     }
 
     @Override
-    void hit(Type other) {
+    void hit(Obstacle other) {
 
     }
 

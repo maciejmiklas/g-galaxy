@@ -13,5 +13,6 @@ subprojects {
         aiVersion = '1.8.0'
         groovyVersion = '2.5.2'
         spockVersion = '1.2-groovy-2.5'
+        gparsVersion = "1.2.1"
     }
 }

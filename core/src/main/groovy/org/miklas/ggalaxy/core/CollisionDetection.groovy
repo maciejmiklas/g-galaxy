@@ -1,5 +1,7 @@
 package org.miklas.ggalaxy.core
 
+import groovyx.gpars.GParsPool
+
 class CollisionDetection {
     private final int w = Conf.SCR_WIDTH
     private final int w2 = w / 2
@@ -13,10 +15,28 @@ class CollisionDetection {
     }
 
     void detect() {
-
+        List<List<Obstacle>> split = split()
+        GParsPool.withPool {
+            split.eachParallel {
+                process it
+            }
+        }
     }
 
-    List<Obstacle>[] split() {
+    protected void process(List<Obstacle> obstacles) {
+        for (int extIdx = 0; extIdx < obstacles.size() - 1; extIdx++) {
+            Obstacle extObs = obstacles.get extIdx
+            for (int intIdx = extIdx + 1; intIdx < obstacles.size(); intIdx++) {
+                Obstacle intObst = obstacles.get intIdx
+                if (extObs.checkCollision(intObst)) {
+                    extObs.hit intObst
+                    intObst.hit extObs
+                }
+            }
+        }
+    }
+
+    protected List<List<Obstacle>> split() {
         def split = []
 
         // (0,0) - (640,380) - left bottom corner

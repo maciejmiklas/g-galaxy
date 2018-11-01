@@ -28,6 +28,12 @@ animation {
         spriteWith = 96
         spriteHeight = 96
         frameDuration = 0.05f
+        cannon {
+            main {
+                x = 30
+                y = 60
+            }
+        }
     }
 
 
@@ -96,6 +102,16 @@ animation {
 
 }
 
+sprite {
+    SHOT_RED {
+        path = 'assets/packs/Spaceship_art_pack_larger/Red/bullet_red.png'
+        imageWidth = 128
+        imageHeight = 128
+        spriteWith = 32
+        spriteHeight = 32
+    }
+}
+
 screen {
     width = 1280
     height = 760
@@ -108,13 +124,14 @@ key {
     }
 }
 
+shot {
+    moveSpeed = 400
+    delayMs = 500
+}
+
 asteroid {
-    move {
-        speed = 200
-    }
-    spawn{
-        time = 1000000000
-    }
+    moveSpeed = 200
+    spawnMs = 500
 }
 
 background {

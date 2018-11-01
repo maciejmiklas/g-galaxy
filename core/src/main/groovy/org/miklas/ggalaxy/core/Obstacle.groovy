@@ -4,16 +4,17 @@ import com.badlogic.gdx.math.Rectangle
 
 interface Obstacle {
 
-    boolean collision(Rectangle other)
+    boolean checkCollision(Obstacle other)
 
-    void hit(Type other)
+    void hit(Obstacle other)
 
     Type getType()
 
     Rectangle getPosition()
 
     enum Type {
-        SHIP,
+        MAIN_SHIP,
+        ENEMY_SHIP,
         SHOT,
         ASTEROID,
     }

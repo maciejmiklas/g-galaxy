@@ -1,6 +1,6 @@
 package org.miklas.ggalaxy.core
 
-import com.badlogic.gdx.Game
+
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -13,7 +13,7 @@ import groovy.transform.CompileStatic
 import static org.miklas.ggalaxy.core.Conf.getSCR_HEIGHT
 import static org.miklas.ggalaxy.core.Conf.getSCR_WIDTH
 
-class GgalaxyGame extends Game {
+class Game extends com.badlogic.gdx.Game {
 
     @Override
     void create() {
@@ -28,9 +28,8 @@ class GgalaxyGame extends Game {
         private final SpriteBatch batch = []
         private final Background background = []
         private final List<Disposable> disposable = []
-        private final CollisionDetection obstacles = []
-        private final Shots shots = []
-
+        private final CollisionDetection collisionDetection = []
+        private final Shots shots
         private final OrthographicCamera camera
         private final Asteroids asteroids
         private final MainShip mainShip
@@ -39,9 +38,10 @@ class GgalaxyGame extends Game {
         GameScreen() {
             stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]
             camera = stage.getViewport().getCamera() as OrthographicCamera
-            mainShip = [AnimationFactory.Asset.SHIP_2_BLUE, AnimationFactory.Asset.SHIP_2_RED]
-            asteroids = [obstacles]
-            obstacles << mainShip
+            shots = [collisionDetection]
+            mainShip = [AnimationFactory.Asset.SHIP_2_BLUE, AnimationFactory.Asset.SHIP_2_RED, shots]
+            asteroids = [collisionDetection]
+            collisionDetection << mainShip
 
             // create the camera and the SpriteBatch
             camera.setToOrtho false, SCR_WIDTH, SCR_HEIGHT
@@ -67,7 +67,7 @@ class GgalaxyGame extends Game {
 
             batch.begin()
             stage.act()
-            obstacles.detect()
+            collisionDetection.detect()
             stage.draw()
             batch.end()
 

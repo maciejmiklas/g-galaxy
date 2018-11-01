@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.scenes.scene2d.Actor
 
-class Asteroid extends Actor implements Obstacle {
+class Asteroid implements Obstacle {
     private final static Sound CRASH_SOUND
 
     Mode mode = Mode.ACTIVE
@@ -33,8 +32,8 @@ class Asteroid extends Actor implements Obstacle {
         this.explosion = explosion
         this.explosionAdjustX = explosion.spriteHeight / 2 - asteroid.spriteHeight / 2
         this.explosionAdjustY = explosion.spriteWith / 2 - asteroid.spriteWith / 2
-        this.animationNormal = AnimationFactory.createAnimation(asteroid, Animation.PlayMode.LOOP)
-        this.animationExplosion = AnimationFactory.createAnimation(explosion, Animation.PlayMode.NORMAL)
+        this.animationNormal = AnimationFactory.create(asteroid, Animation.PlayMode.LOOP)
+        this.animationExplosion = AnimationFactory.create(explosion, Animation.PlayMode.NORMAL)
         reset()
     }
 
@@ -43,7 +42,7 @@ class Asteroid extends Actor implements Obstacle {
             return
         }
 
-        // reached end of screen ?
+        // reached bottom of the screen ?
         if (position.y + asteroid.spriteHeight < 0) {
             mode = Mode.INACTIVE
             return
@@ -53,7 +52,7 @@ class Asteroid extends Actor implements Obstacle {
         sprite.setPosition position.x, position.y
         sprite.draw batch
         animationStateTime += Gdx.graphics.getDeltaTime()
-        position.y -= Conf.ins.asteroid.move.speed * Gdx.graphics.deltaTime
+        position.y -= Conf.ins.asteroid.moveSpeed * Gdx.graphics.deltaTime
     }
 
     def reset() {
@@ -64,14 +63,18 @@ class Asteroid extends Actor implements Obstacle {
     }
 
     @Override
-    boolean collision(Rectangle other) {
-        mode == Mode.ACTIVE && position.overlaps(other)
+    boolean checkCollision(Obstacle other) {
+        mode == Mode.ACTIVE && other.type != Type.ASTEROID && position.overlaps(other.position)
     }
 
     @Override
-    void hit(Type other) {
-        CRASH_SOUND.play()
+    void hit(Obstacle other) {
+        if (mode != Mode.ACTIVE) {
+            return
+        }
+
         mode = Mode.EXPLODING
+        CRASH_SOUND.play()
         animationStateTime = 0.0f
         position.x -= explosionAdjustX
         position.y -= explosionAdjustY

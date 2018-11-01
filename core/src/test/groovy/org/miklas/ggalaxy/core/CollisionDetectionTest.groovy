@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Rectangle
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import static org.miklas.ggalaxy.core.Obstacle.Type.*
+
 class CollisionDetectionTest extends Specification {
 
     def "Split - Should be able to remove from list"() {
@@ -177,6 +179,29 @@ class CollisionDetectionTest extends Specification {
         1  | 3  | 700 | 370 || 0      | 2      | 1   | 3
     }
 
+    def "Process - rock detection"() {
+        given:
+        List<Rock> rocks = createTestRocks()
+        CollisionDetection detection = []
+        detection.process(rocks)
+
+        print detection
+        expect:
+        rocks[0].hits[0].position.x == 15
+        rocks[0].hits[1].position.x == 17
+
+        rocks[1].hits[0].position.x == 0
+        rocks[1].hits[1].position.x == 30
+        rocks[1].hits[2].position.x == 17
+
+        rocks[2].hits[0].position.x == 15
+
+        rocks[3].hits.empty
+
+        rocks[4].hits[0].position.x == 0
+        rocks[4].hits[1].position.x == 15
+    }
+
     private def addRegion0(def detection) {
         detection << new Rock(position: [0, 0, 20, 20])
         detection << new Rock(position: [500, 200, 20, 20])
@@ -195,18 +220,27 @@ class CollisionDetectionTest extends Specification {
         detection << new Rock(position: [700, 400, 23, 23])
     }
 
+    private List<Rock> createTestRocks() {
+        [new Rock(position: [0, 0, 20, 20], type: ASTEROID),
+         new Rock(position: [15, 15, 60, 60], type: MAIN_SHIP),
+         new Rock(position: [30, 30, 20, 20], type: ASTEROID),
+         new Rock(position: [100, 80, 2, 2], type: SHOT),
+         new Rock(position: [17, 17, 2, 2], type: SHOT)]
+    }
+
     class Rock implements Obstacle {
         Rectangle position = []
-        final Type type = Type.ASTEROID
+        Type type = ASTEROID
+        List<Obstacle> hits = []
 
         @Override
-        boolean collision(Rectangle other) {
-            return position.overlaps(other)
+        boolean checkCollision(Obstacle other) {
+            return position.overlaps(other.position)
         }
 
         @Override
-        void hit(Type other) {
-
+        void hit(Obstacle other) {
+            hits << other
         }
     }
 }

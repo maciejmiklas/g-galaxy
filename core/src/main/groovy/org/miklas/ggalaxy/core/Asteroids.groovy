@@ -10,17 +10,17 @@ class Asteroids extends Actor {
 
     private final List<Asteroid> asteroids = []
     private final def MINE_ASSET = [[BOMB_BLUE, EXPLOSION_BLUE], [MINE_BLUE, EXPLOSION_BLUE], [MINE_RED, EXPLOSION_RED]]
-    private final CollisionDetection obstacles
+    private final CollisionDetection collisionDetection
 
     private int spawnIdx = 0
     private long lastSpawnTime = -1
 
-    Asteroids(CollisionDetection obstacles) {
-        this.obstacles = obstacles
+    Asteroids(CollisionDetection collisionDetection) {
+        this.collisionDetection = collisionDetection
     }
 
     void spawn() {
-        if (TimeUtils.nanoTime() - lastSpawnTime < Conf.ins.asteroid.spawn.time) {
+        if (TimeUtils.millis() - lastSpawnTime < Conf.ins.asteroid.spawnMs) {
             return
         }
 
@@ -29,7 +29,7 @@ class Asteroids extends Actor {
             def assets = MINE_ASSET[spawnIdx++]
             def asteroid = new Asteroid(assets[0], assets[1])
             asteroids << asteroid
-            obstacles << asteroid
+            collisionDetection << asteroid
 
             if (spawnIdx == MINE_ASSET.size()) {
                 spawnIdx = 0
@@ -37,7 +37,7 @@ class Asteroids extends Actor {
         } else {
             free.reset()
         }
-        lastSpawnTime = TimeUtils.nanoTime()
+        lastSpawnTime = TimeUtils.millis()
     }
 
     @Override

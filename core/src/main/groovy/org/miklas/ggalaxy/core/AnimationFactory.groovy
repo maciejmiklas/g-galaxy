@@ -10,7 +10,7 @@ class AnimationFactory {
 
     private static final Map<String, Array<Sprite>> CACHE = new HashMap<>()
 
-    static Animation<Sprite> createAnimation(Asset asset, Animation.PlayMode mode) {
+    static Animation<Sprite> create(Asset asset, Animation.PlayMode mode) {
         new Animation<>(asset.frameDuration, load(asset), mode)
     }
 
@@ -50,9 +50,11 @@ class AnimationFactory {
         int spriteHeight
         float frameDuration
         String prefix
+        def conf;
 
         Asset() {
             String name = name()
+            conf = Conf.ins.animation."$name"
             path = Conf.ins.animation."$name".path
             frames = Conf.ins.animation."$name".frames
             imageWidth = Conf.ins.animation."$name".imageWidth
