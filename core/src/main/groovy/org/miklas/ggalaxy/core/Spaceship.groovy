@@ -75,14 +75,14 @@ class Spaceship extends Actor implements Disposable {
             position.x = touchPos.x - WIDTH / 2f as float
         }
 
-        move(Input.Keys.LEFT) { position.x -= it }
-        move(Input.Keys.RIGHT) { position.x += it }
-        move(Input.Keys.UP) { position.y += it }
-        move(Input.Keys.DOWN) { position.y -= it }
+        move(Key.Code.LEFT) { position.x -= it }
+        move(Key.Code.RIGHT) { position.x += it }
+        move(Key.Code.UP) { position.y += it }
+        move(Key.Code.DOWN) { position.y -= it }
     }
 
-    private void move(int key, @ClosureParams(value = SimpleType, options = ['float']) Closure cl) {
-        if (!Gdx.input.isKeyPressed(key)) {
+    private void move(Key.Code code, @ClosureParams(value = SimpleType, options = ['float']) Closure cl) {
+        if (!Key.pressed(code)) {
             return
         }
         cl.delegate = this.position

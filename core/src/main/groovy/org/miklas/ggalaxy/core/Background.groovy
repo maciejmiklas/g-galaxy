@@ -68,10 +68,10 @@ class Background extends Actor implements Disposable {
             speedY = 6
 
         } else if (Key.pressed(Key.Code.DOWN, Key.Code.BOOST)) {
-            speedY = 1
+            speedY = -4
 
         } else if (Key.pressed(Key.Code.DOWN)) {
-            speedY = 2
+            speedY = -2
 
         } else {
             speedY = 4

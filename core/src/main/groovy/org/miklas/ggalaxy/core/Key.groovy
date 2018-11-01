@@ -5,6 +5,9 @@ import com.badlogic.gdx.Input
 
 class Key {
 
+    /**
+     * @param code combination of key codes, all given keys has to be pressed at once.
+     */
     static boolean pressed(Code... code) {
         code.every { it.val.any { Gdx.input.isKeyPressed(it) } }
     }
@@ -17,11 +20,10 @@ class Key {
         BOOST(Input.Keys.SPACE, Input.Keys.B)
 
         int[] val
-
         Code(int ... val) {
             this.val = val
+            println val
         }
-
-
     }
+
 }
