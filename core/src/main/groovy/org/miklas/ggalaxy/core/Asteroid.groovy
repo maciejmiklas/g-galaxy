@@ -13,7 +13,7 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class Raindrop extends Actor {
 
-    static Texture IMG = [Gdx.files.internal("assets/drop.png")]
+    static Texture IMG = [Gdx.files.internal("assets/packs/Spaceship_art_pack_larger/Blue/Spacemines/1.png")]
     private final int WIDTH = 64
     private final int HEIGHT = 64
 
@@ -22,7 +22,8 @@ class Raindrop extends Actor {
 
     Raindrop() {
         position = [MathUtils.random(0, Conf.SCR_WIDTH - 64), Conf.SCR_HEIGHT, 64, 64]
-        sprite = [IMG, WIDTH, HEIGHT]
+        sprite = [IMG, 256, 256]
+        sprite.setSize(WIDTH, HEIGHT)
     }
 
     @Override
