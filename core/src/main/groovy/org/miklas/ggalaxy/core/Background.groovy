@@ -14,18 +14,17 @@ import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
  */
 class Background extends Actor implements Disposable {
 
+    private final Texture bgPink = [Gdx.files.internal("assets/background/space/Nebula Aqua-Pink.png")]
+    private final Texture bgBlue = [Gdx.files.internal("assets/background/space/Nebula Blue.png")]
+    private final Texture bgRead = [Gdx.files.internal("assets/background/space/Nebula Red.png")]
 
-    private Texture bgPink = [Gdx.files.internal("assets/background/space/Nebula Aqua-Pink.png")]
-    private Texture bgBlue = [Gdx.files.internal("assets/background/space/Nebula Blue.png")]
-    private Texture bgRead = [Gdx.files.internal("assets/background/space/Nebula Red.png")]
+    private final Texture stS1 = [Gdx.files.internal("assets/background/space/Stars Small_1.png")]
+    private final Texture stS2 = [Gdx.files.internal("assets/background/space/Stars Small_2.png")]
 
-    private Texture stS1 = [Gdx.files.internal("assets/background/space/Stars Small_1.png")]
-    private Texture stS2 = [Gdx.files.internal("assets/background/space/Stars Small_2.png")]
+    private final Texture stB1 = [Gdx.files.internal("assets/background/space/Stars-Big_1_1_PC.png")]
+    private final Texture stB2 = [Gdx.files.internal("assets/background/space/Stars-Big_1_1_PC.png")]
 
-    private Texture stB1 = [Gdx.files.internal("assets/background/space/Stars-Big_1_1_PC.png")]
-    private Texture stB2 = [Gdx.files.internal("assets/background/space/Stars-Big_1_1_PC.png")]
-
-    private List<Texture> layers = [bgBlue, stS1, stS2]
+    private final List<Texture> layers = [bgBlue, stS1, stS2]
 
     private int speedY = 4
     private int scrollY = 0
@@ -56,37 +55,21 @@ class Background extends Actor implements Disposable {
     }
 
     private void processUserInput() {
-
-        if (Key.pressed(Key.Code.UP, Key.Code.BOOST)) {
-            speedY = Conf.ins.background.speed.up.boost
-
-        } else if (Key.pressed(Key.Code.UP)) {
-            speedY = Conf.ins.background.speed.up.normal
-
-        } else if (Key.pressed(Key.Code.DOWN, Key.Code.BOOST)) {
-            speedY = Conf.ins.background.speed.down.boost
-
-        } else if (Key.pressed(Key.Code.DOWN)) {
-            speedY = Conf.ins.background.speed.down.normal
-
-        } else {
-            speedY = Conf.ins.background.speed.nokey.y
+        boolean vertical = Key.vertical() { code ->
+            def cv = Conf.ins.background.speed."$code"
+            speedY = Key.BOOST.pressed() ? cv.boost : cv.normal
+        }
+        if (!vertical) {
+            speedY = Conf.ins.background.speed.NONE.y
         }
 
-        if (Key.pressed(Key.Code.LEFT, Key.Code.BOOST)) {
-            speedX = 6
-
-        } else if (Key.pressed(Key.Code.LEFT)) {
-            speedX = 2
-
-        } else if (Key.pressed(Key.Code.RIGHT, Key.Code.BOOST)) {
-            speedX = -6
-
-        } else if (Key.pressed(Key.Code.RIGHT)) {
-            speedX = -2
-
-        } else {
-            speedX = 0
+        boolean horizontal = Key.horizontal { code ->
+            def cv = Conf.ins.background.speed."$code"
+            speedX = Key.BOOST.pressed() ? cv.boost : cv.normal
         }
+        if (!horizontal) {
+            speedX = Conf.ins.background.speed.NONE.x
+        }
+
     }
 }

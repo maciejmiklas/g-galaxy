@@ -6,18 +6,20 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.TimeUtils
-import groovy.transform.CompileStatic
 
-@CompileStatic
-class Raindrops extends Actor implements Disposable {
+import static org.miklas.ggalaxy.core.AnimationFactory.Asset.*
 
-    private List<Raindrop> raindrops = []
+class Asteroids extends Actor implements Disposable {
+
+    private final List<Asteroid> asteroids = []
+    private final Sound dropSound
+    private final MainShip mainShip
+    private final def MINE_ASSET = [SPACE_BOMB_BLUE, SPACE_MINE_BLUE, SPACE_MINE_RED]
+
     private long lastDropTime = -1
-    private Sound dropSound
-    private MainShip bucket
 
-    Raindrops(MainShip bucket) {
-        this.bucket = bucket
+    Asteroids(MainShip bucket) {
+        this.mainShip = bucket
         dropSound = Gdx.audio.newSound(Gdx.files.internal("assets/drop.wav"))
     }
 
@@ -25,23 +27,20 @@ class Raindrops extends Actor implements Disposable {
         if (TimeUtils.nanoTime() - lastDropTime < 1000000000) {
             return
         }
-
-        // lists are nicely integrated into Groovy, so you can use += for example
-        // alternative to spare the GC: raindrops.add(new Rectangle(...))
-        raindrops << new Raindrop()
+        asteroids << new Asteroid(MINE_ASSET[lastDropTime % MINE_ASSET.size() - 1 as int])
         lastDropTime = TimeUtils.nanoTime()
     }
 
     @Override
     void draw(Batch batch, float parentAlpha) {
         // move the raindrops, play sound effects
-        raindrops.removeAll { drop ->
+        asteroids.removeAll { drop ->
             boolean remove = false
             if (!drop.move()) {
                 remove = true
             }
 
-            if (drop.overlaps(bucket.position)) {
+            if (drop.overlaps(mainShip.position)) {
                 dropSound.play()
                 remove = true
             }

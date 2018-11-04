@@ -1,7 +1,7 @@
 package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
@@ -11,23 +11,21 @@ import com.badlogic.gdx.utils.Disposable
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class Raindrop extends Actor {
+class Asteroid extends Actor {
 
-    static Texture IMG = [Gdx.files.internal("assets/packs/Spaceship_art_pack_larger/Blue/Spacemines/1.png")]
-    private final int WIDTH = 64
-    private final int HEIGHT = 64
-
+    private Animation<Sprite> animation
+    private float animationStartTime = 0.0f // TODO reset
     private Rectangle position
-    private Sprite sprite
 
-    Raindrop() {
-        position = [MathUtils.random(0, Conf.SCR_WIDTH - 64), Conf.SCR_HEIGHT, 64, 64]
-        sprite = [IMG, 256, 256]
-        sprite.setSize(WIDTH, HEIGHT)
+    Asteroid(AnimationFactory.Asset asset) {
+        position = [MathUtils.random(0, Conf.SCR_WIDTH - asset.spriteWith), Conf.SCR_HEIGHT, asset.spriteWith, asset.spriteHeight]
+        animation = AnimationFactory.createAnimation(asset)
     }
 
     @Override
     void draw(Batch batch, float parentAlpha) {
+        animationStartTime += Gdx.graphics.getDeltaTime()
+        Sprite sprite = animation.getKeyFrame animationStartTime
         sprite.setPosition position.x, position.y
         sprite.draw batch
     }
@@ -42,7 +40,7 @@ class Raindrop extends Actor {
     }
 
     static Disposable disposable() {
-        [dispose: { IMG.dispose() }] as Disposable
+        [dispose: { /*IMG.dispose() TODO*/ }] as Disposable
     }
 
 }

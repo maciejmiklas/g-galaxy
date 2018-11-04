@@ -17,25 +17,22 @@ import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
 @CompileStatic
 class GameScreen implements Screen {
 
-    private OrthographicCamera camera
-    private SpriteBatch batch
-    private Music rainMusic
-    private List<Disposable> disposable
-    private Raindrops raindrops
-    private ClearScr clearScr
-    private MainShip mainShip
-    private Background background
-    private Stage stage
+    private final ClearScr clearScr = []
+    private final SpriteBatch batch = []
+    private final Background background = []
+    private final List<Disposable> disposable = []
+
+    private final OrthographicCamera camera
+    private final Music rainMusic
+    private final Asteroids asteroids
+    private final MainShip mainShip
+    private final Stage stage
 
     GameScreen() {
-        batch = []
-        disposable = []
-        clearScr = []
-        background = []
         stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]
         camera = stage.getViewport().getCamera() as OrthographicCamera
-        mainShip = []
-        raindrops = [mainShip]
+        mainShip = [AnimationFactory.Asset.MAIN_SHIP_BLUE]
+        asteroids = [mainShip]
 
         // load the drop sound effect and the rain clearScr "music"
         rainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/rain.mp3"))
@@ -48,14 +45,14 @@ class GameScreen implements Screen {
         camera.setToOrtho false, SCR_WIDTH, SCR_HEIGHT
 
         // spawn the first raindrop
-        raindrops.spawnRaindrop()
+        asteroids.spawnRaindrop()
 
-        disposable << mainShip << raindrops << rainMusic << batch << Raindrop.disposable() << background << stage
+        disposable << mainShip << asteroids << rainMusic << batch << Asteroid.disposable() << background << stage
 
         stage.addActor clearScr
         stage.addActor background
         stage.addActor mainShip
-        stage.addActor raindrops
+        stage.addActor asteroids
     }
 
     @Override
@@ -70,8 +67,8 @@ class GameScreen implements Screen {
         stage.draw()
         batch.end()
 
-        // pressed if we need to create a new raindrop
-        raindrops.spawnRaindrop()
+        // pressedAll if we need to create a new raindrop
+        asteroids.spawnRaindrop()
     }
 
     @Override

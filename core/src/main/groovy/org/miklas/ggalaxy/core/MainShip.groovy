@@ -8,8 +8,6 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Disposable
 import groovy.transform.CompileStatic
-import groovy.transform.stc.ClosureParams
-import groovy.transform.stc.SimpleType
 
 import static org.miklas.ggalaxy.core.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
@@ -17,22 +15,16 @@ import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
 @CompileStatic
 class MainShip extends Actor implements Disposable {
 
-    Rectangle position
-    private final int WIDTH = 64
-    private final int HEIGHT = 64
-    private final int SPEED = 200
-    private final int BOOST = 100
-    private final float FRAME_DURATION = 0.05f
-    private Animation<Sprite> animation
-    private float animationStartTime = 0.0f
+    final Rectangle position
+    private final  Animation<Sprite> animation
+    private final AnimationFactory.Asset asset
 
-    MainShip() {
+    private float animationStartTime = 0.0f // TODO reset
 
-        // create a Rectangle to logically represent the mainShip
-        // note the division by floats, which is much faster than by ints in Groovy
-
-        position = [SCR_WIDTH / 2f - WIDTH / 2f as float, 20, WIDTH, HEIGHT]
-        animation = new Animation<>(FRAME_DURATION, AnimationFactory.load(AnimationFactory.Name.MAIN_SHIP_BLUE), Animation.PlayMode.LOOP)
+    MainShip(AnimationFactory.Asset asset) {
+        this.asset = asset
+        position = [SCR_WIDTH / 2f - asset.spriteWith / 2f as float, 20, asset.spriteWith, asset.spriteHeight]
+        animation =  AnimationFactory.createAnimation(asset)
     }
 
     @Override
@@ -46,12 +38,12 @@ class MainShip extends Actor implements Disposable {
             position.y = 0
         }
 
-        if (position.x > SCR_WIDTH - WIDTH) {
-            position.x = SCR_WIDTH - WIDTH as float
+        if (position.x > SCR_WIDTH - asset.spriteWith) {
+            position.x = SCR_WIDTH - asset.spriteWith as float
         }
 
-        if (position.y > SCR_HEIGHT - HEIGHT) {
-            position.y = SCR_HEIGHT - HEIGHT as float
+        if (position.y > SCR_HEIGHT - asset.spriteHeight) {
+            position.y = SCR_HEIGHT - asset.spriteHeight as float
         }
 
         processUserInput()
@@ -63,22 +55,11 @@ class MainShip extends Actor implements Disposable {
     }
 
     private void processUserInput() {
-        move(Key.Code.LEFT) { position.x -= it }
-        move(Key.Code.RIGHT) { position.x += it }
-        move(Key.Code.UP) { position.y += it }
-        move(Key.Code.DOWN) { position.y -= it }
+        Key.LEFT.move { position.x -= it }
+        Key.RIGHT.move { position.x += it }
+        Key.UP.move { position.y += it }
+        Key.DOWN.move { position.y -= it }
     }
-
-    private void move(Key.Code code, @ClosureParams(value = SimpleType, options = ['float']) Closure cl) {
-        if (!Key.pressed(code)) {
-            return
-        }
-
-        int speedConst = Key.pressed(Key.Code.BOOST) ? SPEED + BOOST : SPEED
-        float speed = speedConst * Gdx.graphics.deltaTime as float
-        cl(speed)
-    }
-
 
     @Override
     void dispose() {
