@@ -23,7 +23,7 @@ class GameScreen implements Screen {
     private List<Disposable> disposable
     private Raindrops raindrops
     private ClearScr clearScr
-    private Spaceship bucket
+    private MainShip mainShip
     private Background background
     private Stage stage
 
@@ -34,8 +34,8 @@ class GameScreen implements Screen {
         background = []
         stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]
         camera = stage.getViewport().getCamera() as OrthographicCamera
-        bucket = [camera]
-        raindrops = [bucket]
+        mainShip = []
+        raindrops = [mainShip]
 
         // load the drop sound effect and the rain clearScr "music"
         rainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/rain.mp3"))
@@ -50,11 +50,11 @@ class GameScreen implements Screen {
         // spawn the first raindrop
         raindrops.spawnRaindrop()
 
-        disposable << bucket << raindrops << rainMusic << batch << Raindrop.disposable() << background << stage
+        disposable << mainShip << raindrops << rainMusic << batch << Raindrop.disposable() << background << stage
 
         stage.addActor clearScr
         stage.addActor background
-        stage.addActor bucket
+        stage.addActor mainShip
         stage.addActor raindrops
     }
 

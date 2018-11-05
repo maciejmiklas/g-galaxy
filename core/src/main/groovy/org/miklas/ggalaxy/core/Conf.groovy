@@ -1,9 +1,10 @@
 package org.miklas.ggalaxy.core
 
-import groovy.transform.CompileStatic
-
-@CompileStatic
 class Conf {
-    static int SCR_WIDTH = 1280
-    static int SCR_HEIGHT = 760
+    // TODO set different environments dynamically
+    static final ConfigObject ins = new ConfigSlurper("phone").parse(Conf.class.getResource("/config.groovy") as URL)
+
+    static final int SCR_WIDTH = ins.screen.width
+    static final int SCR_HEIGHT = ins.screen.height
 }
+

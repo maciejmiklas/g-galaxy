@@ -14,9 +14,9 @@ class Raindrops extends Actor implements Disposable {
     private List<Raindrop> raindrops = []
     private long lastDropTime = -1
     private Sound dropSound
-    private Spaceship bucket
+    private MainShip bucket
 
-    Raindrops(Spaceship bucket) {
+    Raindrops(MainShip bucket) {
         this.bucket = bucket
         dropSound = Gdx.audio.newSound(Gdx.files.internal("assets/drop.wav"))
     }

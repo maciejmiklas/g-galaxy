@@ -1,12 +1,11 @@
-package org.miklas.ggalaxy.core;
+package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.Game
-import groovy.transform.CompileStatic;
 
-@CompileStatic
 class GgalaxyGame extends Game {
     @Override
     void create() {
+        println "Loaded config: $Conf.ins"
         setScreen(new GameScreen())
     }
 }

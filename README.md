@@ -1,14 +1,14 @@
 # G Galaxy
 
 ## Assets
-Assets are free but cannot be redistributed. For this reason you have to download them and place into right folder. 
+Assets are free but cannot be redistributed. For this reason you have to download them and place into right folder. Further instructions can be found in following sub-folders:
+* _src/main/resources/assets/background/space_
+* _src/main/resources/assets/packs_
 
-### Background
-Download assets from one of those links: 
-* https://dinvstudio.itch.io/dynamic-space-background-lite-free
-* https://assetstore.unity.com/packages/2d/textures-materials/dynamic-space-background-104175
+### Credits 
+* [UnLucky Studio](http://unluckystudio.com/)
+* [DinVStudio](https://dinvstudio.itch.io/) 
 
-and extract here _src/main/resources/assets/background/space_
 
 
 # TODO

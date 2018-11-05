@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Disposable
-import groovy.transform.CompileStatic
 
 import static org.miklas.ggalaxy.core.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
@@ -13,7 +12,6 @@ import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
 /**
  * Parallax Background.
  */
-@CompileStatic
 class Background extends Actor implements Disposable {
 
 
@@ -28,8 +26,6 @@ class Background extends Actor implements Disposable {
     private Texture stB2 = [Gdx.files.internal("assets/background/space/Stars-Big_1_1_PC.png")]
 
     private List<Texture> layers = [bgBlue, stS1, stS2]
-
-    private final int LAYER_SPEED_DIFFERENCE = 2
 
     private int speedY = 4
     private int scrollY = 0
@@ -53,8 +49,8 @@ class Background extends Actor implements Disposable {
         scrollX += speedX
 
         layers.eachWithIndex { layer, idx ->
-            int srcY = (scrollY + (idx + 1) * LAYER_SPEED_DIFFERENCE * scrollY) / 2 as int
-            int srcX = (scrollX + idx * LAYER_SPEED_DIFFERENCE * scrollX) / 10 as int
+            int srcY = (scrollY + (idx + 1) * Conf.ins.background.layerSpeedDiference * scrollY) / 2 as int
+            int srcX = (scrollX + idx * Conf.ins.background.layerSpeedDiference * scrollX) / 10 as int
             batch.draw layer, 0, 0, SCR_WIDTH, SCR_HEIGHT, srcX, srcY, layer.width, layer.height, false, true
         }
     }
@@ -62,19 +58,19 @@ class Background extends Actor implements Disposable {
     private void processUserInput() {
 
         if (Key.pressed(Key.Code.UP, Key.Code.BOOST)) {
-            speedY = 10
+            speedY = Conf.ins.background.speed.up.boost
 
         } else if (Key.pressed(Key.Code.UP)) {
-            speedY = 6
+            speedY = Conf.ins.background.speed.up.normal
 
         } else if (Key.pressed(Key.Code.DOWN, Key.Code.BOOST)) {
-            speedY = -4
+            speedY = Conf.ins.background.speed.down.boost
 
         } else if (Key.pressed(Key.Code.DOWN)) {
-            speedY = -2
+            speedY = Conf.ins.background.speed.down.normal
 
         } else {
-            speedY = 4
+            speedY = Conf.ins.background.speed.nokey.y
         }
 
         if (Key.pressed(Key.Code.LEFT, Key.Code.BOOST)) {

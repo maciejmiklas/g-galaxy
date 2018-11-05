@@ -1,13 +1,10 @@
 package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Disposable
 import groovy.transform.CompileStatic
@@ -18,34 +15,29 @@ import static org.miklas.ggalaxy.core.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
 
 @CompileStatic
-class Spaceship extends Actor implements Disposable {
+class MainShip extends Actor implements Disposable {
 
     Rectangle position
-
-    private Texture texture = [Gdx.files.internal("assets/small_drone.png")]
-    private Vector3 touchPos
     private final int WIDTH = 64
     private final int HEIGHT = 64
     private final int SPEED = 200
-    private Sprite sprite
-    private OrthographicCamera camera
+    private final int BOOST = 100
+    private final float FRAME_DURATION = 0.05f
+    private Animation<Sprite> animation
+    private float animationStartTime = 0.0f
 
-    Spaceship(OrthographicCamera camera) {
-        touchPos = []
-        this.camera = camera
+    MainShip() {
 
-        // create a Rectangle to logically represent the bucket
+        // create a Rectangle to logically represent the mainShip
         // note the division by floats, which is much faster than by ints in Groovy
 
         position = [SCR_WIDTH / 2f - WIDTH / 2f as float, 20, WIDTH, HEIGHT]
-
-        sprite = [texture, 170, 260]
-        sprite.setSize(WIDTH, HEIGHT)
+        animation = new Animation<>(FRAME_DURATION, AnimationFactory.load(AnimationFactory.Name.MAIN_SHIP_BLUE), Animation.PlayMode.LOOP)
     }
 
     @Override
     void draw(Batch batch, float parentAlpha) {
-        // make sure the bucket stays within the screen bounds
+        // make sure the mainShip stays within the screen bounds
         if (position.x < 0) {
             position.x = 0
         }
@@ -64,17 +56,13 @@ class Spaceship extends Actor implements Disposable {
 
         processUserInput()
 
+        animationStartTime += Gdx.graphics.getDeltaTime()
+        Sprite sprite = animation.getKeyFrame animationStartTime
         sprite.setPosition position.x, position.y
         sprite.draw batch
     }
 
     private void processUserInput() {
-        if (Gdx.input.touched) {
-            touchPos.set Gdx.input.x, Gdx.input.y, 0
-            camera.unproject touchPos
-            position.x = touchPos.x - WIDTH / 2f as float
-        }
-
         move(Key.Code.LEFT) { position.x -= it }
         move(Key.Code.RIGHT) { position.x += it }
         move(Key.Code.UP) { position.y += it }
@@ -85,14 +73,15 @@ class Spaceship extends Actor implements Disposable {
         if (!Key.pressed(code)) {
             return
         }
-        cl.delegate = this.position
-        float speed = SPEED * Gdx.graphics.deltaTime as float
+
+        int speedConst = Key.pressed(Key.Code.BOOST) ? SPEED + BOOST : SPEED
+        float speed = speedConst * Gdx.graphics.deltaTime as float
         cl(speed)
     }
 
 
     @Override
     void dispose() {
-        texture.dispose()
+        // TODO dispose sprites from animation
     }
 }
