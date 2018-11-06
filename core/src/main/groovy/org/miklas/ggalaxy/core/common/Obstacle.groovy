@@ -1,4 +1,4 @@
-package org.miklas.ggalaxy.core
+package org.miklas.ggalaxy.core.common
 
 import com.badlogic.gdx.math.Rectangle
 
@@ -13,7 +13,7 @@ interface Obstacle {
     Rectangle getPosition()
 
     enum Type {
-        MAIN_SHIP,
+        SPACE_SHIP,
         ENEMY_SHIP,
         SHOT,
         ASTEROID,

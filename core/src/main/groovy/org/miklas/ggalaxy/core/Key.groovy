@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
+import org.miklas.ggalaxy.core.common.Conf
 
 enum Key {
 

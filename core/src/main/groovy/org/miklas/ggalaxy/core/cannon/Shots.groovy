@@ -1,8 +1,11 @@
-package org.miklas.ggalaxy.core
+package org.miklas.ggalaxy.core.cannon
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.TimeUtils
+import org.miklas.ggalaxy.core.common.CollisionDetection
+import org.miklas.ggalaxy.core.common.Conf
+import org.miklas.ggalaxy.core.common.SpriteFactory
 
 class Shots extends Actor implements MainCannon {
 

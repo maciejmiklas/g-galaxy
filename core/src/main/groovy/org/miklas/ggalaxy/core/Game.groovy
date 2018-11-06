@@ -9,9 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import groovy.transform.CompileStatic
+import org.miklas.ggalaxy.core.cannon.Shots
+import org.miklas.ggalaxy.core.common.AnimationFactory
+import org.miklas.ggalaxy.core.common.CollisionDetection
+import org.miklas.ggalaxy.core.common.Conf
+import org.miklas.ggalaxy.core.enemy.EnemyDeploy
 
-import static org.miklas.ggalaxy.core.Conf.getSCR_HEIGHT
-import static org.miklas.ggalaxy.core.Conf.getSCR_WIDTH
+import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
+import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 
 class Game extends com.badlogic.gdx.Game {
 
@@ -31,8 +36,8 @@ class Game extends com.badlogic.gdx.Game {
         private final CollisionDetection collisionDetection = []
         private final Shots shots
         private final OrthographicCamera camera
-        private final Asteroids asteroids
-        private final MainShip mainShip
+        private final EnemyDeploy enemyDeploy
+        private final SpaceShip mainShip
         private final Stage stage
 
         GameScreen() {
@@ -40,21 +45,18 @@ class Game extends com.badlogic.gdx.Game {
             camera = stage.getViewport().getCamera() as OrthographicCamera
             shots = [collisionDetection]
             mainShip = [AnimationFactory.Asset.SHIP_2_BLUE, AnimationFactory.Asset.SHIP_2_RED, shots]
-            asteroids = [collisionDetection]
+            enemyDeploy = [collisionDetection]
             collisionDetection << mainShip
 
             // create the camera and the SpriteBatch
             camera.setToOrtho false, SCR_WIDTH, SCR_HEIGHT
-
-            // spawn the first raindrop
-            asteroids.spawn()
 
             disposable << batch << stage
 
             stage.addActor clearScr
             stage.addActor background
             stage.addActor mainShip
-            stage.addActor asteroids
+            stage.addActor enemyDeploy
             stage.addActor shots
         }
 
@@ -70,9 +72,6 @@ class Game extends com.badlogic.gdx.Game {
             collisionDetection.detect()
             stage.draw()
             batch.end()
-
-            // pressedAll if we need to create a new raindrop
-            asteroids.spawn()
         }
 
         @Override

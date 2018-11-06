@@ -1,10 +1,12 @@
 package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.math.Rectangle
+import org.miklas.ggalaxy.core.common.CollisionDetection
+import org.miklas.ggalaxy.core.common.Obstacle
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static org.miklas.ggalaxy.core.Obstacle.Type.*
+import static org.miklas.ggalaxy.core.common.Obstacle.Type.*
 
 class CollisionDetectionTest extends Specification {
 
@@ -222,7 +224,7 @@ class CollisionDetectionTest extends Specification {
 
     private List<Rock> createTestRocks() {
         [new Rock(position: [0, 0, 20, 20], type: ASTEROID),
-         new Rock(position: [15, 15, 60, 60], type: MAIN_SHIP),
+         new Rock(position: [15, 15, 60, 60], type: SPACE_SHIP),
          new Rock(position: [30, 30, 20, 20], type: ASTEROID),
          new Rock(position: [100, 80, 2, 2], type: SHOT),
          new Rock(position: [17, 17, 2, 2], type: SHOT)]

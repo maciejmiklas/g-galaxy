@@ -6,14 +6,17 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
+import org.miklas.ggalaxy.core.cannon.MainCannon
+import org.miklas.ggalaxy.core.common.AnimationFactory
+import org.miklas.ggalaxy.core.common.Obstacle
 
-import static org.miklas.ggalaxy.core.Conf.SCR_HEIGHT
-import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
+import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
+import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 
-class MainShip extends Actor implements Obstacle {
+class SpaceShip extends Actor implements Obstacle {
 
     final Rectangle position
-    final Type type = Type.MAIN_SHIP
+    final Type type = Type.SPACE_SHIP
     private final Animation<Sprite> animation
     private final AnimationFactory.Asset assetNormal
     private final AnimationFactory.Asset assetBoost
@@ -21,7 +24,7 @@ class MainShip extends Actor implements Obstacle {
     private Speed speed
     private MainCannon mainCannon
 
-    MainShip(AnimationFactory.Asset assetNormal, AnimationFactory.Asset assetBoost, MainCannon mainCannon) {
+    SpaceShip(AnimationFactory.Asset assetNormal, AnimationFactory.Asset assetBoost, MainCannon mainCannon) {
         this.assetNormal = assetNormal
         this.assetBoost = assetBoost
         this.mainCannon = mainCannon

@@ -1,4 +1,4 @@
-package org.miklas.ggalaxy.core
+package org.miklas.ggalaxy.core.common
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture

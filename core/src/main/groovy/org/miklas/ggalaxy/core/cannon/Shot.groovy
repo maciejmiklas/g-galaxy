@@ -1,9 +1,12 @@
-package org.miklas.ggalaxy.core
+package org.miklas.ggalaxy.core.cannon
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Rectangle
+import org.miklas.ggalaxy.core.common.Conf
+import org.miklas.ggalaxy.core.common.Obstacle
+import org.miklas.ggalaxy.core.common.SpriteFactory
 
 class Shot implements Obstacle {
 
@@ -22,12 +25,12 @@ class Shot implements Obstacle {
 
     @Override
     boolean checkCollision(Obstacle other) {
-        other.type != Type.MAIN_SHIP && mode == Mode.ACTIVE && position.overlaps(other.position)
+        other.type != Type.SPACE_SHIP && mode == Mode.ACTIVE && position.overlaps(other.position)
     }
 
     @Override
     void hit(Obstacle other) {
-        if (other.type == Type.MAIN_SHIP) {
+        if (other.type == Type.SPACE_SHIP) {
             return
         }
 

@@ -131,6 +131,9 @@ shot {
 
 asteroid {
     moveSpeed = 200
+}
+
+enemyDeploy {
     spawnMs = 500
 }
 

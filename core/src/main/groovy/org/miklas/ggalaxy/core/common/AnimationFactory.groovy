@@ -1,4 +1,4 @@
-package org.miklas.ggalaxy.core
+package org.miklas.ggalaxy.core.common
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
@@ -50,7 +50,7 @@ class AnimationFactory {
         int spriteHeight
         float frameDuration
         String prefix
-        def conf;
+        def conf
 
         Asset() {
             String name = name()

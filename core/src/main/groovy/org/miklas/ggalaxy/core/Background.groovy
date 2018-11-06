@@ -4,9 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
+import org.miklas.ggalaxy.core.common.Conf
 
-import static org.miklas.ggalaxy.core.Conf.SCR_HEIGHT
-import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
+import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
+import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 
 /**
  * Parallax Background.

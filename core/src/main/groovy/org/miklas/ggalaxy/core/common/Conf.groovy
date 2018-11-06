@@ -1,4 +1,4 @@
-package org.miklas.ggalaxy.core
+package org.miklas.ggalaxy.core.common
 
 class Conf {
     // TODO set different environments dynamically
