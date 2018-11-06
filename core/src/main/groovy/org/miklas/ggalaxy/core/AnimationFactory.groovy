@@ -8,26 +8,36 @@ import com.badlogic.gdx.utils.Array
 
 class AnimationFactory {
 
-    static Animation<Sprite> createAnimation(Asset asset){
-        new Animation<>(asset.frameDuration, load(asset), Animation.PlayMode.LOOP)
+    private static final Map<String, Array<Sprite>> CACHE = new HashMap<>()
+
+    static Animation<Sprite> createAnimation(Asset asset, Animation.PlayMode mode) {
+        new Animation<>(asset.frameDuration, load(asset), mode)
     }
 
-    static Array<Sprite> load(Asset name) {
-        Array<Sprite> sprites = new Array<>(name.frames)
-        1.upto(name.frames) {
-            Texture texture = [Gdx.files.internal("${name.path}/${it}.png")]
-            Sprite sprite = [texture, name.imageWidth, name.imageHeight]
-            sprite.setSize name.spriteWith, name.spriteHeight
+    static Array<Sprite> load(Asset asset) {
+        if (CACHE.containsKey(asset)) {
+            return CACHE.get(asset)
+        }
+
+        Array<Sprite> sprites = new Array<>(asset.frames)
+        1.upto(asset.frames) {
+            Texture texture = [Gdx.files.internal("${asset.path}/${asset.prefix}${it}.png")]
+            Sprite sprite = [texture, asset.imageWidth, asset.imageHeight]
+            sprite.setSize asset.spriteWith, asset.spriteHeight
             sprites.add sprite
         }
+
+        CACHE.put(asset, sprites)
         sprites
     }
 
     enum Asset {
         MAIN_SHIP_BLUE,
-        SPACE_BOMB_BLUE,
-        SPACE_MINE_BLUE,
-        SPACE_MINE_RED
+        BOMB_BLUE,
+        MINE_BLUE,
+        MINE_RED,
+        PROTON_STAR,
+        EXPLOSION_BLUE
 
         String path
         int frames
@@ -36,16 +46,18 @@ class AnimationFactory {
         int spriteWith
         int spriteHeight
         float frameDuration
+        String prefix
 
         Asset() {
             String name = name()
             path = Conf.ins.animation."$name".path
-            this.frames =  Conf.ins.animation."$name".frames
-            this.imageWidth =  Conf.ins.animation."$name".imageWidth
-            this.imageHeight =  Conf.ins.animation."$name".imageHeight
-            this.spriteWith =  Conf.ins.animation."$name".spriteWith
-            this.spriteHeight =  Conf.ins.animation."$name".spriteHeight
-            this.frameDuration =  Conf.ins.animation."$name".frameDuration
+            frames = Conf.ins.animation."$name".frames
+            imageWidth = Conf.ins.animation."$name".imageWidth
+            imageHeight = Conf.ins.animation."$name".imageHeight
+            spriteWith = Conf.ins.animation."$name".spriteWith
+            spriteHeight = Conf.ins.animation."$name".spriteHeight
+            frameDuration = Conf.ins.animation."$name".frameDuration
+            prefix = Conf.ins.animation."$name".prefix ?: ''
         }
     }
 }

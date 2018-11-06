@@ -13,7 +13,7 @@ enum Key {
     RIGHT(Input.Keys.RIGHT, Input.Keys.D),
     BOOST(Input.Keys.SPACE, Input.Keys.B)
 
-    int[] val// TODO should it be final ?
+    final int[] val
     Key(int ... val) {
         this.val = val
     }
@@ -41,9 +41,9 @@ enum Key {
             return
         }
 
-        int speedConst = Conf.ins.move.speed
+        int speedConst = Conf.ins.key.move.speed
         if (Key.BOOST.pressed()) {
-            speedConst += Conf.ins.move.boost
+            speedConst += Conf.ins.key.move.boost
         }
         float speedCalc = speedConst * Gdx.graphics.deltaTime as float
         cl(speedCalc)

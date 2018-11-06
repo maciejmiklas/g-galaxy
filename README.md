@@ -1,5 +1,8 @@
 # G Galaxy
 
+#Coordinates
+y-up -> coordinates system starts at left bottom corner
+
 ## Assets
 Assets are free but cannot be redistributed. For this reason you have to download them and place into right folder. Further instructions can be found in following sub-folders:
 * _src/main/resources/assets/background/space_

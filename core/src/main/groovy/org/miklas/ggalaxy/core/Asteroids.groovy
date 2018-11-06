@@ -1,7 +1,6 @@
 package org.miklas.ggalaxy.core
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.audio.Sound
+
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Disposable
@@ -12,47 +11,39 @@ import static org.miklas.ggalaxy.core.AnimationFactory.Asset.*
 class Asteroids extends Actor implements Disposable {
 
     private final List<Asteroid> asteroids = []
-    private final Sound dropSound
+
     private final MainShip mainShip
-    private final def MINE_ASSET = [SPACE_BOMB_BLUE, SPACE_MINE_BLUE, SPACE_MINE_RED]
+    private final def MINE_ASSET = [BOMB_BLUE, MINE_BLUE, MINE_RED,]
 
-    private long lastDropTime = -1
+    private long lastSpawnTime = -1
 
-    Asteroids(MainShip bucket) {
-        this.mainShip = bucket
-        dropSound = Gdx.audio.newSound(Gdx.files.internal("assets/drop.wav"))
+    Asteroids(MainShip ship) {
+        this.mainShip = ship
     }
 
-    void spawnRaindrop() {
-        if (TimeUtils.nanoTime() - lastDropTime < 1000000000) {
+    void spawn() {
+        if (TimeUtils.nanoTime() - lastSpawnTime < Conf.ins.asteroid.spawn.time) {
             return
         }
-        asteroids << new Asteroid(MINE_ASSET[lastDropTime % MINE_ASSET.size() - 1 as int])
-        lastDropTime = TimeUtils.nanoTime()
+
+        Asteroid free = asteroids.find { it.mode == Asteroid.Mode.INACTIVE }
+        if (free == null) {
+            asteroids << new Asteroid(MINE_ASSET[lastSpawnTime % MINE_ASSET.size() - 1 as int], EXPLOSION_BLUE)
+        } else {
+            free.reset()
+        }
+        lastSpawnTime = TimeUtils.nanoTime()
     }
 
     @Override
     void draw(Batch batch, float parentAlpha) {
-        // move the raindrops, play sound effects
-        asteroids.removeAll { drop ->
-            boolean remove = false
-            if (!drop.move()) {
-                remove = true
-            }
-
-            if (drop.overlaps(mainShip.position)) {
-                dropSound.play()
-                remove = true
-            }
-            if (!remove) {
-                drop.draw batch, parentAlpha
-            }
-            return remove
+        asteroids.forEach {
+            it.draw batch,  mainShip.position
         }
     }
 
     @Override
     void dispose() {
-        dropSound.dispose()
+
     }
 }

@@ -19,12 +19,12 @@ class MainShip extends Actor implements Disposable {
     private final  Animation<Sprite> animation
     private final AnimationFactory.Asset asset
 
-    private float animationStartTime = 0.0f // TODO reset
+    private float animationStartTime = 0.0f
 
     MainShip(AnimationFactory.Asset asset) {
         this.asset = asset
         position = [SCR_WIDTH / 2f - asset.spriteWith / 2f as float, 20, asset.spriteWith, asset.spriteHeight]
-        animation =  AnimationFactory.createAnimation(asset)
+        animation =  AnimationFactory.createAnimation(asset, Animation.PlayMode.LOOP)
     }
 
     @Override

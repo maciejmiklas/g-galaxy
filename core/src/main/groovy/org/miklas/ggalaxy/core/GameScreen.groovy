@@ -1,9 +1,7 @@
 package org.miklas.ggalaxy.core
 
-
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
-import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -23,7 +21,6 @@ class GameScreen implements Screen {
     private final List<Disposable> disposable = []
 
     private final OrthographicCamera camera
-    private final Music rainMusic
     private final Asteroids asteroids
     private final MainShip mainShip
     private final Stage stage
@@ -34,20 +31,13 @@ class GameScreen implements Screen {
         mainShip = [AnimationFactory.Asset.MAIN_SHIP_BLUE]
         asteroids = [mainShip]
 
-        // load the drop sound effect and the rain clearScr "music"
-        rainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/rain.mp3"))
-
-        // start the playback of the clearScr music immediately
-        //rainMusic.looping = true
-        // rainMusic.play()
-
         // create the camera and the SpriteBatch
         camera.setToOrtho false, SCR_WIDTH, SCR_HEIGHT
 
         // spawn the first raindrop
-        asteroids.spawnRaindrop()
+        asteroids.spawn()
 
-        disposable << mainShip << asteroids << rainMusic << batch << Asteroid.disposable() << background << stage
+        disposable << mainShip << asteroids << batch << Asteroid.disposable() << background << stage
 
         stage.addActor clearScr
         stage.addActor background
@@ -68,7 +58,7 @@ class GameScreen implements Screen {
         batch.end()
 
         // pressedAll if we need to create a new raindrop
-        asteroids.spawnRaindrop()
+        asteroids.spawn()
     }
 
     @Override
