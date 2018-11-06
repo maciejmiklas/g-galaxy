@@ -13,8 +13,9 @@ class Asteroids extends Actor implements Disposable {
     private final List<Asteroid> asteroids = []
 
     private final MainShip mainShip
-    private final def MINE_ASSET = [BOMB_BLUE, MINE_BLUE, MINE_RED,]
+    private final def MINE_ASSET = [[BOMB_BLUE, EXPLOSION_BLUE], [MINE_BLUE, EXPLOSION_BLUE], [MINE_RED, EXPLOSION_RED]]
 
+    private int spawnIdx = 0
     private long lastSpawnTime = -1
 
     Asteroids(MainShip ship) {
@@ -28,7 +29,12 @@ class Asteroids extends Actor implements Disposable {
 
         Asteroid free = asteroids.find { it.mode == Asteroid.Mode.INACTIVE }
         if (free == null) {
-            asteroids << new Asteroid(MINE_ASSET[lastSpawnTime % MINE_ASSET.size() - 1 as int], EXPLOSION_BLUE)
+            def arr = MINE_ASSET[spawnIdx++]
+            asteroids << new Asteroid(arr[0], arr[1])
+
+            if(spawnIdx == MINE_ASSET.size()){
+                spawnIdx = 0
+            }
         } else {
             free.reset()
         }
@@ -38,7 +44,7 @@ class Asteroids extends Actor implements Disposable {
     @Override
     void draw(Batch batch, float parentAlpha) {
         asteroids.forEach {
-            it.draw batch,  mainShip.position
+            it.draw batch, mainShip.position
         }
     }
 

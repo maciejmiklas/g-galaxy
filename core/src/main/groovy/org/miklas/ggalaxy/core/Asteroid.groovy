@@ -15,6 +15,8 @@ class Asteroid extends Actor {
 
     Mode mode = Mode.ACTIVE
     private Animation<Sprite> animation
+    private Animation<Sprite> animationExplosion
+    private Animation<Sprite> animationNormal
     private float animationStateTime = 0.0f
     private final Rectangle position = []
     private AnimationFactory.Asset asteroid
@@ -31,6 +33,8 @@ class Asteroid extends Actor {
         this.explosion = explosion
         this.explosionAdjustX = explosion.spriteHeight / 2 - asteroid.spriteHeight / 2
         this.explosionAdjustY = explosion.spriteWith / 2 - asteroid.spriteWith / 2
+        this.animationNormal = AnimationFactory.createAnimation(asteroid, Animation.PlayMode.LOOP)
+        this.animationExplosion = AnimationFactory.createAnimation(explosion, Animation.PlayMode.NORMAL)
         reset()
     }
 
@@ -57,7 +61,7 @@ class Asteroid extends Actor {
             animationStateTime = 0.0f
             position.x -= explosionAdjustX
             position.y -= explosionAdjustY
-            animation = AnimationFactory.createAnimation(explosion, Animation.PlayMode.NORMAL)
+            animation = animationExplosion
         }
     }
 
@@ -67,7 +71,7 @@ class Asteroid extends Actor {
 
     def reset() {
         mode = Mode.ACTIVE
-        animation = AnimationFactory.createAnimation(asteroid, Animation.PlayMode.LOOP)
+        animation = animationNormal
         animationStateTime = 0.0f
         position.set MathUtils.random(0, Conf.SCR_WIDTH - asteroid.spriteWith), Conf.SCR_HEIGHT, asteroid.spriteWith, asteroid.spriteHeight
     }

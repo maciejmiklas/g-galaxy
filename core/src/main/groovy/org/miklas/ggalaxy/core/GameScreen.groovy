@@ -28,7 +28,7 @@ class GameScreen implements Screen {
     GameScreen() {
         stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]
         camera = stage.getViewport().getCamera() as OrthographicCamera
-        mainShip = [AnimationFactory.Asset.MAIN_SHIP_BLUE]
+        mainShip = [AnimationFactory.Asset.SHIP_2_BLUE, AnimationFactory.Asset.SHIP_2_RED]
         asteroids = [mainShip]
 
         // create the camera and the SpriteBatch

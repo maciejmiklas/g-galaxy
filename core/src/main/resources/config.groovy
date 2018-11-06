@@ -1,5 +1,5 @@
 animation {
-    MAIN_SHIP_BLUE {
+    SHIP_1_BLUE {
         path = 'assets/packs/Spaceship_art_pack_larger/Blue/Animation/'
         frames = 8
         imageWidth = 512
@@ -8,6 +8,28 @@ animation {
         spriteHeight = 64
         frameDuration = 0.05f
     }
+
+    SHIP_2_RED {
+        path = 'assets/packs/Spaceship_art_pack_larger/Red/Enemy_animation/'
+        frames = 8
+        imageWidth = 512
+        imageHeight = 512
+        spriteWith = 96
+        spriteHeight = 96
+        frameDuration = 0.05f
+    }
+
+
+    SHIP_2_BLUE {
+        path = 'assets/packs/Spaceship_art_pack_larger/Blue/spaceship_blue_animation'
+        frames = 4
+        imageWidth = 512
+        imageHeight = 512
+        spriteWith = 96
+        spriteHeight = 96
+        frameDuration = 0.05f
+    }
+
 
     BOMB_BLUE {
         path = 'assets/packs/Spaceship_art_pack_larger/Blue/Spacebombs/'
@@ -61,6 +83,17 @@ animation {
         prefix = '1_'
     }
 
+    EXPLOSION_RED {
+        path = 'assets/packs/Spaceship_art_pack_larger/Effects/Red Explosion'
+        frames = 16
+        imageWidth = 256
+        imageHeight = 256
+        spriteWith = 256
+        spriteHeight = 256
+        frameDuration = 0.05f
+        prefix = '1_'
+    }
+
 }
 
 screen {
@@ -71,7 +104,7 @@ screen {
 key {
     move {
         speed = 200
-        boost = 100
+        boost = 200
     }
 }
 

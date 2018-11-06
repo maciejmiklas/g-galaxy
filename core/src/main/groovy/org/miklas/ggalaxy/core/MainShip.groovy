@@ -16,19 +16,27 @@ import static org.miklas.ggalaxy.core.Conf.SCR_WIDTH
 class MainShip extends Actor implements Disposable {
 
     final Rectangle position
-    private final  Animation<Sprite> animation
-    private final AnimationFactory.Asset asset
-
+    private final Animation<Sprite> animation
+    private final AnimationFactory.Asset assetNormal
+    private final AnimationFactory.Asset assetBoost
     private float animationStartTime = 0.0f
+    private Speed speed
 
-    MainShip(AnimationFactory.Asset asset) {
-        this.asset = asset
-        position = [SCR_WIDTH / 2f - asset.spriteWith / 2f as float, 20, asset.spriteWith, asset.spriteHeight]
-        animation =  AnimationFactory.createAnimation(asset, Animation.PlayMode.LOOP)
+    MainShip(AnimationFactory.Asset assetNormal, AnimationFactory.Asset assetBoost) {
+        this.assetNormal = assetNormal
+        this.assetBoost = assetBoost
+        position = [SCR_WIDTH / 2f - assetNormal.spriteWith / 2f as float, 20, assetNormal.spriteWith, assetNormal.spriteHeight]
+        animation = AnimationFactory.createAnimation(assetNormal, Animation.PlayMode.LOOP)
+    }
+
+    private void checkAnimation() {
+
     }
 
     @Override
     void draw(Batch batch, float parentAlpha) {
+        speed = Key.BOOST.pressed() ? Speed.BOOST : Speed.NORMAL
+
         // make sure the mainShip stays within the screen bounds
         if (position.x < 0) {
             position.x = 0
@@ -38,12 +46,12 @@ class MainShip extends Actor implements Disposable {
             position.y = 0
         }
 
-        if (position.x > SCR_WIDTH - asset.spriteWith) {
-            position.x = SCR_WIDTH - asset.spriteWith as float
+        if (position.x > SCR_WIDTH - assetNormal.spriteWith) {
+            position.x = SCR_WIDTH - assetNormal.spriteWith as float
         }
 
-        if (position.y > SCR_HEIGHT - asset.spriteHeight) {
-            position.y = SCR_HEIGHT - asset.spriteHeight as float
+        if (position.y > SCR_HEIGHT - assetNormal.spriteHeight) {
+            position.y = SCR_HEIGHT - assetNormal.spriteHeight as float
         }
 
         processUserInput()
@@ -64,5 +72,10 @@ class MainShip extends Actor implements Disposable {
     @Override
     void dispose() {
         // TODO dispose sprites from animation
+    }
+
+    private enum Speed {
+        NORMAL,
+        BOOST
     }
 }
