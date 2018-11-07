@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle
 import org.miklas.ggalaxy.core.common.AnimationFactory
 import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.common.Obstacle
+import org.miklas.ggalaxy.core.common.ObstacleType
 
 class Fighter implements Enemy {
     private final static Sound CRASH_SOUND
@@ -20,7 +21,7 @@ class Fighter implements Enemy {
     private Animation<Sprite> animationNormal
     private float animationStateTime = 0.0f
     final Rectangle position = []
-    final Type type = Type.ASTEROID
+    final ObstacleType type = ObstacleType.ASTEROID
     private AnimationFactory.Asset fighterAsset
     private AnimationFactory.Asset explosionAsset
     private float explosionAdjustX = 0
@@ -35,8 +36,8 @@ class Fighter implements Enemy {
         this.explosionAsset = explosionAsset
         this.explosionAdjustX = explosionAsset.spriteHeight / 2 - fighterAsset.spriteHeight / 2
         this.explosionAdjustY = explosionAsset.spriteWith / 2 - fighterAsset.spriteWith / 2
-        this.animationNormal = AnimationFactory.create(fighterAsset, Animation.PlayMode.LOOP)
-        this.animationExplosion = AnimationFactory.create(explosionAsset, Animation.PlayMode.NORMAL)
+        this.animationNormal = AnimationFactory.create(fighterAsset, Animation.PlayMode.LOOP, type)
+        this.animationExplosion = AnimationFactory.create(explosionAsset, Animation.PlayMode.NORMAL, type)
         reset()
     }
 
@@ -53,6 +54,7 @@ class Fighter implements Enemy {
 
         Sprite sprite = animation.getKeyFrame animationStateTime
         sprite.setPosition position.x, position.y
+        sprite.setOrigin sprite.width / 2 as float, sprite.height / 2 as float
         sprite.rotation = 180
         sprite.draw batch
         animationStateTime += Gdx.graphics.getDeltaTime()
@@ -69,7 +71,7 @@ class Fighter implements Enemy {
 
     @Override
     boolean checkCollision(Obstacle other) {
-        mode == Mode.ACTIVE && other.type != Type.ASTEROID && position.overlaps(other.position)
+        mode == Mode.ACTIVE && other.type != ObstacleType.ASTEROID && position.overlaps(other.position)
     }
 
     @Override

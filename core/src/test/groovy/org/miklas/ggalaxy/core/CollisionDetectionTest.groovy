@@ -6,7 +6,7 @@ import org.miklas.ggalaxy.core.common.Obstacle
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static org.miklas.ggalaxy.core.common.Obstacle.Type.*
+import static org.miklas.ggalaxy.core.common.Obstacle.ObstacleType.*
 
 class CollisionDetectionTest extends Specification {
 
@@ -232,7 +232,7 @@ class CollisionDetectionTest extends Specification {
 
     class Rock implements Obstacle {
         Rectangle position = []
-        Type type = ASTEROID
+        ObstacleType type = ASTEROID
         List<Obstacle> hits = []
 
         @Override

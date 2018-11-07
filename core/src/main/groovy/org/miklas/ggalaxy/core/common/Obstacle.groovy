@@ -8,14 +8,8 @@ interface Obstacle {
 
     void hit(Obstacle other)
 
-    Type getType()
+    ObstacleType getType()
 
     Rectangle getPosition()
 
-    enum Type {
-        SPACE_SHIP,
-        ENEMY_SHIP,
-        SHOT,
-        ASTEROID,
-    }
 }

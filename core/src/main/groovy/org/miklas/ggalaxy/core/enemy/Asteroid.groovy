@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle
 import org.miklas.ggalaxy.core.common.AnimationFactory
 import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.common.Obstacle
+import org.miklas.ggalaxy.core.common.ObstacleType
 
 class Asteroid implements Enemy {
     private final static Sound CRASH_SOUND
@@ -20,7 +21,7 @@ class Asteroid implements Enemy {
     private Animation<Sprite> animationNormal
     private float animationStateTime = 0.0f
     final Rectangle position = []
-    final Type type = Type.ASTEROID
+    final ObstacleType type = ObstacleType.ASTEROID
     private AnimationFactory.Asset asteroid
     private AnimationFactory.Asset explosion
     private float explosionAdjustX = 0
@@ -35,8 +36,8 @@ class Asteroid implements Enemy {
         this.explosion = explosion
         this.explosionAdjustX = explosion.spriteHeight / 2 - asteroid.spriteHeight / 2
         this.explosionAdjustY = explosion.spriteWith / 2 - asteroid.spriteWith / 2
-        this.animationNormal = AnimationFactory.create(asteroid, Animation.PlayMode.LOOP)
-        this.animationExplosion = AnimationFactory.create(explosion, Animation.PlayMode.NORMAL)
+        this.animationNormal = AnimationFactory.create(asteroid, Animation.PlayMode.LOOP, type)
+        this.animationExplosion = AnimationFactory.create(explosion, Animation.PlayMode.NORMAL, type)
         reset()
     }
 
@@ -68,7 +69,7 @@ class Asteroid implements Enemy {
 
     @Override
     boolean checkCollision(Obstacle other) {
-        mode == Mode.ACTIVE && other.type != Type.ASTEROID && position.overlaps(other.position)
+        mode == Mode.ACTIVE && other.type != ObstacleType.ASTEROID && position.overlaps(other.position)
     }
 
     @Override

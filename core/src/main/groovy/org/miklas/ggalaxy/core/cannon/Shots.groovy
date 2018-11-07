@@ -18,7 +18,7 @@ class Shots extends Actor implements MainCannon {
     }
 
     @Override
-    void fire(int x, int y) {
+    void fire(int x, int y, int angle) {
         if (TimeUtils.millis() - lastFireMs < Conf.ins.shot.delayMs) {
             return
         }
@@ -28,7 +28,7 @@ class Shots extends Actor implements MainCannon {
             shots << shot
             collisionDetection << shot
         }
-        shot.fire x, y
+        shot.fire x, y, angle
         lastFireMs = TimeUtils.millis()
     }
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import org.miklas.ggalaxy.core.cannon.MainCannon
 import org.miklas.ggalaxy.core.common.AnimationFactory
 import org.miklas.ggalaxy.core.common.Obstacle
+import org.miklas.ggalaxy.core.common.ObstacleType
 
 import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
@@ -16,7 +17,7 @@ import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 class SpaceShip extends Actor implements Obstacle {
 
     final Rectangle position
-    final Type type = Type.SPACE_SHIP
+    final ObstacleType type = ObstacleType.SPACE_SHIP
     private final Animation<Sprite> animation
     private final AnimationFactory.Asset assetNormal
     private final AnimationFactory.Asset assetBoost
@@ -29,7 +30,7 @@ class SpaceShip extends Actor implements Obstacle {
         this.assetBoost = assetBoost
         this.mainCannon = mainCannon
         position = [SCR_WIDTH / 2f - assetNormal.spriteWith / 2f as float, 20, assetNormal.spriteWith, assetNormal.spriteHeight]
-        animation = AnimationFactory.create(assetNormal, Animation.PlayMode.LOOP)
+        animation = AnimationFactory.create(assetNormal, Animation.PlayMode.LOOP, type)
     }
 
     @Override
@@ -68,7 +69,7 @@ class SpaceShip extends Actor implements Obstacle {
         Key.UP.onMove { position.y += it }
         Key.DOWN.onMove { position.y -= it }
         Key.FIRE.onFire {
-            mainCannon.fire position.x + assetNormal.conf.cannon.main.x as int, position.y + assetNormal.conf.cannon.main.y as int
+            mainCannon.fire position.x + assetNormal.conf.cannon.main.x as int, position.y + assetNormal.conf.cannon.main.y as int, 0
         }
     }
 

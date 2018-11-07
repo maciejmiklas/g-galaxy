@@ -10,25 +10,21 @@ class AnimationFactory {
 
     private static final Map<String, Array<Sprite>> CACHE = new HashMap<>()
 
-    static Animation<Sprite> create(Asset asset, Animation.PlayMode mode) {
-        new Animation<>(asset.frameDuration, load(asset), mode)
+    static Animation<Sprite> create(Asset asset, Animation.PlayMode mode, ObstacleType type) {
+        new Animation<>(asset.frameDuration, load(asset, type), mode)
     }
 
-    static Array<Sprite> load(Asset asset) {
-        if (CACHE.containsKey(asset)) {
-            return CACHE.get(asset)
-        }
-
-        Array<Sprite> sprites = new Array<>(asset.frames)
-        1.upto(asset.frames) {
-            Texture texture = [Gdx.files.internal("${asset.path}/${asset.prefix}${it}.png")]
-            Sprite sprite = [texture, asset.imageWidth, asset.imageHeight]
-            sprite.setSize asset.spriteWith, asset.spriteHeight
-            sprites.add sprite
-        }
-
-        CACHE.put(asset, sprites)
-        sprites
+    static Array<Sprite> load(Asset asset, ObstacleType type) {
+        CACHE.computeIfAbsent("${asset}-${type}", {
+            Array<Sprite> sprites = new Array<>(asset.frames)
+            1.upto(asset.frames) {
+                Texture texture = [Gdx.files.internal("${asset.path}/${asset.prefix}${it}.png")]
+                Sprite sprite = [texture, asset.imageWidth, asset.imageHeight]
+                sprite.setSize asset.spriteWith, asset.spriteHeight
+                sprites.add sprite
+            }
+            sprites
+        })
     }
 
     enum Asset {
