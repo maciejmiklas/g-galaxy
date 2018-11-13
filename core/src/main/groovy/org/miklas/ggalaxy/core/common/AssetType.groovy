@@ -1,6 +1,6 @@
 package org.miklas.ggalaxy.core.common
 
-enum ObstacleType {
+enum AssetType {
     SPACE_SHIP,
     ENEMY_SHIP,
     SHOT,

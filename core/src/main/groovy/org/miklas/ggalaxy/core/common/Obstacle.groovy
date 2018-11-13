@@ -8,7 +8,7 @@ interface Obstacle {
 
     void hit(Obstacle other)
 
-    ObstacleType getType()
+    AssetType getType()
 
     Rectangle getPosition()
 

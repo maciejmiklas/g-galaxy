@@ -3,10 +3,11 @@ package org.miklas.ggalaxy.core
 import com.badlogic.gdx.math.Rectangle
 import org.miklas.ggalaxy.core.common.CollisionDetection
 import org.miklas.ggalaxy.core.common.Obstacle
+import org.miklas.ggalaxy.core.common.AssetType
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static org.miklas.ggalaxy.core.common.Obstacle.ObstacleType.*
+import static org.miklas.ggalaxy.core.common.AssetType.*
 
 class CollisionDetectionTest extends Specification {
 
@@ -232,7 +233,7 @@ class CollisionDetectionTest extends Specification {
 
     class Rock implements Obstacle {
         Rectangle position = []
-        ObstacleType type = ASTEROID
+        AssetType type = ASTEROID
         List<Obstacle> hits = []
 
         @Override

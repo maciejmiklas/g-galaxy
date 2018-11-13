@@ -2,14 +2,11 @@ package org.miklas.ggalaxy.core.cannon
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.utils.TimeUtils
+import org.miklas.ggalaxy.core.common.AssetName
 import org.miklas.ggalaxy.core.common.CollisionDetection
-import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.common.SpriteFactory
 
 class Shots extends Actor implements MainCannon {
 
-    private long lastFireMs = 0
     private final List<Shot> shots = []
     private final CollisionDetection collisionDetection
 
@@ -18,18 +15,14 @@ class Shots extends Actor implements MainCannon {
     }
 
     @Override
-    void fire(int x, int y, int angle) {
-        if (TimeUtils.millis() - lastFireMs < Conf.ins.shot.delayMs) {
-            return
-        }
+    void fire(int x, int y, int angle, int moveSpeed) {
         Shot shot = shots.find { it.mode == Shot.Mode.INACTIVE }
         if (shot == null) {
-            shot = new Shot(SpriteFactory.Asset.SHOT_RED)
+            shot = new Shot(AssetName.SHOT_RED)
             shots << shot
             collisionDetection << shot
         }
-        shot.fire x, y, angle
-        lastFireMs = TimeUtils.millis()
+        shot.fire x, y, angle, moveSpeed
     }
 
     @Override

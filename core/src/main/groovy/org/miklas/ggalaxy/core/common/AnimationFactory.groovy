@@ -10,55 +10,24 @@ class AnimationFactory {
 
     private static final Map<String, Array<Sprite>> CACHE = new HashMap<>()
 
-    static Animation<Sprite> create(Asset asset, Animation.PlayMode mode, ObstacleType type) {
-        new Animation<>(asset.frameDuration, load(asset, type), mode)
+    static Animation<Sprite> create(AssetName asset, Animation.PlayMode mode, AssetType type) {
+        new Animation<>(Conf.animation(asset).frameDuration, load(asset, type), mode)
     }
 
-    static Array<Sprite> load(Asset asset, ObstacleType type) {
+    private static Array<Sprite> load(AssetName asset, AssetType type) {
         CACHE.computeIfAbsent("${asset}-${type}", {
-            Array<Sprite> sprites = new Array<>(asset.frames)
-            1.upto(asset.frames) {
-                Texture texture = [Gdx.files.internal("${asset.path}/${asset.prefix}${it}.png")]
-                Sprite sprite = [texture, asset.imageWidth, asset.imageHeight]
-                sprite.setSize asset.spriteWith, asset.spriteHeight
+            def c_an = Conf.animation asset
+            Array<Sprite> sprites = new Array<>(c_an.frames)
+            1.upto(c_an.frames) {
+                def pref = c_an.prefix ?: ""
+                Texture texture = [Gdx.files.internal("${c_an.path}/${pref}${it}.png")]
+                Sprite sprite = [texture, c_an.imageWidth, c_an.imageHeight]
+                sprite.setSize c_an.spriteWith, c_an.spriteHeight
                 sprites.add sprite
             }
             sprites
         })
     }
 
-    enum Asset {
-        SHIP_1_BLUE,
-        SHIP_2_RED,
-        SHIP_2_BLUE,
-        BOMB_BLUE,
-        MINE_BLUE,
-        MINE_RED,
-        PROTON_STAR,
-        EXPLOSION_BLUE,
-        EXPLOSION_RED
 
-        String path
-        int frames
-        int imageWidth
-        int imageHeight
-        int spriteWith
-        int spriteHeight
-        float frameDuration
-        String prefix
-        def conf
-
-        Asset() {
-            String name = name()
-            conf = Conf.ins.animation."$name"
-            path = Conf.ins.animation."$name".path
-            frames = Conf.ins.animation."$name".frames
-            imageWidth = Conf.ins.animation."$name".imageWidth
-            imageHeight = Conf.ins.animation."$name".imageHeight
-            spriteWith = Conf.ins.animation."$name".spriteWith
-            spriteHeight = Conf.ins.animation."$name".spriteHeight
-            frameDuration = Conf.ins.animation."$name".frameDuration
-            prefix = Conf.ins.animation."$name".prefix ?: ''
-        }
-    }
 }

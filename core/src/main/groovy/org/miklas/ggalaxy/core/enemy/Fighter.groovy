@@ -7,12 +7,11 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
-import org.miklas.ggalaxy.core.common.AnimationFactory
-import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.common.Obstacle
-import org.miklas.ggalaxy.core.common.ObstacleType
+import com.badlogic.gdx.utils.TimeUtils
+import org.miklas.ggalaxy.core.cannon.MainCannon
+import org.miklas.ggalaxy.core.common.*
 
-class Fighter implements Enemy {
+class Fighter implements EnemyShip {
     private final static Sound CRASH_SOUND
 
     Mode mode = Mode.ACTIVE
@@ -21,33 +20,48 @@ class Fighter implements Enemy {
     private Animation<Sprite> animationNormal
     private float animationStateTime = 0.0f
     final Rectangle position = []
-    final ObstacleType type = ObstacleType.ASTEROID
-    private AnimationFactory.Asset fighterAsset
-    private AnimationFactory.Asset explosionAsset
+    final AssetType type = AssetType.ASTEROID
+    private AssetName fighterAsset
+    private AssetName explosionAsset
     private float explosionAdjustX = 0
     private float explosionAdjustY = 0
-
+    private int fireDelayMs
+    private long lastFireMs = 0
+    private MainCannon mainCannon
+    def c_an
+    def c_cm
+    def c_mv
     static {
         CRASH_SOUND = Gdx.audio.newSound(Gdx.files.internal("assets/drop.wav"))
     }
 
-    Fighter(AnimationFactory.Asset fighterAsset, AnimationFactory.Asset explosionAsset) {
+    Fighter(AssetName fighterAsset, AssetName explosionAsset, MainCannon mainCannon) {
         this.fighterAsset = fighterAsset
+        this.mainCannon = mainCannon
         this.explosionAsset = explosionAsset
-        this.explosionAdjustX = explosionAsset.spriteHeight / 2 - fighterAsset.spriteHeight / 2
-        this.explosionAdjustY = explosionAsset.spriteWith / 2 - fighterAsset.spriteWith / 2
+        this.c_an = Conf.animation(fighterAsset)
+        this.c_cm = Conf.cannonMain AssetType.ENEMY_SHIP
+        this.c_mv = Conf.movement AssetType.ENEMY_SHIP
+        this.explosionAdjustX = c_an.spriteHeight / 2 - c_an.spriteHeight / 2
+        this.explosionAdjustY = c_an.spriteWith / 2 - c_an.spriteWith / 2
         this.animationNormal = AnimationFactory.create(fighterAsset, Animation.PlayMode.LOOP, type)
         this.animationExplosion = AnimationFactory.create(explosionAsset, Animation.PlayMode.NORMAL, type)
+        updateFireDelay()
         reset()
     }
 
+    private void updateFireDelay() {
+        fireDelayMs = MathUtils.random c_cm.minDelayMs, c_cm.maxDelayMs
+    }
+
+    @Override
     void draw(Batch batch) {
         if (mode == Mode.INACTIVE) {
             return
         }
 
         // reached bottom of the screen ?
-        if (position.y + fighterAsset.spriteHeight < 0) {
+        if (position.y + c_an.spriteHeight < 0) {
             mode = Mode.INACTIVE
             return
         }
@@ -58,7 +72,16 @@ class Fighter implements Enemy {
         sprite.rotation = 180
         sprite.draw batch
         animationStateTime += Gdx.graphics.getDeltaTime()
-        position.y -= Conf.ins.asteroid.moveSpeed * Gdx.graphics.deltaTime
+        position.y -= c_mv.moveSpeed * Gdx.graphics.deltaTime
+
+        if (TimeUtils.millis() - lastFireMs > fireDelayMs) {
+            mainCannon.fire position.x + c_an.cannon.main.position.x as int,
+                    position.y + c_an.cannon.main.position.y as int,
+                    180,
+                    c_cm.moveSpeed
+            lastFireMs = TimeUtils.millis()
+            updateFireDelay()
+        }
     }
 
     @Override
@@ -66,12 +89,12 @@ class Fighter implements Enemy {
         mode = Mode.ACTIVE
         animation = animationNormal
         animationStateTime = 0.0f
-        position.set MathUtils.random(0, Conf.SCR_WIDTH - fighterAsset.spriteWith), Conf.SCR_HEIGHT, fighterAsset.spriteWith, fighterAsset.spriteHeight
+        position.set MathUtils.random(0, Conf.SCR_WIDTH - c_an.spriteWith), Conf.SCR_HEIGHT, c_an.spriteWith, c_an.spriteHeight
     }
 
     @Override
     boolean checkCollision(Obstacle other) {
-        mode == Mode.ACTIVE && other.type != ObstacleType.ASTEROID && position.overlaps(other.position)
+        mode == Mode.ACTIVE && other.type != AssetType.ASTEROID && position.overlaps(other.position)
     }
 
     @Override

@@ -8,35 +8,17 @@ class SpriteFactory {
 
     private static final Map<String, Sprite> CACHE = new HashMap<>()
 
-    static Sprite create(Asset asset) {
+    static Sprite create(AssetName asset) {
         if (CACHE.containsKey(asset)) {
             return CACHE.get(asset)
         }
 
-        Texture texture = [Gdx.files.internal(asset.path)]
-        Sprite sprite = [texture, asset.imageWidth, asset.imageHeight]
-        sprite.setSize asset.spriteWith, asset.spriteHeight
+        def c_sp = Conf.sprite asset
+        Texture texture = [Gdx.files.internal(c_sp.path)]
+        Sprite sprite = [texture, c_sp.imageWidth, c_sp.imageHeight]
+        sprite.setSize c_sp.spriteWith, c_sp.spriteHeight
 
         CACHE.put(asset, sprite)
         sprite
-    }
-
-    enum Asset {
-        SHOT_RED
-
-        String path
-        int imageWidth
-        int imageHeight
-        int spriteWith
-        int spriteHeight
-
-        Asset() {
-            String name = name()
-            path = Conf.ins.sprite."$name".path
-            imageWidth = Conf.ins.sprite."$name".imageWidth
-            imageHeight = Conf.ins.sprite."$name".imageHeight
-            spriteWith = Conf.ins.sprite."$name".spriteWith
-            spriteHeight = Conf.ins.sprite."$name".spriteHeight
-        }
     }
 }

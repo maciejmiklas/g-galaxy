@@ -1,6 +1,6 @@
 package org.miklas.ggalaxy.core.enemy
 
-import static org.miklas.ggalaxy.core.common.AnimationFactory.Asset.*
+import static org.miklas.ggalaxy.core.common.AssetName.*
 
 class AsteroidFactory implements EnemyFactory {
 

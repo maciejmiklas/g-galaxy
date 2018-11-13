@@ -7,6 +7,14 @@ animation {
         spriteWith = 64
         spriteHeight = 64
         frameDuration = 0.05f
+        cannon {
+            main {
+                position {
+                    x = 30
+                    y = 60
+                }
+            }
+        }
     }
 
     SHIP_2_RED {
@@ -17,6 +25,14 @@ animation {
         spriteWith = 96
         spriteHeight = 96
         frameDuration = 0.05f
+        cannon {
+            main {
+                position {
+                    x = 30
+                    y = 60
+                }
+            }
+        }
     }
 
 
@@ -30,8 +46,10 @@ animation {
         frameDuration = 0.05f
         cannon {
             main {
-                x = 30
-                y = 60
+                position {
+                    x = 30
+                    y = 60
+                }
             }
         }
     }
@@ -112,6 +130,30 @@ sprite {
     }
 }
 
+cannon {
+    main {
+        SPACE_SHIP {
+            moveSpeed = 400
+            delayMs = 500
+        }
+        ENEMY_SHIP {
+            moveSpeed = 400
+            maxDelayMs = 50000
+            minDelayMs = 50000
+        }
+    }
+}
+
+movement {
+    ENEMY_SHIP {
+        spawnMs = 500
+        moveSpeed = 100
+    }
+    ASTEROID {
+        moveSpeed = 200
+    }
+}
+
 screen {
     width = 1280
     height = 760
@@ -122,19 +164,6 @@ key {
         speed = 200
         boost = 200
     }
-}
-
-shot {
-    moveSpeed = 400
-    delayMs = 500
-}
-
-asteroid {
-    moveSpeed = 200
-}
-
-enemyDeploy {
-    spawnMs = 500
 }
 
 background {

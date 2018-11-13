@@ -1,6 +1,5 @@
 package org.miklas.ggalaxy.core
 
-
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -10,7 +9,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import groovy.transform.CompileStatic
 import org.miklas.ggalaxy.core.cannon.Shots
-import org.miklas.ggalaxy.core.common.AnimationFactory
+import org.miklas.ggalaxy.core.common.AssetName
 import org.miklas.ggalaxy.core.common.CollisionDetection
 import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.enemy.EnemyDeploy
@@ -44,8 +43,8 @@ class Game extends com.badlogic.gdx.Game {
             stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]
             camera = stage.getViewport().getCamera() as OrthographicCamera
             shots = [collisionDetection]
-            mainShip = [AnimationFactory.Asset.SHIP_2_BLUE, AnimationFactory.Asset.SHIP_2_RED, shots]
-            enemyDeploy = [collisionDetection]
+            mainShip = [AssetName.SHIP_2_BLUE, AssetName.SHIP_2_RED, shots]
+            enemyDeploy = [collisionDetection, shots]
             collisionDetection << mainShip
 
             // create the camera and the SpriteBatch
