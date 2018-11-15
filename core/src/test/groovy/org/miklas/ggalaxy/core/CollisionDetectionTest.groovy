@@ -1,7 +1,7 @@
 package org.miklas.ggalaxy.core
 
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
-import org.miklas.ggalaxy.core.common.CollisionDetection
 import org.miklas.ggalaxy.core.common.Obstacle
 import org.miklas.ggalaxy.core.common.AssetType
 import spock.lang.Specification
@@ -244,6 +244,16 @@ class CollisionDetectionTest extends Specification {
         @Override
         void hit(Obstacle other) {
             hits << other
+        }
+
+        @Override
+        void reset() {
+
+        }
+
+        @Override
+        void draw(Batch batch, float parentAlpha) {
+
         }
     }
 }

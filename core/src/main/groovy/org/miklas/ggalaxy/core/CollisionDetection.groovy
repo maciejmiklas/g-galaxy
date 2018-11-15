@@ -1,14 +1,23 @@
-package org.miklas.ggalaxy.core.common
+package org.miklas.ggalaxy.core
 
+import groovy.transform.PackageScope
 import groovyx.gpars.GParsPool
+import org.miklas.ggalaxy.core.common.Conf
+import org.miklas.ggalaxy.core.common.Obstacle
+import org.miklas.ggalaxy.core.event.EventBus
+import org.miklas.ggalaxy.core.event.EventType
 
+@PackageScope
 class CollisionDetection {
     private final int w = Conf.SCR_WIDTH
     private final int w2 = w / 2
     private final int h = Conf.SCR_HEIGHT
     private final int h2 = h / 2
-
     private List<Obstacle> elements = []
+
+    CollisionDetection() {
+        EventBus.register(EventType.OBSTACLE_CREATED) { elements << it }
+    }
 
     void leftShift(Obstacle obstacle) {
         elements << obstacle

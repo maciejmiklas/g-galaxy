@@ -4,13 +4,13 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Rectangle
-import org.miklas.ggalaxy.core.common.AssetName
-import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.common.Obstacle
-import org.miklas.ggalaxy.core.common.AssetType
-import org.miklas.ggalaxy.core.common.SpriteFactory
+import groovy.transform.PackageScope
+import org.miklas.ggalaxy.core.common.*
+import org.miklas.ggalaxy.core.event.EventBus
+import org.miklas.ggalaxy.core.event.EventType
 
-class Shot implements Obstacle, MainCannon {
+@PackageScope
+class Shot implements Obstacle, Cannon {
 
     Mode mode = Mode.ACTIVE
     Rectangle position = []
@@ -22,6 +22,7 @@ class Shot implements Obstacle, MainCannon {
 
     Shot(AssetName asset) {
         sprite = SpriteFactory.create asset
+        EventBus.event EventType.OBSTACLE_CREATED, this
     }
 
     @Override
@@ -39,6 +40,11 @@ class Shot implements Obstacle, MainCannon {
     }
 
     @Override
+    void reset() {
+
+    }
+
+    @Override
     void fire(int x, int y, int angle, int moveSpeed) {
         mode = Mode.ACTIVE
         this.position.x = x
@@ -47,7 +53,8 @@ class Shot implements Obstacle, MainCannon {
         this.moveSpeed = moveSpeed
     }
 
-    void draw(Batch batch) {
+    @Override
+    void draw(Batch batch, float parentAlpha) {
         if (mode == Mode.INACTIVE) {
             return
         }

@@ -1,14 +1,16 @@
 package org.miklas.ggalaxy.core.enemy
 
+import groovy.transform.PackageScope
+
 import static org.miklas.ggalaxy.core.common.AssetName.*
 
-class AsteroidFactory implements EnemyFactory {
+@PackageScope
+class AsteroidFactory {
 
     private final List<Asteroid> asteroids = []
     private final def ASSETS = [[BOMB_BLUE, EXPLOSION_BLUE], [MINE_BLUE, EXPLOSION_BLUE], [MINE_RED, EXPLOSION_RED]]
     private int spawnIdx = 0
 
-    @Override
     def next() {
         Asteroid asteroid = asteroids.find { it.mode == Asteroid.Mode.INACTIVE }
         if (asteroid != null) {

@@ -7,13 +7,17 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
+import groovy.transform.PackageScope
 import org.miklas.ggalaxy.core.common.AnimationFactory
 import org.miklas.ggalaxy.core.common.AssetName
 import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.common.Obstacle
 import org.miklas.ggalaxy.core.common.AssetType
+import org.miklas.ggalaxy.core.event.EventBus
+import org.miklas.ggalaxy.core.event.EventType
 
-class Asteroid implements EnemyShip {
+@PackageScope
+class Asteroid implements Obstacle {
     private final static Sound CRASH_SOUND
 
     Mode mode = Mode.ACTIVE
@@ -40,11 +44,12 @@ class Asteroid implements EnemyShip {
         this.explosionAdjustY = c_ac.spriteWith / 2 - c_ac.spriteWith / 2
         this.animationNormal = AnimationFactory.create(asteroid, Animation.PlayMode.LOOP, type)
         this.animationExplosion = AnimationFactory.create(explosion, Animation.PlayMode.NORMAL, type)
+        EventBus.event EventType.OBSTACLE_CREATED, this
         reset()
     }
 
     @Override
-    void draw(Batch batch) {
+    void draw(Batch batch, float parentAlpha)  {
         if (mode == Mode.INACTIVE) {
             return
         }

@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
+import groovy.transform.PackageScope
 import org.miklas.ggalaxy.core.common.Conf
+import org.miklas.ggalaxy.core.common.Keyboard
 
 import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
@@ -12,6 +14,7 @@ import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 /**
  * Parallax Background.
  */
+@PackageScope
 class Background extends Actor {
 
     private final Texture bgPink = [Gdx.files.internal("assets/background/space/Nebula Aqua-Pink.png")]
@@ -51,17 +54,17 @@ class Background extends Actor {
     }
 
     private void processUserInput() {
-        boolean vertical = Key.vertical() { code ->
+        boolean vertical = Keyboard.vertical() { code ->
             def cv = Conf.ins.background.speed."$code"
-            speedY = Key.BOOST.pressed() ? cv.boost : cv.normal
+            speedY = Keyboard.BOOST.pressed() ? cv.boost : cv.normal
         }
         if (!vertical) {
             speedY = Conf.ins.background.speed.NONE.y
         }
 
-        boolean horizontal = Key.horizontal { code ->
+        boolean horizontal = Keyboard.horizontal { code ->
             def cv = Conf.ins.background.speed."$code"
-            speedX = Key.BOOST.pressed() ? cv.boost : cv.normal
+            speedX = Keyboard.BOOST.pressed() ? cv.boost : cv.normal
         }
         if (!horizontal) {
             speedX = Conf.ins.background.speed.NONE.x

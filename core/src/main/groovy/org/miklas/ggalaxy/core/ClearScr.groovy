@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import groovy.transform.CompileStatic
+import groovy.transform.PackageScope
 
 @CompileStatic
+@PackageScope
 class ClearScr extends Actor {
 
     @Override

@@ -3,16 +3,10 @@ package org.miklas.ggalaxy.core.cannon
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import org.miklas.ggalaxy.core.common.AssetName
-import org.miklas.ggalaxy.core.common.CollisionDetection
 
-class Shots extends Actor implements MainCannon {
+class SingleShotCannon extends Actor implements Cannon {
 
     private final List<Shot> shots = []
-    private final CollisionDetection collisionDetection
-
-    Shots(CollisionDetection collisionDetection) {
-        this.collisionDetection = collisionDetection
-    }
 
     @Override
     void fire(int x, int y, int angle, int moveSpeed) {
@@ -20,7 +14,6 @@ class Shots extends Actor implements MainCannon {
         if (shot == null) {
             shot = new Shot(AssetName.SHOT_RED)
             shots << shot
-            collisionDetection << shot
         }
         shot.fire x, y, angle, moveSpeed
     }
@@ -28,7 +21,7 @@ class Shots extends Actor implements MainCannon {
     @Override
     void draw(Batch batch, float parentAlpha) {
         shots.forEach {
-            it.draw batch
+            it.draw batch, parentAlpha
         }
     }
 }

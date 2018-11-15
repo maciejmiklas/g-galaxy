@@ -8,10 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.TimeUtils
-import org.miklas.ggalaxy.core.cannon.MainCannon
+import groovy.transform.PackageScope
+import org.miklas.ggalaxy.core.cannon.Cannon
 import org.miklas.ggalaxy.core.common.*
+import org.miklas.ggalaxy.core.event.EventBus
+import org.miklas.ggalaxy.core.event.EventType
 
-class Fighter implements EnemyShip {
+@PackageScope
+class Fighter implements Obstacle {
     private final static Sound CRASH_SOUND
 
     Mode mode = Mode.ACTIVE
@@ -27,7 +31,7 @@ class Fighter implements EnemyShip {
     private float explosionAdjustY = 0
     private int fireDelayMs
     private long lastFireMs = 0
-    private MainCannon mainCannon
+    private Cannon mainCannon
     def c_an
     def c_cm
     def c_mv
@@ -35,7 +39,7 @@ class Fighter implements EnemyShip {
         CRASH_SOUND = Gdx.audio.newSound(Gdx.files.internal("assets/drop.wav"))
     }
 
-    Fighter(AssetName fighterAsset, AssetName explosionAsset, MainCannon mainCannon) {
+    Fighter(AssetName fighterAsset, AssetName explosionAsset, Cannon mainCannon) {
         this.fighterAsset = fighterAsset
         this.mainCannon = mainCannon
         this.explosionAsset = explosionAsset
@@ -46,6 +50,7 @@ class Fighter implements EnemyShip {
         this.explosionAdjustY = c_an.spriteWith / 2 - c_an.spriteWith / 2
         this.animationNormal = AnimationFactory.create(fighterAsset, Animation.PlayMode.LOOP, type)
         this.animationExplosion = AnimationFactory.create(explosionAsset, Animation.PlayMode.NORMAL, type)
+        EventBus.event EventType.OBSTACLE_CREATED, this
         updateFireDelay()
         reset()
     }
@@ -55,7 +60,7 @@ class Fighter implements EnemyShip {
     }
 
     @Override
-    void draw(Batch batch) {
+    void draw(Batch batch, float parentAlpha) {
         if (mode == Mode.INACTIVE) {
             return
         }

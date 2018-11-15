@@ -1,12 +1,11 @@
-package org.miklas.ggalaxy.core
+package org.miklas.ggalaxy.core.common
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
-import org.miklas.ggalaxy.core.common.Conf
 
-enum Key {
+enum Keyboard {
 
     UP(Input.Keys.UP, Input.Keys.W),
     DOWN(Input.Keys.DOWN, Input.Keys.S),
@@ -17,7 +16,7 @@ enum Key {
 
     final int[] val
 
-    Key(int ... val) {
+    Keyboard(int ... val) {
         this.val = val
     }
 
@@ -28,14 +27,14 @@ enum Key {
     /**
      * @param code combination of key codes, all given keys has to be pressed at once.
      */
-    static boolean pressedAll(Key... code) {
+    static boolean pressedAll(Keyboard... code) {
         code.every { it.val.any { Gdx.input.isKeyPressed(it) } }
     }
 
     /**
      * @param true if any of given keys is on
      */
-    static Key pressedAny(Key... code) {
+    static Keyboard pressedAny(Keyboard... code) {
         code.find { it.val.find { Gdx.input.isKeyPressed(it) } }
     }
 
@@ -51,26 +50,25 @@ enum Key {
         }
 
         int speedConst = Conf.ins.key.move.speed
-        if (Key.BOOST.pressed()) {
+        if (Keyboard.BOOST.pressed()) {
             speedConst += Conf.ins.key.move.boost
         }
         float speedCalc = speedConst * Gdx.graphics.deltaTime as float
         cl(speedCalc)
     }
 
-
-    static boolean vertical(@ClosureParams(value = SimpleType, options = "org.miklas.ggalaxy.core.Key") Closure cl) {
+    static boolean vertical(@ClosureParams(value = SimpleType, options = "org.miklas.ggalaxy.core.Keyboard") Closure cl) {
         if (!pressedAny(UP, DOWN)) {
             return false
         }
 
-        Key key = UP.pressed() ? UP : DOWN
+        Keyboard key = UP.pressed() ? UP : DOWN
         cl.call key
         true
     }
 
-    static boolean horizontal(@ClosureParams(value = SimpleType, options = "org.miklas.ggalaxy.core.Key") Closure cl) {
-        Key dKey = pressedAny(LEFT, RIGHT)
+    static boolean horizontal(@ClosureParams(value = SimpleType, options = "org.miklas.ggalaxy.core.Keyboard") Closure cl) {
+        Keyboard dKey = pressedAny(LEFT, RIGHT)
         if (!dKey) {
             return false
         }

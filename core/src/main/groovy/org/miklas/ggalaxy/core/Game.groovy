@@ -7,25 +7,27 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.StretchViewport
-import groovy.transform.CompileStatic
-import org.miklas.ggalaxy.core.cannon.Shots
+import groovy.transform.PackageScope
+import org.miklas.ggalaxy.core.cannon.SingleShotCannon
 import org.miklas.ggalaxy.core.common.AssetName
-import org.miklas.ggalaxy.core.common.CollisionDetection
 import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.enemy.EnemyDeploy
+import org.miklas.ggalaxy.core.enemy.AsteroidDeploy
+import org.miklas.ggalaxy.core.enemy.FighterDeploy
 
 import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 
+@PackageScope
 class Game extends com.badlogic.gdx.Game {
 
     @Override
     void create() {
+        Stage.metaClass.leftShift = { delegate.addActor it }
+
         println "Loaded config: $Conf.ins"
         setScreen(new GameScreen())
     }
 
-    @CompileStatic
     class GameScreen implements Screen {
 
         private final ClearScr clearScr = []
@@ -33,18 +35,18 @@ class Game extends com.badlogic.gdx.Game {
         private final Background background = []
         private final List<Disposable> disposable = []
         private final CollisionDetection collisionDetection = []
-        private final Shots shots
+        private final SingleShotCannon singleCannon = []
         private final OrthographicCamera camera
-        private final EnemyDeploy enemyDeploy
+        private final FighterDeploy fighterDeploy
+        private final AsteroidDeploy asteroidDeploy = []
         private final SpaceShip mainShip
         private final Stage stage
 
         GameScreen() {
             stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]
             camera = stage.getViewport().getCamera() as OrthographicCamera
-            shots = [collisionDetection]
-            mainShip = [AssetName.SHIP_2_BLUE, AssetName.SHIP_2_RED, shots]
-            enemyDeploy = [collisionDetection, shots]
+            mainShip = [AssetName.SHIP_2_BLUE, AssetName.SHIP_2_RED, singleCannon]
+            fighterDeploy = [singleCannon]
             collisionDetection << mainShip
 
             // create the camera and the SpriteBatch
@@ -52,11 +54,13 @@ class Game extends com.badlogic.gdx.Game {
 
             disposable << batch << stage
 
-            stage.addActor clearScr
-            stage.addActor background
-            stage.addActor mainShip
-            stage.addActor enemyDeploy
-            stage.addActor shots
+            // TODO register dynamic method for call <<
+            stage << clearScr
+            stage << background
+            stage << mainShip
+            stage << fighterDeploy
+            stage << asteroidDeploy
+            stage << singleCannon
         }
 
         @Override

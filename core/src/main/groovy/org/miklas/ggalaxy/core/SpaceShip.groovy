@@ -7,16 +7,19 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.TimeUtils
-import org.miklas.ggalaxy.core.cannon.MainCannon
+import groovy.transform.PackageScope
+import org.miklas.ggalaxy.core.cannon.Cannon
 import org.miklas.ggalaxy.core.common.AnimationFactory
 import org.miklas.ggalaxy.core.common.AssetName
 import org.miklas.ggalaxy.core.common.Conf
+import org.miklas.ggalaxy.core.common.Keyboard
 import org.miklas.ggalaxy.core.common.Obstacle
 import org.miklas.ggalaxy.core.common.AssetType
 
 import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 
+@PackageScope
 class SpaceShip extends Actor implements Obstacle {
 
     final Rectangle position
@@ -26,12 +29,12 @@ class SpaceShip extends Actor implements Obstacle {
     private final AssetName assetBoost
     private float animationStartTime = 0.0f
     private Speed speed
-    private MainCannon mainCannon
+    private Cannon mainCannon
     private long lastFireMs = 0
     def c_an
     def c_cm
 
-    SpaceShip(AssetName assetNormal, AssetName assetBoost, MainCannon mainCannon) {
+    SpaceShip(AssetName assetNormal, AssetName assetBoost, Cannon mainCannon) {
         this.assetNormal = assetNormal
         this.assetBoost = assetBoost
         this.mainCannon = mainCannon
@@ -43,7 +46,7 @@ class SpaceShip extends Actor implements Obstacle {
 
     @Override
     void draw(Batch batch, float parentAlpha) {
-        speed = Key.BOOST.pressed() ? Speed.BOOST : Speed.NORMAL
+        speed = Keyboard.BOOST.pressed() ? Speed.BOOST : Speed.NORMAL
 
         // make sure the mainShip stays within the screen bounds
         if (position.x < 0) {
@@ -72,11 +75,11 @@ class SpaceShip extends Actor implements Obstacle {
 
     private void processUserInput() {
         // TODO do we have to register closures on every invocation, would it be more efficient to register it once ?
-        Key.LEFT.onMove { position.x -= it }
-        Key.RIGHT.onMove { position.x += it }
-        Key.UP.onMove { position.y += it }
-        Key.DOWN.onMove { position.y -= it }
-        Key.FIRE.onFire {
+        Keyboard.LEFT.onMove { position.x -= it }
+        Keyboard.RIGHT.onMove { position.x += it }
+        Keyboard.UP.onMove { position.y += it }
+        Keyboard.DOWN.onMove { position.y -= it }
+        Keyboard.FIRE.onFire {
             if (TimeUtils.millis() - lastFireMs > c_cm.delayMs) {
                 mainCannon.fire position.x + c_an.cannon.main.position.x as int,
                                 position.y + c_an.cannon.main.position.y as int,
@@ -94,6 +97,11 @@ class SpaceShip extends Actor implements Obstacle {
 
     @Override
     void hit(Obstacle other) {
+
+    }
+
+    @Override
+    void reset() {
 
     }
 
