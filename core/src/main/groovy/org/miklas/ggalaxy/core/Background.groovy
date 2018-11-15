@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import groovy.transform.PackageScope
 import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.common.Keyboard
+import org.miklas.ggalaxy.core.event.EventBus
+import org.miklas.ggalaxy.core.event.EventType
 
 import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
@@ -35,8 +37,18 @@ class Background extends Actor {
     private int speedX = 0
     private int scrollX = 0
 
+    private boolean boost = false
+
     Background() {
         layers*.setWrap Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat
+
+        EventBus.register(EventType.BOOST_START) {
+            boost = true
+        }
+
+        EventBus.register(EventType.BOOST_END) {
+            boost = false
+        }
     }
 
     @Override
@@ -56,7 +68,7 @@ class Background extends Actor {
     private void processUserInput() {
         boolean vertical = Keyboard.vertical() { code ->
             def cv = Conf.ins.background.speed."$code"
-            speedY = Keyboard.BOOST.pressed() ? cv.boost : cv.normal
+            speedY = boost ? cv.boost : cv.normal
         }
         if (!vertical) {
             speedY = Conf.ins.background.speed.NONE.y
@@ -64,7 +76,7 @@ class Background extends Actor {
 
         boolean horizontal = Keyboard.horizontal { code ->
             def cv = Conf.ins.background.speed."$code"
-            speedX = Keyboard.BOOST.pressed() ? cv.boost : cv.normal
+            speedX = boost ? cv.boost : cv.normal
         }
         if (!horizontal) {
             speedX = Conf.ins.background.speed.NONE.x

@@ -160,9 +160,9 @@ screen {
 }
 
 key {
-    move {
-        speed = 200
-        boost = 200
+    moveSpeed {
+        normal = 200
+        boost = 300
     }
 }
 

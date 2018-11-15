@@ -11,4 +11,9 @@ class EventBus {
     static void event(EventType type, def data) {
         listeners.get(type)?.each { it(data) }
     }
+
+    static void event(EventType type) {
+        listeners.get(type)?.each { it() }
+    }
+
 }

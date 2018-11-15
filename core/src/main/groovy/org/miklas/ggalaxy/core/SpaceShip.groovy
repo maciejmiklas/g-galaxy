@@ -9,12 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.TimeUtils
 import groovy.transform.PackageScope
 import org.miklas.ggalaxy.core.cannon.Cannon
-import org.miklas.ggalaxy.core.common.AnimationFactory
-import org.miklas.ggalaxy.core.common.AssetName
-import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.common.Keyboard
-import org.miklas.ggalaxy.core.common.Obstacle
-import org.miklas.ggalaxy.core.common.AssetType
+import org.miklas.ggalaxy.core.common.*
+import org.miklas.ggalaxy.core.event.EventBus
+import org.miklas.ggalaxy.core.event.EventType
 
 import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
@@ -24,7 +21,7 @@ class SpaceShip extends Actor implements Obstacle {
 
     final Rectangle position
     final AssetType type = AssetType.SPACE_SHIP
-    private final Animation<Sprite> animation
+    private Animation<Sprite> animation
     private final AssetName assetNormal
     private final AssetName assetBoost
     private float animationStartTime = 0.0f
@@ -42,6 +39,15 @@ class SpaceShip extends Actor implements Obstacle {
         c_cm = Conf.cannonMain AssetType.SPACE_SHIP
         position = [SCR_WIDTH / 2f - c_an.spriteWith / 2f as float, 20, c_an.spriteWith, c_an.spriteHeight]
         animation = AnimationFactory.create(assetNormal, Animation.PlayMode.LOOP, type)
+
+
+        EventBus.register(EventType.BOOST_START) {
+            animation = AnimationFactory.create(assetBoost, Animation.PlayMode.LOOP, type)
+        }
+
+        EventBus.register(EventType.BOOST_END) {
+            animation = AnimationFactory.create(assetNormal, Animation.PlayMode.LOOP, type)
+        }
     }
 
     @Override
@@ -71,10 +77,11 @@ class SpaceShip extends Actor implements Obstacle {
         Sprite sprite = animation.getKeyFrame animationStartTime
         sprite.setPosition position.x, position.y
         sprite.draw batch
+
+
     }
 
     private void processUserInput() {
-        // TODO do we have to register closures on every invocation, would it be more efficient to register it once ?
         Keyboard.LEFT.onMove { position.x -= it }
         Keyboard.RIGHT.onMove { position.x += it }
         Keyboard.UP.onMove { position.y += it }
@@ -82,9 +89,9 @@ class SpaceShip extends Actor implements Obstacle {
         Keyboard.FIRE.onFire {
             if (TimeUtils.millis() - lastFireMs > c_cm.delayMs) {
                 mainCannon.fire position.x + c_an.cannon.main.position.x as int,
-                                position.y + c_an.cannon.main.position.y as int,
-                            0,
-                                c_cm.moveSpeed
+                        position.y + c_an.cannon.main.position.y as int,
+                        0,
+                        c_cm.moveSpeed
                 lastFireMs = TimeUtils.millis()
             }
         }

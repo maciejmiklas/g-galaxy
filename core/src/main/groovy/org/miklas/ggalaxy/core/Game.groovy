@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import groovy.transform.PackageScope
 import org.miklas.ggalaxy.core.cannon.SingleShotCannon
 import org.miklas.ggalaxy.core.common.AssetName
+import org.miklas.ggalaxy.core.common.Booster
 import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.enemy.AsteroidDeploy
 import org.miklas.ggalaxy.core.enemy.FighterDeploy
@@ -22,7 +23,7 @@ class Game extends com.badlogic.gdx.Game {
 
     @Override
     void create() {
-        Stage.metaClass.leftShift = { delegate.addActor it }
+        Stage.metaClass.leftShift = { delegate.addActor it; delegate }
 
         println "Loaded config: $Conf.ins"
         setScreen(new GameScreen())
@@ -41,6 +42,7 @@ class Game extends com.badlogic.gdx.Game {
         private final AsteroidDeploy asteroidDeploy = []
         private final SpaceShip mainShip
         private final Stage stage
+        private final Booster booster = []
 
         GameScreen() {
             stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]
@@ -53,14 +55,7 @@ class Game extends com.badlogic.gdx.Game {
             camera.setToOrtho false, SCR_WIDTH, SCR_HEIGHT
 
             disposable << batch << stage
-
-            // TODO register dynamic method for call <<
-            stage << clearScr
-            stage << background
-            stage << mainShip
-            stage << fighterDeploy
-            stage << asteroidDeploy
-            stage << singleCannon
+            stage << clearScr << background << mainShip << fighterDeploy << asteroidDeploy << singleCannon << booster
         }
 
         @Override

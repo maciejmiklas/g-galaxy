@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
+import org.miklas.ggalaxy.core.event.EventBus
+import org.miklas.ggalaxy.core.event.EventType
 
 enum Keyboard {
 
@@ -14,14 +16,28 @@ enum Keyboard {
     BOOST(Input.Keys.SPACE, Input.Keys.B),
     FIRE(Input.Keys.X)
 
-    final int[] val
+    private final int[] val
+    private boolean boost = false
 
     Keyboard(int ... val) {
         this.val = val
+
+
+        EventBus.register(EventType.BOOST_START) {
+            boost = true
+        }
+
+        EventBus.register(EventType.BOOST_END) {
+            boost = false
+        }
     }
 
     boolean pressed() {
         val.any { Gdx.input.isKeyPressed(it) }
+    }
+
+    boolean keyJustPressed() {
+        val.any { Gdx.input.isKeyJustPressed(it) }
     }
 
     /**
@@ -49,13 +65,18 @@ enum Keyboard {
             return
         }
 
-        int speedConst = Conf.ins.key.move.speed
-        if (Keyboard.BOOST.pressed()) {
-            speedConst += Conf.ins.key.move.boost
-        }
+        int speedConst = boost ? Conf.ins.key.moveSpeed.boost : Conf.ins.key.moveSpeed.normal
         float speedCalc = speedConst * Gdx.graphics.deltaTime as float
-        cl(speedCalc)
+        cl speedCalc
     }
+
+    void onKeyJustPressed(@ClosureParams(value = SimpleType, options = ['float']) Closure cl) {
+        if (!keyJustPressed()) {
+            return
+        }
+        cl()
+    }
+
 
     static boolean vertical(@ClosureParams(value = SimpleType, options = "org.miklas.ggalaxy.core.Keyboard") Closure cl) {
         if (!pressedAny(UP, DOWN)) {
@@ -63,7 +84,7 @@ enum Keyboard {
         }
 
         Keyboard key = UP.pressed() ? UP : DOWN
-        cl.call key
+        cl key
         true
     }
 
@@ -72,7 +93,7 @@ enum Keyboard {
         if (!dKey) {
             return false
         }
-        cl.call dKey
+        cl dKey
         true
     }
 
