@@ -12,8 +12,7 @@ import org.miklas.ggalaxy.core.cannon.SingleShotCannon
 import org.miklas.ggalaxy.core.common.AssetName
 import org.miklas.ggalaxy.core.common.Booster
 import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.enemy.AsteroidDeploy
-import org.miklas.ggalaxy.core.enemy.FighterDeploy
+import org.miklas.ggalaxy.core.enemy.EnemyDeploy
 
 import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
@@ -25,7 +24,7 @@ class Game extends com.badlogic.gdx.Game {
     void create() {
         Stage.metaClass.leftShift = { delegate.addActor it; delegate }
 
-        println "Loaded config: $Conf.ins"
+        println "Loaded config: $Conf.cfg"
         setScreen(new GameScreen())
     }
 
@@ -38,8 +37,7 @@ class Game extends com.badlogic.gdx.Game {
         private final CollisionDetection collisionDetection = []
         private final SingleShotCannon singleCannon = []
         private final OrthographicCamera camera
-        private final FighterDeploy fighterDeploy
-        private final AsteroidDeploy asteroidDeploy = []
+        private final EnemyDeploy enemyDeploy
         private final SpaceShip mainShip
         private final Stage stage
         private final Booster booster = []
@@ -47,15 +45,15 @@ class Game extends com.badlogic.gdx.Game {
         GameScreen() {
             stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]
             camera = stage.getViewport().getCamera() as OrthographicCamera
-            mainShip = [AssetName.SHIP_2_BLUE, AssetName.SHIP_2_RED, singleCannon]
-            fighterDeploy = [singleCannon]
+            mainShip = [AssetName.SHIP_INTERCEPTOR_BLUE, AssetName.SHIP_INTERCEPTOR_RED, singleCannon]
+            enemyDeploy = [singleCannon]
             collisionDetection << mainShip
 
             // create the camera and the SpriteBatch
             camera.setToOrtho false, SCR_WIDTH, SCR_HEIGHT
 
             disposable << batch << stage
-            stage << clearScr << background << mainShip << fighterDeploy << asteroidDeploy << singleCannon << booster
+            stage << clearScr << background << mainShip << enemyDeploy << singleCannon << booster
         }
 
         @Override

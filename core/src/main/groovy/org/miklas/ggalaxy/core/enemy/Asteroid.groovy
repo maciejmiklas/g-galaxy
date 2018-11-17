@@ -5,19 +5,14 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import groovy.transform.PackageScope
-import org.miklas.ggalaxy.core.common.AnimationFactory
-import org.miklas.ggalaxy.core.common.AssetName
-import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.common.Obstacle
-import org.miklas.ggalaxy.core.common.AssetType
+import org.miklas.ggalaxy.core.common.*
 import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
 
 @PackageScope
-class Asteroid implements Obstacle {
+class Asteroid implements DeployableAsset {
     private final static Sound CRASH_SOUND
 
     Mode mode = Mode.ACTIVE
@@ -45,11 +40,10 @@ class Asteroid implements Obstacle {
         this.animationNormal = AnimationFactory.create(asteroid, Animation.PlayMode.LOOP, type)
         this.animationExplosion = AnimationFactory.create(explosion, Animation.PlayMode.NORMAL, type)
         EventBus.event EventType.OBSTACLE_CREATED, this
-        reset()
     }
 
     @Override
-    void draw(Batch batch, float parentAlpha)  {
+    void draw(Batch batch, float parentAlpha) {
         if (mode == Mode.INACTIVE) {
             return
         }
@@ -68,20 +62,12 @@ class Asteroid implements Obstacle {
     }
 
     @Override
-    void reset() {
-        mode = Mode.ACTIVE
-        animation = animationNormal
-        animationStateTime = 0.0f
-        position.set MathUtils.random(0, Conf.SCR_WIDTH - c_ac.spriteWith), Conf.SCR_HEIGHT, c_ac.spriteWith, c_ac.spriteHeight
-    }
-
-    @Override
-    boolean checkCollision(Obstacle other) {
+    boolean checkCollision(Asset other) {
         mode == Mode.ACTIVE && other.type != AssetType.ASTEROID && position.overlaps(other.position)
     }
 
     @Override
-    void hit(Obstacle other) {
+    void hit(Asset other) {
         if (mode != Mode.ACTIVE) {
             return
         }
@@ -92,6 +78,14 @@ class Asteroid implements Obstacle {
         position.x -= explosionAdjustX
         position.y -= explosionAdjustY
         animation = animationExplosion
+    }
+
+    @Override
+    void deploy(int x, int y) {
+        mode = Mode.ACTIVE
+        animation = animationNormal
+        animationStateTime = 0.0f
+        position.set x, y, c_ac.spriteWith, c_ac.spriteHeight
     }
 
     enum Mode {

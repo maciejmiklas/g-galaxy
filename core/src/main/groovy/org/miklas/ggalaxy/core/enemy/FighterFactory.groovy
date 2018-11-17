@@ -6,10 +6,10 @@ import org.miklas.ggalaxy.core.cannon.Cannon
 import static org.miklas.ggalaxy.core.common.AssetName.*
 
 @PackageScope
-class FighterFactory {
+class FighterFactory implements EnemyFactory {
 
     private final List<Fighter> fighters = []
-    private final def ASSETS = [[SHIP_1_BLUE, EXPLOSION_BLUE], [SHIP_2_BLUE, EXPLOSION_BLUE], [SHIP_2_RED, EXPLOSION_RED]]
+    private final def ASSETS = [[SHIP_CARGO, EXPLOSION_BLUE], [SHIP_INTERCEPTOR_BLUE, EXPLOSION_BLUE], [SHIP_INTERCEPTOR_RED, EXPLOSION_RED]]
     private int spawnIdx = 0
     private Cannon mainCannon
 
@@ -17,10 +17,11 @@ class FighterFactory {
         this.mainCannon = mainCannon
     }
 
-    def next() {
-        Fighter fighter = fighters.find { it.mode == Asteroid.Mode.INACTIVE }
+    @Override
+    NextEnemy next() {
+        Fighter fighter = fighters.find { it.mode == Fighter.Mode.INACTIVE }
         if (fighter != null) {
-            return [fighter, false]
+            return [asset: fighter, newInstance: false]
         }
 
         if (spawnIdx == ASSETS.size()) {
@@ -29,6 +30,6 @@ class FighterFactory {
         def assets = ASSETS[spawnIdx++]
         fighter = new Fighter(assets[0], assets[1], mainCannon)
         fighters << fighter
-        [fighter, true]
+        return [asset: fighter, newInstance: true]
     }
 }

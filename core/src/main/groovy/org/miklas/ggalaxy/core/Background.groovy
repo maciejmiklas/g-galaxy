@@ -59,27 +59,27 @@ class Background extends Actor {
         scrollX += speedX
 
         layers.eachWithIndex { layer, idx ->
-            int srcY = (scrollY + (idx + 1) * Conf.ins.background.layerSpeedDiference * scrollY) / 2 as int
-            int srcX = (scrollX + idx * Conf.ins.background.layerSpeedDiference * scrollX) / 10 as int
+            int srcY = (scrollY + (idx + 1) * Conf.cfg.background.layerSpeedDiference * scrollY) / 2 as int
+            int srcX = (scrollX + idx * Conf.cfg.background.layerSpeedDiference * scrollX) / 10 as int
             batch.draw layer, 0, 0, SCR_WIDTH, SCR_HEIGHT, srcX, srcY, layer.width, layer.height, false, true
         }
     }
 
     private void processUserInput() {
         boolean vertical = Keyboard.vertical() { code ->
-            def cv = Conf.ins.background.speed."$code"
+            def cv = Conf.cfg.background.speed."$code"
             speedY = boost ? cv.boost : cv.normal
         }
         if (!vertical) {
-            speedY = Conf.ins.background.speed.NONE.y
+            speedY = Conf.cfg.background.speed.NONE.y
         }
 
         boolean horizontal = Keyboard.horizontal { code ->
-            def cv = Conf.ins.background.speed."$code"
+            def cv = Conf.cfg.background.speed."$code"
             speedX = boost ? cv.boost : cv.normal
         }
         if (!horizontal) {
-            speedX = Conf.ins.background.speed.NONE.x
+            speedX = Conf.cfg.background.speed.NONE.x
         }
 
     }

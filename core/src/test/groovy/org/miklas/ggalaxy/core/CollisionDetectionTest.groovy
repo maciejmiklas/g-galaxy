@@ -2,7 +2,7 @@ package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
-import org.miklas.ggalaxy.core.common.Obstacle
+import org.miklas.ggalaxy.core.common.Asset
 import org.miklas.ggalaxy.core.common.AssetType
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -29,7 +29,7 @@ class CollisionDetectionTest extends Specification {
 
         when:
         addRegion0 detection
-        List<Obstacle>[] splits = detection.split()
+        List<Asset>[] splits = detection.split()
 
         then:
         splits[1] == []
@@ -46,7 +46,7 @@ class CollisionDetectionTest extends Specification {
 
         when:
         addRegion1 detection
-        List<Obstacle>[] splits = detection.split()
+        List<Asset>[] splits = detection.split()
 
         then:
         splits[0] == []
@@ -63,7 +63,7 @@ class CollisionDetectionTest extends Specification {
 
         when:
         addRegion2 detection
-        List<Obstacle>[] splits = detection.split()
+        List<Asset>[] splits = detection.split()
 
         then:
         splits[0] == []
@@ -80,7 +80,7 @@ class CollisionDetectionTest extends Specification {
 
         when:
         addRegion3 detection
-        List<Obstacle>[] splits = detection.split()
+        List<Asset>[] splits = detection.split()
 
         then:
         splits[0] == []
@@ -100,7 +100,7 @@ class CollisionDetectionTest extends Specification {
         addRegion1 detection
         addRegion2 detection
         addRegion3 detection
-        List<Obstacle>[] splits = detection.split()
+        List<Asset>[] splits = detection.split()
 
         then:
         splits[0].size() == 2
@@ -121,7 +121,7 @@ class CollisionDetectionTest extends Specification {
     def "Split - Rock on border between #b1 and #b2"(int b1, int b2, int x, int y, int notInA, int notInB, int notInC, int inZone) {
         CollisionDetection detection = []
         detection << new Rock(position: [x, y, 12, 12])
-        List<Obstacle>[] splits = detection.split()
+        List<Asset>[] splits = detection.split()
 
         expect:
         splits[notInA].size() == 0
@@ -144,7 +144,7 @@ class CollisionDetectionTest extends Specification {
 
         when:
         detection << new Rock(position: [630, 400, 12, 12])
-        List<Obstacle>[] splits = detection.split()
+        List<Asset>[] splits = detection.split()
 
         then:
         splits[0].size() == 0
@@ -162,7 +162,7 @@ class CollisionDetectionTest extends Specification {
 
         CollisionDetection detection = []
         detection << new Rock(position: [x, y, 20, 20])
-        List<Obstacle>[] splits = detection.split()
+        List<Asset>[] splits = detection.split()
 
         expect:
         splits[notInA].size() == 0
@@ -231,23 +231,23 @@ class CollisionDetectionTest extends Specification {
          new Rock(position: [17, 17, 2, 2], type: SHOT)]
     }
 
-    class Rock implements Obstacle {
+    class Rock implements Asset {
         Rectangle position = []
         AssetType type = ASTEROID
-        List<Obstacle> hits = []
+        List<Asset> hits = []
 
         @Override
-        boolean checkCollision(Obstacle other) {
+        boolean checkCollision(Asset other) {
             return position.overlaps(other.position)
         }
 
         @Override
-        void hit(Obstacle other) {
+        void hit(Asset other) {
             hits << other
         }
 
         @Override
-        void reset() {
+        void reset(int x, int y) {
 
         }
 

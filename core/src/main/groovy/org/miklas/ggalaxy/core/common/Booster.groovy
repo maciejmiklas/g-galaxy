@@ -10,7 +10,6 @@ class Booster extends Actor {
 
     private long boostStartMs = 0
 
-
     @Override
     void draw(Batch batch, float parentAlpha) {
         Keyboard.BOOST.onKeyJustPressed {

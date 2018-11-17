@@ -10,7 +10,7 @@ import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
 
 @PackageScope
-class Shot implements Obstacle, Cannon {
+class Shot implements Asset, Cannon {
 
     Mode mode = Mode.ACTIVE
     Rectangle position = []
@@ -26,22 +26,17 @@ class Shot implements Obstacle, Cannon {
     }
 
     @Override
-    boolean checkCollision(Obstacle other) {
+    boolean checkCollision(Asset other) {
         other.type != AssetType.SPACE_SHIP && mode == Mode.ACTIVE && position.overlaps(other.position)
     }
 
     @Override
-    void hit(Obstacle other) {
+    void hit(Asset other) {
         if (other.type == AssetType.SPACE_SHIP) {
             return
         }
 
         mode = Mode.INACTIVE
-    }
-
-    @Override
-    void reset() {
-
     }
 
     @Override

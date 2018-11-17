@@ -1,5 +1,5 @@
 animation {
-    SHIP_1_BLUE {
+    SHIP_CARGO {
         path = 'assets/packs/Spaceship_art_pack_larger/Blue/Animation/'
         frames = 8
         imageWidth = 512
@@ -17,26 +17,7 @@ animation {
         }
     }
 
-    SHIP_2_RED {
-        path = 'assets/packs/Spaceship_art_pack_larger/Red/Enemy_animation/'
-        frames = 8
-        imageWidth = 512
-        imageHeight = 512
-        spriteWith = 96
-        spriteHeight = 96
-        frameDuration = 0.05f
-        cannon {
-            main {
-                position {
-                    x = 30
-                    y = 60
-                }
-            }
-        }
-    }
-
-
-    SHIP_2_BLUE {
+    SHIP_INTERCEPTOR_BLUE {
         path = 'assets/packs/Spaceship_art_pack_larger/Blue/spaceship_blue_animation'
         frames = 4
         imageWidth = 512
@@ -54,6 +35,41 @@ animation {
         }
     }
 
+    SHIP_INTERCEPTOR_RED {
+        path = 'assets/packs/Spaceship_art_pack_larger/Red/Enemy_animation/'
+        frames = 8
+        imageWidth = 512
+        imageHeight = 512
+        spriteWith = 96
+        spriteHeight = 96
+        frameDuration = 0.05f
+        cannon {
+            main {
+                position {
+                    x = 30
+                    y = 60
+                }
+            }
+        }
+    }
+
+    SHIP_FALCON {
+        path = 'assets/packs/Spaceship_art_pack_larger/Blue/Small_ship_blue'
+        frames = 5
+        imageWidth = 640
+        imageHeight = 640
+        spriteWith = 96
+        spriteHeight = 96
+        frameDuration = 0.05f
+        cannon {
+            main {
+                position {
+                    x = 30
+                    y = 60
+                }
+            }
+        }
+    }
 
     BOMB_BLUE {
         path = 'assets/packs/Spaceship_art_pack_larger/Blue/Spacebombs/'
@@ -118,6 +134,17 @@ animation {
         prefix = '1_'
     }
 
+    EXPLOSION_GALAXY {
+        path = 'assets/packs/Spaceship_art_pack_larger/Effects/Galaxy'
+        frames = 16
+        imageWidth = 256
+        imageHeight = 256
+        spriteWith = 256
+        spriteHeight = 256
+        frameDuration = 0.05f
+        prefix = 'galaxy_'
+    }
+
 }
 
 sprite {
@@ -144,9 +171,20 @@ cannon {
     }
 }
 
+fighter {
+    CLASS_A {
+        ships = []
+    }
+}
+
+enemyDeploy {
+    spawnMs = 500
+    widthMargin = 10
+    deployMargin = 50
+}
+
 movement {
     ENEMY_SHIP {
-        spawnMs = 500
         moveSpeed = 100
     }
     ASTEROID {

@@ -3,5 +3,7 @@ package org.miklas.ggalaxy.core.enemy
 import groovy.transform.PackageScope
 
 @PackageScope
-class FighterFormation {
+interface Deployable {
+
+    void deploy(int x, int y)
 }

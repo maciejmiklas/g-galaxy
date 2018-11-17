@@ -3,7 +3,7 @@ package org.miklas.ggalaxy.core
 import groovy.transform.PackageScope
 import groovyx.gpars.GParsPool
 import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.common.Obstacle
+import org.miklas.ggalaxy.core.common.Asset
 import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
 
@@ -13,18 +13,18 @@ class CollisionDetection {
     private final int w2 = w / 2
     private final int h = Conf.SCR_HEIGHT
     private final int h2 = h / 2
-    private List<Obstacle> elements = []
+    private List<Asset> elements = []
 
     CollisionDetection() {
         EventBus.register(EventType.OBSTACLE_CREATED) { elements << it }
     }
 
-    void leftShift(Obstacle obstacle) {
+    void leftShift(Asset obstacle) {
         elements << obstacle
     }
 
     void detect() {
-        List<List<Obstacle>> split = split()
+        List<List<Asset>> split = split()
         GParsPool.withPool {
             split.eachParallel {
                 process it
@@ -32,11 +32,11 @@ class CollisionDetection {
         }
     }
 
-    protected void process(List<Obstacle> obstacles) {
+    protected void process(List<Asset> obstacles) {
         for (int extIdx = 0; extIdx < obstacles.size() - 1; extIdx++) {
-            Obstacle extObs = obstacles.get extIdx
+            Asset extObs = obstacles.get extIdx
             for (int intIdx = extIdx + 1; intIdx < obstacles.size(); intIdx++) {
-                Obstacle intObst = obstacles.get intIdx
+                Asset intObst = obstacles.get intIdx
                 if (extObs.checkCollision(intObst)) {
                     extObs.hit intObst
                     intObst.hit extObs
@@ -45,7 +45,7 @@ class CollisionDetection {
         }
     }
 
-    protected List<List<Obstacle>> split() {
+    protected List<List<Asset>> split() {
         def split = []
 
         // (0,0) - (640,380) - left bottom corner

@@ -65,7 +65,7 @@ enum Keyboard {
             return
         }
 
-        int speedConst = boost ? Conf.ins.key.moveSpeed.boost : Conf.ins.key.moveSpeed.normal
+        int speedConst = boost ? Conf.cfg.key.moveSpeed.boost : Conf.cfg.key.moveSpeed.normal
         float speedCalc = speedConst * Gdx.graphics.deltaTime as float
         cl speedCalc
     }

@@ -17,7 +17,7 @@ import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 
 @PackageScope
-class SpaceShip extends Actor implements Obstacle {
+class SpaceShip extends Actor implements Asset {
 
     final Rectangle position
     final AssetType type = AssetType.SPACE_SHIP
@@ -98,17 +98,12 @@ class SpaceShip extends Actor implements Obstacle {
     }
 
     @Override
-    boolean checkCollision(Obstacle other) {
+    boolean checkCollision(Asset other) {
         position.overlaps(other.position)
     }
 
     @Override
-    void hit(Obstacle other) {
-
-    }
-
-    @Override
-    void reset() {
+    void hit(Asset other) {
 
     }
 

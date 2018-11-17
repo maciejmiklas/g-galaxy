@@ -15,7 +15,7 @@ import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
 
 @PackageScope
-class Fighter implements Obstacle {
+class Fighter implements DeployableAsset {
     private final static Sound CRASH_SOUND
 
     Mode mode = Mode.ACTIVE
@@ -52,7 +52,6 @@ class Fighter implements Obstacle {
         this.animationExplosion = AnimationFactory.create(explosionAsset, Animation.PlayMode.NORMAL, type)
         EventBus.event EventType.OBSTACLE_CREATED, this
         updateFireDelay()
-        reset()
     }
 
     private void updateFireDelay() {
@@ -90,20 +89,12 @@ class Fighter implements Obstacle {
     }
 
     @Override
-    void reset() {
-        mode = Mode.ACTIVE
-        animation = animationNormal
-        animationStateTime = 0.0f
-        position.set MathUtils.random(0, Conf.SCR_WIDTH - c_an.spriteWith), Conf.SCR_HEIGHT, c_an.spriteWith, c_an.spriteHeight
-    }
-
-    @Override
-    boolean checkCollision(Obstacle other) {
+    boolean checkCollision(Asset other) {
         mode == Mode.ACTIVE && other.type != AssetType.ASTEROID && position.overlaps(other.position)
     }
 
     @Override
-    void hit(Obstacle other) {
+    void hit(Asset other) {
         if (mode != Mode.ACTIVE) {
             return
         }
@@ -116,9 +107,18 @@ class Fighter implements Obstacle {
         animation = animationExplosion
     }
 
+    @Override
+    void deploy(int x, int y) {
+        mode = Mode.ACTIVE
+        animation = animationNormal
+        animationStateTime = 0.0f
+        position.set x, y, c_an.spriteWith, c_an.spriteHeight
+    }
+
     enum Mode {
         EXPLODING,
         INACTIVE,
         ACTIVE
     }
+
 }
