@@ -3,7 +3,11 @@ package org.miklas.ggalaxy.core.cannon
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import org.miklas.ggalaxy.core.common.AssetName
+import org.springframework.context.annotation.Primary
+import org.springframework.stereotype.Component
 
+@Component
+@Primary
 class SingleShotCannon extends Actor implements Cannon {
 
     private final List<Shot> shots = []

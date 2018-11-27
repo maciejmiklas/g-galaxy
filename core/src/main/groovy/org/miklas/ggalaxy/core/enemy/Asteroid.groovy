@@ -12,7 +12,7 @@ import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
 
 @PackageScope
-class Asteroid implements DeployableAsset {
+class Asteroid implements Deployable {
     private final static Sound CRASH_SOUND
 
     Mode mode = Mode.ACTIVE

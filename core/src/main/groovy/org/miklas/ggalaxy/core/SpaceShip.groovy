@@ -12,29 +12,31 @@ import org.miklas.ggalaxy.core.cannon.Cannon
 import org.miklas.ggalaxy.core.common.*
 import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 
 @PackageScope
+@Component
 class SpaceShip extends Actor implements Asset {
+
+    @Autowired
+    private Cannon mainCannon
 
     final Rectangle position
     final AssetType type = AssetType.SPACE_SHIP
     private Animation<Sprite> animation
-    private final AssetName assetNormal
-    private final AssetName assetBoost
+    private final AssetName assetNormal = AssetName.SHIP_INTERCEPTOR_BLUE//TODO get from config
+    private final AssetName assetBoost = AssetName.SHIP_INTERCEPTOR_RED
     private float animationStartTime = 0.0f
     private Speed speed
-    private Cannon mainCannon
     private long lastFireMs = 0
     def c_an
     def c_cm
 
-    SpaceShip(AssetName assetNormal, AssetName assetBoost, Cannon mainCannon) {
-        this.assetNormal = assetNormal
-        this.assetBoost = assetBoost
-        this.mainCannon = mainCannon
+    SpaceShip() {
         c_an = Conf.animation assetNormal
         c_cm = Conf.cannonMain AssetType.SPACE_SHIP
         position = [SCR_WIDTH / 2f - c_an.spriteWith / 2f as float, 20, c_an.spriteWith, c_an.spriteHeight]

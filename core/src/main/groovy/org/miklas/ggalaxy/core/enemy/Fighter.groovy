@@ -15,7 +15,7 @@ import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
 
 @PackageScope
-class Fighter implements DeployableAsset {
+class Fighter implements Deployable {
     private final static Sound CRASH_SOUND
 
     Mode mode = Mode.ACTIVE

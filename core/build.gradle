@@ -4,6 +4,8 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
     compile "org.codehaus.gpars:gpars:$gparsVersion"
-
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    
     testCompile "org.spockframework:spock-core:$spockVersion"
 }

@@ -9,6 +9,7 @@ import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.common.Keyboard
 import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
+import org.springframework.stereotype.Component
 
 import static org.miklas.ggalaxy.core.common.Conf.SCR_HEIGHT
 import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
@@ -17,6 +18,7 @@ import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
  * Parallax Background.
  */
 @PackageScope
+@Component
 class Background extends Actor {
 
     private final Texture bgPink = [Gdx.files.internal("assets/background/space/Nebula Aqua-Pink.png")]

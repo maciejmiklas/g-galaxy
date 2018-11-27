@@ -1,10 +1,12 @@
 package org.miklas.ggalaxy.core.enemy
 
 import groovy.transform.PackageScope
+import org.springframework.stereotype.Component
 
 import static org.miklas.ggalaxy.core.common.AssetName.*
 
 @PackageScope
+@Component
 class AsteroidFactory implements EnemyFactory {
 
     private final List<Asteroid> asteroids = []

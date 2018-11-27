@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
+import org.springframework.stereotype.Component
 
+@Component
 class Booster extends Actor {
 
     private long boostStartMs = 0

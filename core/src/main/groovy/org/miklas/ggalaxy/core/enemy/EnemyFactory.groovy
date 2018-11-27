@@ -8,7 +8,7 @@ interface EnemyFactory {
     NextEnemy next()
 
     class NextEnemy {
-        DeployableAsset asset
+        Deployable asset
         boolean newInstance
     }
 }

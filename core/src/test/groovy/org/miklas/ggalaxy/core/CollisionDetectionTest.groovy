@@ -247,11 +247,6 @@ class CollisionDetectionTest extends Specification {
         }
 
         @Override
-        void reset(int x, int y) {
-
-        }
-
-        @Override
         void draw(Batch batch, float parentAlpha) {
 
         }

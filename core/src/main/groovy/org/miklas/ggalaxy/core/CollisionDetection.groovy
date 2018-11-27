@@ -6,8 +6,10 @@ import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.common.Asset
 import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
+import org.springframework.stereotype.Component
 
 @PackageScope
+@Component
 class CollisionDetection {
     private final int w = Conf.SCR_WIDTH
     private final int w2 = w / 2

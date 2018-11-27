@@ -3,25 +3,33 @@ package org.miklas.ggalaxy.core.enemy
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Actor
-import org.miklas.ggalaxy.core.cannon.Cannon
 import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.common.CyclicList
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
+
+import javax.annotation.PostConstruct
 
 import static com.badlogic.gdx.utils.TimeUtils.millis
 import static org.miklas.ggalaxy.core.common.Conf.cfg
 
+@Component
 class EnemyDeploy extends Actor {
 
-    private final List<DeployableAsset> enemyList = []
+    @Autowired
+    private AsteroidFactory _asteroidFactory
+
+    @Autowired
+    private FighterFactory _fighterFactory
+
+    private final List<Deployable> enemyList = []
     private long lastSpawnTime = -1
-    private final AsteroidFactory _asteroidFactory = []
-    private final FighterFactory _fighterFactory
     private CyclicList<EnemyFactory> factories
     private int[][] lastX = [[-1, -1], [-1, -1]]
     private int lastXIdx = 0
 
-    EnemyDeploy(Cannon mainCannon) {
-        this._fighterFactory = [mainCannon]
+    @PostConstruct
+    void init() {
         factories = [_asteroidFactory, _asteroidFactory, _fighterFactory]
     }
 
