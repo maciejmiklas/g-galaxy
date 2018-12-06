@@ -3,9 +3,8 @@ package org.miklas.ggalaxy.core.enemy
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Actor
+import org.miklas.ggalaxy.core.common.AssetName
 import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.common.CyclicList
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import javax.annotation.PostConstruct
@@ -16,52 +15,58 @@ import static org.miklas.ggalaxy.core.common.Conf.cfg
 @Component
 class EnemyDeploy extends Actor {
 
-    @Autowired
-    private AsteroidFactory _asteroidFactory
-
-    @Autowired
-    private FighterFactory _fighterFactory
-
-    private final List<Deployable> enemyList = []
-    private long lastSpawnTime = -1
-    private CyclicList<EnemyFactory> factories
+    private final List<Enemy> enemies = []
+    private long lastSpawnMs = -1
+    private long lastShuffleMs = -1
     private int[][] lastX = [[-1, -1], [-1, -1]]
     private int lastXIdx = 0
 
     @PostConstruct
     void init() {
-        factories = [_asteroidFactory, _asteroidFactory, _fighterFactory]
+        cfg.enemy.asset.each {
+            AssetName an = it.key
+            def clazz = it.value.clazz
+            1.upto(it.value.max) {
+                enemies.add this.class.classLoader.loadClass(clazz).newInstance(an)
+            }
+        }
     }
 
     private void spawn() {
-        if (millis() - lastSpawnTime < cfg.enemyDeploy.spawnMs) {
+        def ms = millis()
+
+        if (ms - lastShuffleMs > cfg.enemy.shuffleEnemiesMs) {
+            Collections.shuffle enemies
+            lastShuffleMs = ms
+        }
+
+        if (ms - lastSpawnMs < cfg.enemy.spawnMs) {
             return
         }
+        lastSpawnMs = ms
         int x = nextX()
         if (x < 0) {
             return
         }
-        EnemyFactory.NextEnemy next = factories.next().next()
-        next.asset.deploy nextX(), Conf.SCR_HEIGHT + 30
-
-        if (next.newInstance) {
-            enemyList << next.asset
+        Enemy next = enemies.find { it.mode == Enemy.Mode.INACTIVE }
+        if (next == null) {
+            return
         }
-        lastSpawnTime = millis()
+
+        next.deploy x, Conf.SCR_HEIGHT + cfg.enemy.marginWidth
     }
 
     private nextX() {
         if (lastXIdx == lastX.length) {
             lastXIdx = 0
         }
-        int x = MathUtils.random cfg.enemyDeploy.widthMargin, Conf.SCR_WIDTH - cfg.enemyDeploy.widthMargin
+        int x = MathUtils.random cfg.enemy.marginWidth, Conf.SCR_WIDTH - cfg.enemy.marginWidth
 
         if (lastX.find({ x > it[0] && x < it[1] })) {
-            println "$x, $lastX"
             return -1
         }
 
-        lastX[lastXIdx] = [x - cfg.enemyDeploy.deployMargin, x + cfg.enemyDeploy.deployMargin]
+        lastX[lastXIdx] = [x - cfg.enemy.deployDistance, x + cfg.enemy.deployDistance]
         lastXIdx++
         return x
     }
@@ -69,9 +74,15 @@ class EnemyDeploy extends Actor {
     @Override
     void draw(Batch batch, float parentAlpha) {
         spawn()
-        enemyList.forEach {
+        enemies.forEach {
             it.draw batch, parentAlpha
         }
     }
+
+    class Amount {
+        int max
+        int now
+    }
+
 
 }

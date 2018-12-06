@@ -6,15 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Rectangle
 import groovy.transform.PackageScope
-import org.miklas.ggalaxy.core.common.AnimationFactory
-import org.miklas.ggalaxy.core.common.Asset
-import org.miklas.ggalaxy.core.common.AssetName
-import org.miklas.ggalaxy.core.common.Conf
+import org.miklas.ggalaxy.core.common.*
 import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
 
 @PackageScope
-abstract class Deployable implements Asset {
+abstract class Enemy implements Asset {
     Mode mode = Mode.INACTIVE
     final Rectangle position = []
 
@@ -27,20 +24,19 @@ abstract class Deployable implements Asset {
 
     private float explosionAdjustX = 0
     private float explosionAdjustY = 0
+    private Sound crashSound
 
-    private final static Sound CRASH_SOUND
-    static {
-        CRASH_SOUND = Gdx.audio.newSound(Gdx.files.internal("assets/drop.wav"))
-    }
+    Enemy(AssetName assetName) {
+        this.crashSound = Gdx.audio.newSound(Gdx.files.internal("assets/drop.wav"))
 
-    Deployable(AssetName assetName) {
         this.c_an = Conf.animation assetName
         this.c_ea = Conf.enemyAsset assetName
-
-        this.explosionAdjustX = c_an.spriteHeight
-        this.explosionAdjustY = c_an.spriteWith
-
         AssetName explosionName = c_an.explosion
+
+        def c_ex = Conf.animation explosionName
+        this.explosionAdjustX = c_ex.spriteHeight / 2 - c_an.spriteHeight / 2
+        this.explosionAdjustY = c_ex.spriteWith / 2 - c_an.spriteWith / 2
+
         this.animationNormal = AnimationFactory.create(assetName, Animation.PlayMode.LOOP, type)
         this.animationExplosion = AnimationFactory.create(explosionName, Animation.PlayMode.NORMAL, type)
 
@@ -49,12 +45,12 @@ abstract class Deployable implements Asset {
 
     @Override
     void hit(Asset other) {
-        if (mode != Mode.ACTIVE) {
+        if (mode != Mode.ACTIVE || (other.getType() != AssetType.SHOT && other.getType() != AssetType.SPACE_SHIP)) {
             return
         }
 
         mode = Mode.EXPLODING
-        CRASH_SOUND.play()
+        crashSound.play()
         animationStateTime = 0.0f
         position.x -= explosionAdjustX
         position.y -= explosionAdjustY

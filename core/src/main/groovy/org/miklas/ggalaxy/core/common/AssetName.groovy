@@ -11,5 +11,6 @@ enum AssetName {
     PROTON_STAR,
     EXPLOSION_BLUE,
     EXPLOSION_RED,
-    SHOT_RED
+    SHOT_RED,
+    EXPLOSION_GALAXY
 }

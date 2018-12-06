@@ -34,11 +34,12 @@ class SpaceShip extends Actor implements Asset {
     private Speed speed
     private long lastFireMs = 0
     def c_an
-    def c_cm
+    def c_sh
 
     SpaceShip() {
         c_an = Conf.animation assetNormal
-        c_cm = Conf.cannonMain AssetType.SPACE_SHIP
+        c_sh = Conf.spaceShip()
+
         position = [SCR_WIDTH / 2f - c_an.spriteWith / 2f as float, 20, c_an.spriteWith, c_an.spriteHeight]
         animation = AnimationFactory.create(assetNormal, Animation.PlayMode.LOOP, type)
 
@@ -89,11 +90,11 @@ class SpaceShip extends Actor implements Asset {
         Keyboard.UP.onMove { position.y += it }
         Keyboard.DOWN.onMove { position.y -= it }
         Keyboard.FIRE.onFire {
-            if (TimeUtils.millis() - lastFireMs > c_cm.delayMs) {
+            if (TimeUtils.millis() - lastFireMs > c_sh.cannon.main.delayMs) {
                 mainCannon.fire position.x + c_an.cannon.main.position.x as int,
                         position.y + c_an.cannon.main.position.y as int,
                         0,
-                        c_cm.moveSpeed
+                        c_sh.cannon.main.moveSpeed
                 lastFireMs = TimeUtils.millis()
             }
         }

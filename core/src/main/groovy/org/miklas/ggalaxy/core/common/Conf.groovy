@@ -14,21 +14,23 @@ class Conf {
         cfg.animation."$name"
     }
 
-    static def cannonMain(AssetType type) {
-        cfg.cannon.main."$type"
+    static def cannonMain(AssetName name) {
+        cfg.cannon.main."$name"
     }
 
-    static def movement(AssetType type) {
-        cfg.movement."$type"
+    static def movement(AssetName name) {
+        cfg.movement."$name"
     }
 
     static def sprite(AssetName type) {
         cfg.sprite."$type"
     }
 
-    static def enemyDeploy() {
-        cfg.enemyDeploy
+    static def enemyAsset(AssetName name) {
+        cfg.enemy.asset."$name"
     }
 
+    static def spaceShip() {
+        cfg.spaceShip
+    }
 }
-

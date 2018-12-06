@@ -15,6 +15,7 @@ animation {
                 }
             }
         }
+        explosion = 'EXPLOSION_BLUE'
     }
 
     SHIP_INTERCEPTOR_BLUE {
@@ -33,6 +34,7 @@ animation {
                 }
             }
         }
+        explosion = 'EXPLOSION_BLUE'
     }
 
     SHIP_INTERCEPTOR_RED {
@@ -51,6 +53,7 @@ animation {
                 }
             }
         }
+        explosion = 'EXPLOSION_GALAXY'
     }
 
     SHIP_FALCON {
@@ -69,6 +72,7 @@ animation {
                 }
             }
         }
+        explosion = 'EXPLOSION_GALAXY'
     }
 
     BOMB_BLUE {
@@ -79,6 +83,7 @@ animation {
         spriteWith = 64
         spriteHeight = 64
         frameDuration = 0.2f
+        explosion = 'EXPLOSION_BLUE'
     }
 
     MINE_BLUE {
@@ -89,6 +94,7 @@ animation {
         spriteWith = 64
         spriteHeight = 64
         frameDuration = 0.5f
+        explosion = 'EXPLOSION_BLUE'
     }
 
     MINE_RED {
@@ -99,6 +105,7 @@ animation {
         spriteWith = 64
         spriteHeight = 64
         frameDuration = 0.05f
+        explosion = 'EXPLOSION_RED'
     }
 
     PROTON_STAR {
@@ -110,6 +117,7 @@ animation {
         spriteHeight = 64
         frameDuration = 0.2f
         prefix = 'p_Sprite_'
+        explosion = 'EXPLOSION_RED'
     }
 
     EXPLOSION_BLUE {
@@ -144,7 +152,6 @@ animation {
         frameDuration = 0.05f
         prefix = 'galaxy_'
     }
-
 }
 
 sprite {
@@ -157,39 +164,82 @@ sprite {
     }
 }
 
-cannon {
-    main {
-        SPACE_SHIP {
+spaceShip {
+    cannon {
+        main {
             moveSpeed = 400
             delayMs = 500
         }
-        ENEMY_SHIP {
-            moveSpeed = 400
-            maxDelayMs = 50000
-            minDelayMs = 50000
+    }
+}
+
+cannon {
+    main {
+        SHIP_CARGO {
+            shotSpeed = 400
+            minDelayMs = 1000000
+            maxDelayMs = 2000000
+        }
+        SHIP_INTERCEPTOR_BLUE {
+            shotSpeed = 400
+            minDelayMs = 1000000
+            maxDelayMs = 2000000
+        }
+        SHIP_INTERCEPTOR_RED {
+            shotSpeed = 400
+            minDelayMs = 1000000
+            maxDelayMs = 2000000
+        }
+        SHIP_FALCON {
+            shotSpeed = 400
+            minDelayMs = 1000000
+            maxDelayMs = 2000000
         }
     }
 }
 
-fighter {
-    CLASS_A {
-        ships = []
+enemy {
+    asset {
+        SHIP_CARGO {
+            clazz = 'org.miklas.ggalaxy.core.enemy.Fighter'
+            max = 8
+            modeSpeed = 100
+        }
+        SHIP_INTERCEPTOR_BLUE {
+            clazz = 'org.miklas.ggalaxy.core.enemy.Fighter'
+            max = 3
+            modeSpeed = 200
+        }
+        SHIP_INTERCEPTOR_RED {
+            clazz = 'org.miklas.ggalaxy.core.enemy.Fighter'
+            max = 5
+            modeSpeed = 300
+        }
+        SHIP_FALCON {
+            clazz = 'org.miklas.ggalaxy.core.enemy.Fighter'
+            max = 4
+            modeSpeed = 400
+        }
+        BOMB_BLUE {
+            clazz = 'org.miklas.ggalaxy.core.enemy.Asteroid'
+            max = 3
+            modeSpeed = 50
+        }
+        MINE_BLUE {
+            clazz = 'org.miklas.ggalaxy.core.enemy.Asteroid'
+            max = 4
+            modeSpeed = 100
+        }
+        MINE_RED {
+            clazz = 'org.miklas.ggalaxy.core.enemy.Asteroid'
+            max = 5
+            modeSpeed = 150
+        }
     }
-}
-
-enemyDeploy {
-    spawnMs = 500
-    widthMargin = 10
-    deployMargin = 50
-}
-
-movement {
-    ENEMY_SHIP {
-        moveSpeed = 100
-    }
-    ASTEROID {
-        moveSpeed = 200
-    }
+    spawnMs = 200
+    marginWidth = 10
+    deployDistance = 50
+    shuffleEnemiesMs = 60000
 }
 
 screen {

@@ -188,7 +188,6 @@ class CollisionDetectionTest extends Specification {
         CollisionDetection detection = []
         detection.process(rocks)
 
-        print detection
         expect:
         rocks[0].hits[0].position.x == 15
         rocks[0].hits[1].position.x == 17
