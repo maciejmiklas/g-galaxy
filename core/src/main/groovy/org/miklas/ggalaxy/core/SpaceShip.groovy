@@ -80,8 +80,7 @@ class SpaceShip extends Actor implements Asset {
         Sprite sprite = animation.getKeyFrame animationStartTime
         sprite.setPosition position.x, position.y
         sprite.draw batch
-
-
+        true
     }
 
     private void processUserInput() {

@@ -22,7 +22,7 @@ import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 class GameScreen implements Screen {
 
     @Autowired
-    private final SpaceShip mainShip
+    private SpaceShip mainShip
 
     @Autowired
     private Cannon mainCannon

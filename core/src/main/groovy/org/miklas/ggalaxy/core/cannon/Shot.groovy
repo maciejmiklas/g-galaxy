@@ -66,7 +66,7 @@ class Shot implements Asset, Cannon {
             return
         }
 
-        double radian = angle * Math.PI / 180
+        double radian = Math.toRadians angle
         int offset = moveSpeed * Gdx.graphics.deltaTime
 
         position.x = position.x + offset * Math.sin(radian)

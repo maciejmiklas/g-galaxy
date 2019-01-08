@@ -8,4 +8,5 @@ dependencies {
     compile "org.springframework:spring-context:$springVersion"
     
     testCompile "org.spockframework:spock-core:$spockVersion"
+    testCompile "jfree:jfreechart:$jfreechartVersion"
 }

@@ -1,12 +1,11 @@
 package org.miklas.ggalaxy.core.enemy
 
-import com.badlogic.gdx.Gdx
+
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
 import groovy.transform.PackageScope
 import org.miklas.ggalaxy.core.cannon.Cannon
-import org.miklas.ggalaxy.core.common.Asset
 import org.miklas.ggalaxy.core.common.AssetName
 import org.miklas.ggalaxy.core.common.AssetType
 import org.miklas.ggalaxy.core.common.Conf
@@ -36,25 +35,9 @@ class Fighter extends Enemy {
     }
 
     @Override
-    void draw(Batch batch, float parentAlpha) {
-        if (mode == Mode.INACTIVE) {
-            return
-        }
+    protected preDraw(Sprite sprite, Batch batch, float parentAlpha) {
 
-        // reached bottom of the screen ?
-        if (position.y + c_an.spriteHeight < 0) {
-            mode = Mode.INACTIVE
-            return
-        }
-
-        Sprite sprite = animation.getKeyFrame animationStateTime
-        sprite.setPosition position.x, position.y
-        sprite.setOrigin sprite.width / 2 as float, sprite.height / 2 as float
-        sprite.rotation = 180
-        sprite.draw batch
-        animationStateTime += Gdx.graphics.getDeltaTime()
-        position.y -= c_ea.modeSpeed * Gdx.graphics.deltaTime
-/*
+        /*
         def ms = millis()
         if (ms - lastFireMs > fireDelayMs) {
             mainCannon.fire position.x + c_an.cannon.main.position.x as int,
@@ -64,11 +47,6 @@ class Fighter extends Enemy {
             lastFireMs = ms
             updateFireDelay()
         }*/
-    }
-
-    @Override
-    boolean checkCollision(Asset other) {
-        mode == Mode.ACTIVE && other.type != AssetType.ASTEROID && position.overlaps(other.position)
     }
 
 

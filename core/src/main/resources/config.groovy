@@ -204,36 +204,43 @@ enemy {
             clazz = 'org.miklas.ggalaxy.core.enemy.Fighter'
             max = 8
             modeSpeed = 100
+            movingPattern = 'SINUS'
         }
         SHIP_INTERCEPTOR_BLUE {
             clazz = 'org.miklas.ggalaxy.core.enemy.Fighter'
             max = 3
             modeSpeed = 200
+            movingPattern = 'SINUS'
         }
         SHIP_INTERCEPTOR_RED {
             clazz = 'org.miklas.ggalaxy.core.enemy.Fighter'
             max = 5
             modeSpeed = 300
+            movingPattern = 'SINUS'
         }
         SHIP_FALCON {
             clazz = 'org.miklas.ggalaxy.core.enemy.Fighter'
             max = 4
-            modeSpeed = 400
+            modeSpeed = 500
+            movingPattern = 'SINUS'
         }
         BOMB_BLUE {
             clazz = 'org.miklas.ggalaxy.core.enemy.Asteroid'
             max = 3
             modeSpeed = 50
+            movingPattern = 'STRAIGHT'
         }
         MINE_BLUE {
             clazz = 'org.miklas.ggalaxy.core.enemy.Asteroid'
             max = 4
             modeSpeed = 100
+            movingPattern = 'STRAIGHT'
         }
         MINE_RED {
             clazz = 'org.miklas.ggalaxy.core.enemy.Asteroid'
             max = 5
             modeSpeed = 150
+            movingPattern = 'STRAIGHT'
         }
     }
     spawnMs = 200
@@ -277,6 +284,15 @@ background {
             y = 4
             x = 0
         }
+    }
+}
+
+pathFollowing {
+    linear {
+        distanceMargin = 5
+    }
+    bazier {
+        distanceMargin = 5
     }
 }
 

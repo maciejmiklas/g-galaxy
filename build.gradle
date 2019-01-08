@@ -15,5 +15,6 @@ subprojects {
         spockVersion = '1.2-groovy-2.5'
         gparsVersion = '1.2.1'
         springVersion = '5.1.2.RELEASE'
+        jfreechartVersion = '1.0.13'
     }
 }

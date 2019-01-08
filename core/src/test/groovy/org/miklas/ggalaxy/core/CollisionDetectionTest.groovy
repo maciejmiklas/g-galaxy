@@ -247,7 +247,6 @@ class CollisionDetectionTest extends Specification {
 
         @Override
         void draw(Batch batch, float parentAlpha) {
-
         }
     }
 }

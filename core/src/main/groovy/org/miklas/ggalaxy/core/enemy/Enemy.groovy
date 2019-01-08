@@ -3,6 +3,7 @@ package org.miklas.ggalaxy.core.enemy
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.Animation
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Rectangle
 import groovy.transform.PackageScope
@@ -45,10 +46,6 @@ abstract class Enemy implements Asset {
 
     @Override
     void hit(Asset other) {
-        if (mode != Mode.ACTIVE || (other.getType() != AssetType.SHOT && other.getType() != AssetType.SPACE_SHIP)) {
-            return
-        }
-
         mode = Mode.EXPLODING
         crashSound.play()
         animationStateTime = 0.0f
@@ -57,6 +54,64 @@ abstract class Enemy implements Asset {
         animation = animationExplosion
     }
 
+    @Override
+    boolean checkCollision(Asset other) {
+        mode == Mode.ACTIVE && (other.getType() == AssetType.SHOT || other.getType() == AssetType.SPACE_SHIP) && position.overlaps(other.position)
+    }
+
+    @Override
+    final void draw(Batch batch, float parentAlpha) {
+        if (!shouldDraw()) {
+            return
+        }
+
+        Sprite sprite = animation.getKeyFrame animationStateTime
+        sprite.setPosition position.x, position.y
+        sprite.setOrigin sprite.width / 2 as float, sprite.height / 2 as float
+        sprite.rotation = 180
+
+        preDraw sprite, batch, parentAlpha
+
+        sprite.draw batch
+
+        animationStateTime += Gdx.graphics.getDeltaTime()
+        "move_${c_ea.movingPattern.toLowerCase()}"()
+    }
+
+    private void move_straight() {
+        position.y -= c_ea.modeSpeed * Gdx.graphics.deltaTime
+    }
+
+    int sinLength = random(10, 100)
+    int sinAmp = random(5, 20)
+
+    private void move_sinus() {
+        position.x += sinAmp * Math.sin(position.y / sinLength)
+        position.y -= c_ea.modeSpeed * Gdx.graphics.deltaTime
+    }
+
+
+    int random(int min, int max) {
+        return (int) (Math.random() * (max - min)) + min
+    }
+
+
+    protected preDraw(Sprite sprite, Batch batch, float parentAlpha) {
+
+    }
+
+    protected boolean shouldDraw() {
+        if (mode == Mode.INACTIVE) {
+            return false
+        }
+
+        // reached bottom of the screen ?
+        if (position.y + c_an.spriteHeight < 0) {
+            mode = Mode.INACTIVE
+            return false
+        }
+        true
+    }
 
     void deploy(int x, int y) {
         mode = Mode.ACTIVE
@@ -69,5 +124,10 @@ abstract class Enemy implements Asset {
         INACTIVE,
         ACTIVE,
         EXPLODING
+    }
+
+    enum MovingPattern {
+        STRAIGHT,
+        SINUS
     }
 }
