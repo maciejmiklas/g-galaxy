@@ -14,6 +14,15 @@ class SpringConfig {
 
     @PostConstruct
     void init() {
+        initMeta()
+    }
+
+    static void initMeta() {
         Stage.metaClass.leftShift = { delegate.addActor it; delegate }
+        Number.metaClass {
+            getPow2 = { delegate * delegate }
+            getPow3 = { delegate * delegate * delegate }
+        }
+
     }
 }

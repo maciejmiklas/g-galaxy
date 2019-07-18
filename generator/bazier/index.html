@@ -1,0 +1,30 @@
+<!-- Based on: https://github.com/vrk/baziertool -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>G-Galaxy Bazier Path Generator</title>
+  	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script src="script.js"></script>
+</head>
+
+<body>
+  <div id="container">
+
+    <fieldset>
+      <legend>Path Edit Modes</legend>
+      <label><input type="radio" name="mode" id="addMode" checked/>add points</label>
+      <label><input type="radio" name="mode" id="selectMode" />move points</label>
+      <label><input type="radio" name="mode" id="removeMode" />remove points</label><br />
+      <label><input type="checkbox" name="lockControl" id="lockControl" checked/>lock adjacent control points</label>
+      <button id="clear" type="button">Clear all points</button><br/>
+    </fieldset>
+    <div class="col">
+      <canvas id="paintme" width="1280" height="760"></canvas>
+    </div>
+    <div class="col">
+      <textarea id="putJS"></textarea>
+    </div>
+  </div>
+</body>
+</html>
