@@ -16,5 +16,6 @@ subprojects {
         gparsVersion = '1.2.1'
         springVersion = '5.1.2.RELEASE'
         jfreechartVersion = '1.0.13'
+        logbackVersion = '1.2.3'
     }
 }

@@ -1,10 +1,5 @@
 // Bezier Tool Canvas Commands Generator
 //
-// history:
-// - 01/01/2017: lol wow people use this thing. uploaded to github:
-//               https://github.com/vrk/beziertool
-// - 04/03/2011: born!
-//
 // @author Victoria Kirst
 //
 // Based on: https://github.com/vrk/baziertool
@@ -86,29 +81,20 @@ window.onload = function () {
 
     }, false);
 
-    var setSrcButton = document.getElementById('addImgSrc');
-    setSrcButton.addEventListener('click', function () {
-        var input = document.getElementById('imageSrc');
-        gBackgroundImg = document.createElement('img');
-
-        // No image if invalid path
-        gBackgroundImg.onerror = function () {
-            gBackgroundImg = null;
-        };
-        gBackgroundImg.src = input.value;
-        render();
-
-        input.value = '';
-
-    }, false);
-
+    document.onmousemove = onMouseMove;
 };
+
+function onMouseMove(e) {
+    var pos = getMousePosition(e);
+    document.getElementById('xPos').textContent = pos.xNorm();
+    document.getElementById('yPos').textContent = pos.yNorm();
+}
 
 // Modified from http://diveintohtml5.org/examples/halma.js
 function getMousePosition(e) {
     var x;
     var y;
-    if (e.pageX != undefined && e.pageY != undefined) {
+    if (e.pageX !== undefined && e.pageY !== undefined) {
         x = e.pageX;
         y = e.pageY;
     } else {
@@ -210,12 +196,19 @@ function Point(newX, newY) {
 
     this.x = function () {
         return xVal;
-    }
+    };
 
     this.y = function () {
         return yVal;
-    }
+    };
 
+    this.xNorm = function () {
+        return xVal;
+    };
+
+    this.yNorm = function () {
+        return HEIGHT - yVal;
+    };
     this.set = function (x, y) {
         xVal = x;
         yVal = y;
@@ -263,7 +256,7 @@ function ControlPoint(angle, magnitude, owner, isFirst) {
         // TODO fixme fragile
         if (_angle != deg)
             _angle = deg;
-    }
+    };
 
     this.origin = function origin() {
         var line = null;
@@ -274,7 +267,7 @@ function ControlPoint(angle, magnitude, owner, isFirst) {
         if (line)
             return new Point(line.pt.x(), line.pt.y());
         return null;
-    }
+    };
 
     // Returns the Point at which the knob is located.
     this.asPoint = function () {
@@ -283,19 +276,25 @@ function ControlPoint(angle, magnitude, owner, isFirst) {
 
     this.x = function () {
         return my.origin().x() + my.xDelta();
-    }
+    };
 
     this.y = function () {
         return my.origin().y() + my.yDelta();
-    }
+    };
+
+    this.xNorm = this.x;
+
+    this.yNorm = function () {
+        return HEIGHT - this.y()
+    };
 
     this.xDelta = function () {
         return _magnitude * Math.cos(_angle);
-    }
+    };
 
     this.yDelta = function () {
         return _magnitude * Math.sin(_angle);
-    }
+    };
 
     function computeMagnitudeAngleFromOffset(xDelta, yDelta) {
         _magnitude = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2));
@@ -328,11 +327,11 @@ function ControlPoint(angle, magnitude, owner, isFirst) {
 
     this.contains = function (pt) {
         return my.asPoint().contains(pt);
-    }
+    };
 
     this.offsetFrom = function (pt) {
         return my.asPoint().offsetFrom(pt);
-    }
+    };
 
     this.draw = function (ctx) {
         ctx.save();
@@ -346,7 +345,7 @@ function ControlPoint(angle, magnitude, owner, isFirst) {
         ctx.stroke();
         endPt.drawSquare(ctx);
         ctx.restore();
-    }
+    };
 
     // When Constructed
     if (my.__proto__.syncNeighbor)
@@ -387,11 +386,11 @@ function LineSegment(pt, prev) {
         // If there are at least two points, draw curve.
         if (my.prev)
             drawCurve(ctx, my.prev.pt, my.pt, my.ctrlPt1, my.ctrlPt2);
-    }
+    };
 
     this.toJSString = function () {
         if (!my.prev) {
-            return '  ctx.moveTo(' + Math.round(my.pt.x()) + ' + xoff, ' + Math.round(my.pt.y()) + ' + yoff);';
+            return 'new Point2D(' + Math.round(my.pt.xNorm()) + ', ' + Math.round(my.pt.yNorm()) + '),';
         } else {
             var ctrlPt1x = 0;
             var ctrlPt1y = 0;
@@ -401,30 +400,28 @@ function LineSegment(pt, prev) {
             var y = 0;
 
             if (my.ctrlPt1) {
-                ctrlPt1x = Math.round(my.ctrlPt1.x());
-                ctrlPt1y = Math.round(my.ctrlPt1.y());
+                ctrlPt1x = Math.round(my.ctrlPt1.xNorm());
+                ctrlPt1y = Math.round(my.ctrlPt1.yNorm());
             }
 
             if (my.ctrlPt2) {
-                ctrlPt2x = Math.round(my.ctrlPt2.x());
-                ctrlPt2y = Math.round(my.ctrlPt2.y());
+                ctrlPt2x = Math.round(my.ctrlPt2.xNorm());
+                ctrlPt2y = Math.round(my.ctrlPt2.yNorm());
             }
             if (my.pt) {
-                x = Math.round(my.pt.x());
-                y = Math.round(my.pt.y());
+                x = Math.round(my.pt.xNorm());
+                y = Math.round(my.pt.yNorm());
             }
 
-            ctrlPt1y = HEIGHT - ctrlPt1y;
-            ctrlPt2y = HEIGHT - ctrlPt2y;
-
-            return '  ctx.bezierCurveTo(' + ctrlPt1x + ', ' +
-                ctrlPt1y + ', ' +
+            // new BezierElement(cp1: [1200, 100], cp2: [200, 600], end: [600, 600])
+            return '    new BezierElement(cp1: [' + ctrlPt1x + ', ' +
+                ctrlPt1y + '], cp2: [' +
                 ctrlPt2x + ', ' +
-                ctrlPt2y + ', ' +
+                ctrlPt2y + '], end: [' +
                 x + ', ' +
-                y + ');';
+                y + ']),';
         }
-    }
+    };
 
     this.findInLineSegment = function (pos) {
         if (my.pathPointIntersects(pos)) {
@@ -438,11 +435,11 @@ function LineSegment(pt, prev) {
             return true;
         }
         return false;
-    }
+    };
 
     this.pathPointIntersects = function (pos) {
         return my.pt && my.pt.contains(pos);
-    }
+    };
 
     this.moveTo = function (pos) {
         var dist = my.selectedPoint.offsetFrom(pos);
@@ -476,7 +473,7 @@ function LineSegment(pt, prev) {
             my.ctrlPt1 = new ControlPoint(angle + Math.PI, 15, my, true);
             my.ctrlPt2 = new ControlPoint(angle, 15, my, false);
         }
-    };
+    }
 }
 
 function BezierPath(startPoint) {
@@ -502,7 +499,6 @@ function BezierPath(startPoint) {
 
     // Must call after add point, since init uses
     // addPoint
-    // TODO: this is a little gross
     init();
 
     this.draw = function (ctx) {
@@ -527,7 +523,7 @@ function BezierPath(startPoint) {
             current = current.next;
         }
         return false;
-    }
+    };
 
     // returns true if point deleted
     this.deletePoint = function (pos) {
@@ -566,33 +562,31 @@ function BezierPath(startPoint) {
             current = current.next;
         }
         return false;
-    }
+    };
 
     this.clearSelected = function () {
         selectedSegment = null;
-    }
+    };
 
     this.updateSelected = function (pos) {
         selectedSegment.moveTo(pos);
-    }
+    };
+
 
     this.toJSString = function () {
         var myString =
-            ['function drawShape(ctx, xoff, yoff) {',
-                '  ctx.beginPath();',
-            ];
+            ['new BezierPathFollowing('];
 
         var current = my.head;
         while (current != null) {
             myString.push(current.toJSString());
             current = current.next;
         }
-        myString.push('  ctx.stroke();');
-        myString.push('}');
+        myString.push(')');
         return myString.join('\n');
-    }
+    };
 
     function init() {
         my.addPoint(startPoint);
-    };
+    }
 }

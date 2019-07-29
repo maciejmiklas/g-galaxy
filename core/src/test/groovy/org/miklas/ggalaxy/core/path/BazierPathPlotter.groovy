@@ -21,7 +21,12 @@ SwingUtilities.invokeLater {
             SpringConfig.initMeta()
             XYSeriesCollection dataset = new XYSeriesCollection()
 
-            BezierPathFollowing path = new BezierPathFollowing(new Point2D(50, 50), new BezierElement(cp1: [1200, 100], cp2: [200, 600], end: [600, 600]))
+            BezierPathFollowing path = new BezierPathFollowing(
+                    new Point2D(116, 94),
+                    new BezierElement(cp1: [177, 18], cp2: [299, 136], end: [148, 437]),
+                    new BezierElement(cp1: [77, 578], cp2: [625, 722], end: [534, 546]),
+                    new BezierElement(cp1: [473, 427], cp2: [311, 128], end: [982, 193])
+            )
 
             XYSeries xy = new XYSeries("xy")
             xy.add 1280, 760

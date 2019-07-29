@@ -1,8 +1,10 @@
 package org.miklas.ggalaxy.core.path
 
+import groovy.util.logging.Slf4j
 import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.common.Point2D
 
+@Slf4j
 class BezierPathFollowing implements PathFollowing {
 
     final List<BezierElement> path = new LinkedList<>()
@@ -21,16 +23,21 @@ class BezierPathFollowing implements PathFollowing {
         conf = Conf.cfg.pathFollowing.bazier
         currentPoint.x = start.x
         currentPoint.y = start.y
-        startPoint.x = start.x
-        startPoint.y = start.y
         path.addAll elements
-        currentEl = path.get 0
+
         nextElement()
     }
 
     boolean nextElement() {
-        ti = 1 / currentPoint.distance(currentEl.end)
+        if (currentElIdx == path.size()) {
+            return false
+        }
+        startPoint.x = currentPoint.x
+        startPoint.y = currentPoint.y
+        currentEl = path.get currentElIdx++
+        ti = 1 / startPoint.distance(currentEl.end) * conf.skippPixels
         tv = 0
+        true
     }
 
     boolean goCloser() {
@@ -39,10 +46,12 @@ class BezierPathFollowing implements PathFollowing {
             return false
         }
 
-        currentPoint.x = (1 - tv).pow3 * startPoint.x + 3 * tv * (1 - tv).pow2 * currentEl.cp1.x + 3 * tv.pow2 * (1 - tv) * currentEl.cp2.x + tv.pow3 * currentEl.end.x
-        currentPoint.y = (1 - tv).pow3 * startPoint.y + 3 * tv * (1 - tv).pow2 * currentEl.cp1.y + 3 * tv.pow2 * (1 - tv) * currentEl.cp2.y + tv.pow3 * currentEl.end.x
+        // P = (1−t)ˆ3*P1 + 3(1−t)ˆ2*t*P2 +3*(1−t)*t^2* P3 + t^3*P4
+        currentPoint.x = (1 - tv).pow3 * startPoint.x + 3 * (1 - tv).pow2 * tv * currentEl.cp1.x + 3 * (1 - tv) * tv.pow2 * currentEl.cp2.x + tv.pow3 * currentEl.end.x
+        currentPoint.y = (1 - tv).pow3 * startPoint.y + 3 * (1 - tv).pow2 * tv * currentEl.cp1.y + 3 * (1 - tv) * tv.pow2 * currentEl.cp2.y + tv.pow3 * currentEl.end.y
         tv += ti
         if (tv > 1) {
+            log.debug("t > 1 - break Bazier Path")
             return false
         }
         return true
@@ -65,13 +74,10 @@ class BezierPathFollowing implements PathFollowing {
         if (goCloser()) {
             return true
         }
-        currentEl = path.get currentElIdx++
-        if (currentElIdx == path.size()) {
+
+        if (!nextElement()) {
             return false
         }
-        startPoint.x = currentPoint.x
-        startPoint.y = currentPoint.y
-        nextElement()
 
         if (goCloser()) {
             return true
