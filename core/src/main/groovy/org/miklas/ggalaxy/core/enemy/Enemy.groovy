@@ -30,11 +30,11 @@ abstract class Enemy implements Asset {
     Enemy(AssetName assetName) {
         this.crashSound = Gdx.audio.newSound(Gdx.files.internal("assets/drop.wav"))
 
-        this.c_an = Conf.animation assetName
+        this.c_an = Conf.asset assetName
         this.c_ea = Conf.enemyAsset assetName
         AssetName explosionName = c_an.explosion
 
-        def c_ex = Conf.animation explosionName
+        def c_ex = Conf.asset explosionName
         this.explosionAdjustX = c_ex.spriteHeight / 2 - c_an.spriteHeight / 2
         this.explosionAdjustY = c_ex.spriteWith / 2 - c_an.spriteWith / 2
 

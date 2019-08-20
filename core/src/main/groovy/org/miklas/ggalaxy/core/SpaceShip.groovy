@@ -37,7 +37,7 @@ class SpaceShip extends Actor implements Asset {
     def c_sh
 
     SpaceShip() {
-        c_an = Conf.animation assetNormal
+        c_an = Conf.asset assetNormal
         c_sh = Conf.spaceShip()
 
         position = [SCR_WIDTH / 2f - c_an.spriteWith / 2f as float, 20, c_an.spriteWith, c_an.spriteHeight]

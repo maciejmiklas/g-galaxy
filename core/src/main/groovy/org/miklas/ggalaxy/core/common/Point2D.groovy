@@ -16,6 +16,21 @@ class Point2D {
         y = EMPTY_POINT
     }
 
+    Point2D plus(Point2D val) {
+        new Point2D(x: x + val.x, y: y + val.y)
+    }
+
+    Point2D multiply(Number val) {
+        new Point2D(x: x * val.x, y: y * val.y)
+    }
+
+    Point2D leftShift(Point2D val) {
+        x = val.x
+        y = val.y
+        this
+    }
+
+
     int distance(Point2D to) {
         Math.sqrt((to.x - x).pow2 + (to.y - y).pow2)
     }

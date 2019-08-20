@@ -1,4 +1,4 @@
-animation {
+asset {
     SHIP_CARGO {
         path = 'assets/packs/Spaceship_art_pack_larger/Blue/Animation/'
         frames = 8

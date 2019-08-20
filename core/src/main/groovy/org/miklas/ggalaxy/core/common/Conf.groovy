@@ -10,8 +10,8 @@ class Conf {
     // 0 - 760 on y axis
     static final int SCR_HEIGHT = cfg.screen.height
 
-    static def animation(AssetName name) {
-        cfg.animation."$name"
+    static def asset(AssetName name) {
+        cfg.asset."$name"
     }
 
     static def cannonMain(AssetName name) {
