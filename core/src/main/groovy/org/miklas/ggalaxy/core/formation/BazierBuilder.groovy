@@ -1,12 +1,9 @@
-package org.miklas.ggalaxy.core.path.script.formation
-
+package org.miklas.ggalaxy.core.formation
 
 import groovy.transform.ToString
-import groovy.transform.TupleConstructor
 import org.miklas.ggalaxy.core.common.Point2D
 import org.miklas.ggalaxy.core.path.BezierElement
 
-@TupleConstructor
 @ToString(includeNames = true, includePackage = false)
 class BazierBuilder {
     String key

@@ -1,4 +1,4 @@
-package org.miklas.ggalaxy.core.path.script.formation
+package org.miklas.ggalaxy.core.formation
 
 import groovy.transform.PackageScope
 import groovy.transform.ToString

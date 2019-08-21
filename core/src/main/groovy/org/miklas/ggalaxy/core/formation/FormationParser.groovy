@@ -1,47 +1,47 @@
-package org.miklas.ggalaxy.core.path.script.formation
+package org.miklas.ggalaxy.core.formation
 
-import groovy.transform.PackageScope
+
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.miklas.ggalaxy.core.SpringConfig
 import org.miklas.ggalaxy.core.common.Point2D
 
-@PackageScope
-class Parser {
+class FormationParser {
 
     static void main(String... x) {
-        println("GO")
         SpringConfig.initMeta()
-        new Parser()
+        def parser = new FormationParser('/formation_001.groovy')
+        print "OUT: ${parser.formationBuilder}"
     }
 
     private Binding binding;
-    private FormationBuilder builder;
+    FormationBuilder formationBuilder = [];
 
-    Parser() {
+    FormationParser(String scriptPath) {
         binding = [parser: this]
 
         CompilerConfiguration config = []
         config.scriptBaseClass = FormationScript.name
 
         GroovyShell shell = [this.class.classLoader, binding, config]
-        def script = Parser.getResource('/formation_001.groovy')
+        def script = FormationParser.getResource(scriptPath)
         shell.evaluate new File(script.toURI())
-
-        print "OUT: $builder"
     }
 
     static Point2D xy(int x, int y) {
         [x, y]
     }
 
-    def formation(String key) {
-        builder = new FormationBuilder(formationKey: key)
-        builder
+    def element(String key) {
+        formationBuilder.element key
+    }
+
+    def formation(String... keys) {
+        formationBuilder.formation keys
     }
 
     static abstract class FormationScript extends Script {
         @Delegate
         @Lazy
-        Parser parser = binding.parser
+        FormationParser parser = binding.parser
     }
 }

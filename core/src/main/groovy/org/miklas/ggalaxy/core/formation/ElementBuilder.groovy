@@ -1,18 +1,15 @@
-package org.miklas.ggalaxy.core.path.script.formation
+package org.miklas.ggalaxy.core.formation
 
-import groovy.transform.PackageScope
 import groovy.transform.ToString
 
-@PackageScope
 @ToString(includeNames = true, includePackage = false)
-class FormationBuilder {
+class ElementBuilder {
 
     List<BazierBuilder> baziers = []
     String assetKey;
     String formationKey
 
     def asset(String key) {
-        assert formationKey != null: 'Define formation first, e.g.: formation \'F1\' '
         assetKey = key
 
         def bazier = new BazierBuilder();
