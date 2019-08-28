@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class Booster extends Actor {
 
-    private long boostStartMs = 0
+    long boostStartMs = 0
 
     @Override
     void draw(Batch batch, float parentAlpha) {

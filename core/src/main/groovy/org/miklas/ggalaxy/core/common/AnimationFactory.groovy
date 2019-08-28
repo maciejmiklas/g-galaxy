@@ -8,13 +8,13 @@ import com.badlogic.gdx.utils.Array
 
 class AnimationFactory {
 
-    private static final Map<String, Array<Sprite>> CACHE = new HashMap<>()
+    static final Map<String, Array<Sprite>> CACHE = new HashMap<>()
 
     static Animation<Sprite> create(AssetName asset, Animation.PlayMode mode, AssetType type) {
         new Animation<>(Conf.asset(asset).frameDuration, load(asset, type), mode)
     }
 
-    private static Array<Sprite> load(AssetName asset, AssetType type) {
+    static Array<Sprite> load(AssetName asset, AssetType type) {
         CACHE.computeIfAbsent("${asset}-${type}", {
             def c_an = Conf.asset asset
             Array<Sprite> sprites = new Array<>(c_an.frames)

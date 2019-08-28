@@ -9,7 +9,8 @@ import org.jfree.data.xy.XYSeries
 import org.jfree.data.xy.XYSeriesCollection
 import org.miklas.ggalaxy.core.SpringConfig
 import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.common.Point2D
+import org.miklas.ggalaxy.core.formation.Formation
+import org.miklas.ggalaxy.core.formation.FormationBuilder
 
 import javax.swing.*
 import java.awt.*
@@ -21,12 +22,15 @@ SwingUtilities.invokeLater {
             SpringConfig.initMeta()
             XYSeriesCollection dataset = new XYSeriesCollection()
 
+            Formation formation = new FormationBuilder('/formation_001.groovy').build()
+            BezierPathFollowing path = formation.paths[0][0]
+            /*
             BezierPathFollowing path = new BezierPathFollowing(
                     new Point2D(116, 94),
                     new BezierElement(cp1: [177, 18], cp2: [299, 136], end: [148, 437]),
                     new BezierElement(cp1: [77, 578], cp2: [625, 722], end: [534, 546]),
                     new BezierElement(cp1: [473, 427], cp2: [311, 128], end: [982, 193])
-            )
+            )*/
 
             XYSeries xy = new XYSeries("xy")
             xy.add 1280, 760

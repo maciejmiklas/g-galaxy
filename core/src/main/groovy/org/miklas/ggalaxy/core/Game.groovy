@@ -9,7 +9,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 @PackageScope
 class Game extends com.badlogic.gdx.Game {
 
-    private ApplicationContext ctx
+    ApplicationContext ctx
 
     @Override
     void create() {

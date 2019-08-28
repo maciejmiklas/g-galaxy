@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component
 @PackageScope
 @Component
 class CollisionDetection {
-    private final int w = Conf.SCR_WIDTH
-    private final int w2 = w / 2
-    private final int h = Conf.SCR_HEIGHT
-    private final int h2 = h / 2
-    private List<Asset> elements = []
+    final int w = Conf.SCR_WIDTH
+    final int w2 = w / 2
+    final int h = Conf.SCR_HEIGHT
+    final int h2 = h / 2
+    List<Asset> elements = []
 
     CollisionDetection() {
         EventBus.register(EventType.OBSTACLE_CREATED) { elements << it }
@@ -34,7 +34,7 @@ class CollisionDetection {
         }
     }
 
-    protected void process(List<Asset> obstacles) {
+    void process(List<Asset> obstacles) {
         for (int extIdx = 0; extIdx < obstacles.size() - 1; extIdx++) {
             Asset extObs = obstacles.get extIdx
             for (int intIdx = extIdx + 1; intIdx < obstacles.size(); intIdx++) {
@@ -47,7 +47,7 @@ class CollisionDetection {
         }
     }
 
-    protected List<List<Asset>> split() {
+    List<List<Asset>> split() {
         def split = []
 
         // (0,0) - (640,380) - left bottom corner
@@ -87,15 +87,15 @@ class CollisionDetection {
         split
     }
 
-    private boolean filter3(def x, def y) {
+    boolean filter3(def x, def y) {
         x >= w2 && x < w && y >= h2 && y < h
     }
 
-    private boolean filter2(def x, def y) {
+    boolean filter2(def x, def y) {
         x >= 0 && x < w2 && y >= h2 && y < h
     }
 
-    private boolean filter1(def x, def y) {
+    boolean filter1(def x, def y) {
         x >= w2 && x < w && y >= 0 && y < h2
     }
 }

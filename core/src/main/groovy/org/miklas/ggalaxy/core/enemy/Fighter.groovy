@@ -9,6 +9,7 @@ import org.miklas.ggalaxy.core.cannon.Cannon
 import org.miklas.ggalaxy.core.common.AssetName
 import org.miklas.ggalaxy.core.common.AssetType
 import org.miklas.ggalaxy.core.common.Conf
+import org.miklas.ggalaxy.core.path.PathFollowing
 import org.springframework.beans.factory.annotation.Autowired
 
 import static com.badlogic.gdx.utils.TimeUtils.millis
@@ -17,25 +18,26 @@ import static com.badlogic.gdx.utils.TimeUtils.millis
 class Fighter extends Enemy {
 
     @Autowired
-    private Cannon mainCannon
-    final AssetType type = AssetType.ENEMY_SHIP
-    private int fireDelayMs
-    private long lastFireMs = 0
-    private def c_cm
+    Cannon mainCannon
 
-    Fighter(AssetName assetName) {
-        super(assetName)
+    final AssetType type = AssetType.ENEMY_SHIP
+    int fireDelayMs
+    long lastFireMs = 0
+    def c_cm
+
+    Fighter(AssetName assetName, PathFollowing pathFollowing) {
+        super(assetName, pathFollowing)
         this.c_cm = Conf.cannonMain assetName
         this.fireDelayMs = millis() // do not fire immediately
         updateFireDelay()
     }
 
-    private void updateFireDelay() {
+    void updateFireDelay() {
         fireDelayMs = MathUtils.random c_cm.minDelayMs, c_cm.maxDelayMs
     }
 
     @Override
-    protected preDraw(Sprite sprite, Batch batch, float parentAlpha) {
+    void preDraw(Sprite sprite, Batch batch, float parentAlpha) {
 
         /*
         def ms = millis()

@@ -15,10 +15,10 @@ class Shot implements Asset, Cannon {
     Mode mode = Mode.ACTIVE
     Rectangle position = []
     final AssetType type = AssetType.SHOT
-    private int moveSpeed
+    int moveSpeed
 
-    private Sprite sprite
-    private int angle
+    Sprite sprite
+    int angle
 
     Shot(AssetName asset) {
         sprite = SpriteFactory.create asset
@@ -59,7 +59,7 @@ class Shot implements Asset, Cannon {
         move()
     }
 
-    private void move() {
+    void move() {
         // reached top of the screen ?
         if (position.x < 0 || position.x > Conf.SCR_WIDTH || position.y < 0 || position.y > Conf.SCR_HEIGHT) {
             mode = Mode.INACTIVE

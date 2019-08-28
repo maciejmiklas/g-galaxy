@@ -1,6 +1,6 @@
 package org.miklas.ggalaxy.core
 
-
+import com.badlogic.gdx.scenes.scene2d.Stage
 import org.miklas.ggalaxy.core.common.Point2D
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -18,7 +18,7 @@ class SpringConfig {
     }
 
     static void initMeta() {
-        //Stage.metaClass.leftShift = { delegate.addActor it; delegate }
+        Stage.metaClass.leftShift = { delegate.addActor it; delegate }
         Number.metaClass {
             getPow2 = { delegate * delegate }
             getPow3 = { delegate * delegate * delegate }

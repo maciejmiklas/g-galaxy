@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 @Primary
 class SingleShotCannon extends Actor implements Cannon {
 
-    private final List<Shot> shots = []
+    final List<Shot> shots = []
 
     @Override
     void fire(int x, int y, int angle, int moveSpeed) {

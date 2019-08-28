@@ -390,7 +390,7 @@ function LineSegment(pt, prev) {
 
     this.toJSString = function () {
         if (!my.prev) {
-            return 'new Point2D(' + Math.round(my.pt.xNorm()) + ', ' + Math.round(my.pt.yNorm()) + '),';
+            return Math.round(my.pt.xNorm()) + ', ' + Math.round(my.pt.yNorm()) + ' ';
         } else {
             var ctrlPt1x = 0;
             var ctrlPt1y = 0;
@@ -414,12 +414,7 @@ function LineSegment(pt, prev) {
             }
 
             // new BezierElement(cp1: [1200, 100], cp2: [200, 600], end: [600, 600])
-            return '    new BezierElement(cp1: [' + ctrlPt1x + ', ' +
-                ctrlPt1y + '], cp2: [' +
-                ctrlPt2x + ', ' +
-                ctrlPt2y + '], end: [' +
-                x + ', ' +
-                y + ']),';
+            return 'flyto ' + ctrlPt1x + ', ' + ctrlPt1y + ', ' + ctrlPt2x + ', ' + ctrlPt2y + ', ' + x + ', ' + y;
         }
     };
 
@@ -574,16 +569,13 @@ function BezierPath(startPoint) {
 
 
     this.toJSString = function () {
-        var myString =
-            ['new BezierPathFollowing('];
-
+        var myString = ['bazier'];
         var current = my.head;
         while (current != null) {
             myString.push(current.toJSString());
             current = current.next;
         }
-        myString.push(')');
-        return myString.join('\n');
+        return myString.join(' ');
     };
 
     function init() {

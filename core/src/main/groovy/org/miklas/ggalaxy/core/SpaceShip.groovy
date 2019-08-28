@@ -23,16 +23,16 @@ import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 class SpaceShip extends Actor implements Asset {
 
     @Autowired
-    private Cannon mainCannon
+    Cannon mainCannon
 
     final Rectangle position
     final AssetType type = AssetType.SPACE_SHIP
-    private Animation<Sprite> animation
-    private final AssetName assetNormal = AssetName.SHIP_INTERCEPTOR_BLUE//TODO get from config
-    private final AssetName assetBoost = AssetName.SHIP_INTERCEPTOR_RED
-    private float animationStartTime = 0.0f
-    private Speed speed
-    private long lastFireMs = 0
+    Animation<Sprite> animation
+    final AssetName assetNormal = AssetName.SHIP_INTERCEPTOR_BLUE//TODO get from config
+    final AssetName assetBoost = AssetName.SHIP_INTERCEPTOR_RED
+    float animationStartTime = 0.0f
+    Speed speed
+    long lastFireMs = 0
     def c_an
     def c_sh
 
@@ -83,7 +83,7 @@ class SpaceShip extends Actor implements Asset {
         true
     }
 
-    private void processUserInput() {
+    void processUserInput() {
         Keyboard.LEFT.onMove { position.x -= it }
         Keyboard.RIGHT.onMove { position.x += it }
         Keyboard.UP.onMove { position.y += it }
@@ -109,7 +109,7 @@ class SpaceShip extends Actor implements Asset {
 
     }
 
-    private enum Speed {
+    enum Speed {
         NORMAL,
         BOOST
     }

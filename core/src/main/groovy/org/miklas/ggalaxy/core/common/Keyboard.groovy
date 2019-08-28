@@ -16,8 +16,8 @@ enum Keyboard {
     BOOST(Input.Keys.SPACE, Input.Keys.B),
     FIRE(Input.Keys.X)
 
-    private final int[] val
-    private boolean boost = false
+    final int[] val
+    boolean boost = false
 
     Keyboard(int ... val) {
         this.val = val

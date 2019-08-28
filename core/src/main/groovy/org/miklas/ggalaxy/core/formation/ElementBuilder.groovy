@@ -5,18 +5,22 @@ import groovy.transform.ToString
 @ToString(includeNames = true, includePackage = false)
 class ElementBuilder {
 
-    List<BazierBuilder> baziers = []
-    String assetKey;
+    BazierBuilder bazier
+    String assetKey
     String formationKey
 
     def asset(String key) {
         assetKey = key
 
-        def bazier = new BazierBuilder();
-        baziers.add bazier
         def cmd = [:]
-        cmd.bazier = { int x, int y -> bazier.start(x, y) }
+        cmd.bazier = { int x, int y -> setBazier(x, y) }
         cmd
+    }
+
+    def setBazier(int x, int y) {
+        assert bazier == null: "Bazier already set for formation: " + formationKey
+        bazier = new BazierBuilder()
+        bazier.start(x, y)
     }
 
     SyncPointBuilder syncPoint(String key) {

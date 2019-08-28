@@ -1,21 +1,23 @@
 package org.miklas.ggalaxy.core.path
 
+import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.common.Point2D
 
 @Slf4j
+@ToString(includeNames = true, includePackage = false)
 class BezierPathFollowing implements PathFollowing {
 
     final List<BezierElement> path = new LinkedList<>()
 
-    private final def conf
-    private double ti, tv
+    final def conf
+    double ti, tv
 
     final Point2D startPoint = []
-    private final Point2D currentPoint = []
-    private BezierElement currentEl
-    private int currentElIdx = -1
+    final Point2D currentPoint = []
+    BezierElement currentEl
+    int currentElIdx = -1
 
     BezierPathFollowing(Point2D start, BezierElement... elements) {
         conf = Conf.cfg.pathFollowing.bazier

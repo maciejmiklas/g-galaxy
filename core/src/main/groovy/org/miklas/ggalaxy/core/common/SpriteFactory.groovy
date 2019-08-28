@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 
 class SpriteFactory {
 
-    private static final Map<String, Sprite> CACHE = new HashMap<>()
+    static final Map<String, Sprite> CACHE = new HashMap<>()
 
     static Sprite create(AssetName asset) {
         if (CACHE.containsKey(asset)) {

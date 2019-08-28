@@ -15,11 +15,11 @@ import static org.miklas.ggalaxy.core.common.Conf.cfg
 @Component
 class EnemyDeploy extends Actor {
 
-    private final List<Enemy> enemies = []
-    private long lastSpawnMs = -1
-    private long lastShuffleMs = -1
-    private int[][] lastX = [[-1, -1], [-1, -1]]
-    private int lastXIdx = 0
+    final List<Enemy> enemies = []
+    long lastSpawnMs = -1
+    long lastShuffleMs = -1
+    int[][] lastX = [[-1, -1], [-1, -1]]
+    int lastXIdx = 0
 
     @PostConstruct
     void init() {
@@ -27,12 +27,12 @@ class EnemyDeploy extends Actor {
             AssetName an = it.key
             def clazz = it.value.clazz
             1.upto(it.value.max) {
-                enemies.add this.class.classLoader.loadClass(clazz).newInstance(an)
+                enemies.add this.class.classLoader.loadClass(clazz).newInstance(an, null)//TODO XXXXXXXXX
             }
         }
     }
 
-    private void spawn() {
+    void spawn() {
         def ms = millis()
 
         if (ms - lastShuffleMs > cfg.enemy.shuffleEnemiesMs) {
@@ -56,7 +56,7 @@ class EnemyDeploy extends Actor {
         next.deploy x, Conf.SCR_HEIGHT + cfg.enemy.marginWidth
     }
 
-    private nextX() {
+   int nextX() {
         if (lastXIdx == lastX.length) {
             lastXIdx = 0
         }

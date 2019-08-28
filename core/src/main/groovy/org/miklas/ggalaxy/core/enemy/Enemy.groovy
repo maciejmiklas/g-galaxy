@@ -10,25 +10,28 @@ import groovy.transform.PackageScope
 import org.miklas.ggalaxy.core.common.*
 import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
+import org.miklas.ggalaxy.core.path.PathFollowing
 
 @PackageScope
 abstract class Enemy implements Asset {
     Mode mode = Mode.INACTIVE
     final Rectangle position = []
 
-    protected def c_an
-    protected def c_ea
-    protected Animation<Sprite> animation
-    protected Animation<Sprite> animationExplosion
-    protected Animation<Sprite> animationNormal
-    protected float animationStateTime = 0.0f
+    final def c_an
+    final def c_ea
+    Animation<Sprite> animation
+    final Animation<Sprite> animationExplosion
+    final Animation<Sprite> animationNormal
+    float animationStateTime = 0.0f
+    final PathFollowing pathFollowing
 
-    private float explosionAdjustX = 0
-    private float explosionAdjustY = 0
-    private Sound crashSound
+    float explosionAdjustX = 0
+    float explosionAdjustY = 0
+    final Sound crashSound
 
-    Enemy(AssetName assetName) {
+    Enemy(AssetName assetName, PathFollowing pathFollowing) {
         this.crashSound = Gdx.audio.newSound(Gdx.files.internal("assets/drop.wav"))
+        this.pathFollowing = pathFollowing
 
         this.c_an = Conf.asset assetName
         this.c_ea = Conf.enemyAsset assetName
@@ -78,14 +81,14 @@ abstract class Enemy implements Asset {
         "move_${c_ea.movingPattern.toLowerCase()}"()
     }
 
-    private void move_straight() {
+    void move_straight() {
         position.y -= c_ea.modeSpeed * Gdx.graphics.deltaTime
     }
 
     int sinLength = random(10, 100)
     int sinAmp = random(5, 20)
 
-    private void move_sinus() {
+    void move_sinus() {
         position.x += sinAmp * Math.sin(position.y / sinLength)
         position.y -= c_ea.modeSpeed * Gdx.graphics.deltaTime
     }
@@ -96,11 +99,11 @@ abstract class Enemy implements Asset {
     }
 
 
-    protected preDraw(Sprite sprite, Batch batch, float parentAlpha) {
+    void preDraw(Sprite sprite, Batch batch, float parentAlpha) {
 
     }
 
-    protected boolean shouldDraw() {
+    boolean shouldDraw() {
         if (mode == Mode.INACTIVE) {
             return false
         }

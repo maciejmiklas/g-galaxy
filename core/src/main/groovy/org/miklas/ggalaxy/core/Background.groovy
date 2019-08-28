@@ -21,25 +21,25 @@ import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 @Component
 class Background extends Actor {
 
-    private final Texture bgPink = [Gdx.files.internal("assets/background/space/Nebula Aqua-Pink.png")]
-    private final Texture bgBlue = [Gdx.files.internal("assets/background/space/Nebula Blue.png")]
-    private final Texture bgRead = [Gdx.files.internal("assets/background/space/Nebula Red.png")]
+    final Texture bgPink = [Gdx.files.internal("assets/background/space/Nebula Aqua-Pink.png")]
+    final Texture bgBlue = [Gdx.files.internal("assets/background/space/Nebula Blue.png")]
+    final Texture bgRead = [Gdx.files.internal("assets/background/space/Nebula Red.png")]
 
-    private final Texture stS1 = [Gdx.files.internal("assets/background/space/Stars Small_1.png")]
-    private final Texture stS2 = [Gdx.files.internal("assets/background/space/Stars Small_2.png")]
+    final Texture stS1 = [Gdx.files.internal("assets/background/space/Stars Small_1.png")]
+    final Texture stS2 = [Gdx.files.internal("assets/background/space/Stars Small_2.png")]
 
-    private final Texture stB1 = [Gdx.files.internal("assets/background/space/Stars-Big_1_1_PC.png")]
-    private final Texture stB2 = [Gdx.files.internal("assets/background/space/Stars-Big_1_1_PC.png")]
+    final Texture stB1 = [Gdx.files.internal("assets/background/space/Stars-Big_1_1_PC.png")]
+    final Texture stB2 = [Gdx.files.internal("assets/background/space/Stars-Big_1_1_PC.png")]
 
-    private final List<Texture> layers = [bgBlue, stS1, stS2]
+    final List<Texture> layers = [bgBlue, stS1, stS2]
 
-    private int speedY = 4
-    private int scrollY = 0
+    int speedY = 4
+    int scrollY = 0
 
-    private int speedX = 0
-    private int scrollX = 0
+    int speedX = 0
+    int scrollX = 0
 
-    private boolean boost = false
+    boolean boost = false
 
     Background() {
         layers*.setWrap Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat
@@ -67,7 +67,7 @@ class Background extends Actor {
         }
     }
 
-    private void processUserInput() {
+    void processUserInput() {
         boolean vertical = Keyboard.vertical() { code ->
             def cv = Conf.cfg.background.speed."$code"
             speedY = boost ? cv.boost : cv.normal

@@ -204,25 +204,25 @@ class CollisionDetectionTest extends Specification {
         rocks[4].hits[1].position.x == 15
     }
 
-    private def addRegion0(def detection) {
+    def addRegion0(def detection) {
         detection << new Rock(position: [0, 0, 20, 20])
         detection << new Rock(position: [500, 200, 20, 20])
     }
 
-    private def addRegion1(def detection) {
+    def addRegion1(def detection) {
         detection << new Rock(position: [641, 1, 21, 21])
         detection << new Rock(position: [1000, 200, 21, 21])
     }
 
-    private def addRegion2(def detection) {
+    def addRegion2(def detection) {
         detection << new Rock(position: [10, 400, 22, 22])
     }
 
-    private def addRegion3(def detection) {
+    def addRegion3(def detection) {
         detection << new Rock(position: [700, 400, 23, 23])
     }
 
-    private List<Rock> createTestRocks() {
+    List<Rock> createTestRocks() {
         [new Rock(position: [0, 0, 20, 20], type: ASTEROID),
          new Rock(position: [15, 15, 60, 60], type: SPACE_SHIP),
          new Rock(position: [30, 30, 20, 20], type: ASTEROID),

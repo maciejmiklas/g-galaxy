@@ -22,30 +22,30 @@ import static org.miklas.ggalaxy.core.common.Conf.SCR_WIDTH
 class GameScreen implements Screen {
 
     @Autowired
-    private SpaceShip mainShip
+    SpaceShip mainShip
 
     @Autowired
-    private Cannon mainCannon
+    Cannon mainCannon
 
     @Autowired
-    private Background background
+    Background background
 
     @Autowired
-    private ClearScr clearScr
+    ClearScr clearScr
 
     @Autowired
-    private CollisionDetection collisionDetection
+    CollisionDetection collisionDetection
 
     @Autowired
-    private EnemyDeploy enemyDeploy
+    EnemyDeploy enemyDeploy
 
     @Autowired
-    private Booster booster
+    Booster booster
 
-    private final SpriteBatch batch = []
-    private final List<Disposable> disposable = []
-    private final OrthographicCamera camera
-    private final Stage stage
+    final SpriteBatch batch = []
+    final List<Disposable> disposable = []
+    final OrthographicCamera camera
+    final Stage stage
 
     GameScreen() {
         stage = [new StretchViewport(SCR_WIDTH, SCR_HEIGHT)]

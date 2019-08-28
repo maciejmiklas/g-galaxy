@@ -2,7 +2,7 @@ package org.miklas.ggalaxy.core.common
 
 class CyclicList<E> extends ArrayList<E> {
 
-    private int nextIdx = 0
+    int nextIdx = 0
 
     CyclicList(Collection<? extends E> var) {
         super(var)
