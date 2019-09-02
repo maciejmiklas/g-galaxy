@@ -25,7 +25,7 @@ class AnimationFactory {
                 sprite.setSize c_an.spriteWith, c_an.spriteHeight
                 sprites.add sprite
             }
-            sprites
+           return sprites
         })
     }
 

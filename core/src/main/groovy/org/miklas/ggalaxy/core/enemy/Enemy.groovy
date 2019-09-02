@@ -5,7 +5,6 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.math.Rectangle
 import groovy.transform.PackageScope
 import org.miklas.ggalaxy.core.common.*
 import org.miklas.ggalaxy.core.event.EventBus
@@ -15,7 +14,7 @@ import org.miklas.ggalaxy.core.path.PathFollowing
 @PackageScope
 abstract class Enemy implements Asset {
     Mode mode = Mode.INACTIVE
-    final Rectangle position = []
+    Point position = []
 
     final def c_an
     final def c_ea
@@ -68,36 +67,26 @@ abstract class Enemy implements Asset {
             return
         }
 
+        if (mode == Mode.ACTIVE) {
+            position << pathFollowing.next()
+        }
+
         Sprite sprite = animation.getKeyFrame animationStateTime
         sprite.setPosition position.x, position.y
         sprite.setOrigin sprite.width / 2 as float, sprite.height / 2 as float
-        sprite.rotation = 180
+        sprite.rotation = 90
 
         preDraw sprite, batch, parentAlpha
 
         sprite.draw batch
 
         animationStateTime += Gdx.graphics.getDeltaTime()
-        "move_${c_ea.movingPattern.toLowerCase()}"()
-    }
-
-    void move_straight() {
-        position.y -= c_ea.modeSpeed * Gdx.graphics.deltaTime
-    }
-
-    int sinLength = random(10, 100)
-    int sinAmp = random(5, 20)
-
-    void move_sinus() {
-        position.x += sinAmp * Math.sin(position.y / sinLength)
-        position.y -= c_ea.modeSpeed * Gdx.graphics.deltaTime
     }
 
 
     int random(int min, int max) {
-        return (int) (Math.random() * (max - min)) + min
+        (int) (Math.random() * (max - min)) + min
     }
-
 
     void preDraw(Sprite sprite, Batch batch, float parentAlpha) {
 
@@ -105,6 +94,10 @@ abstract class Enemy implements Asset {
 
     boolean shouldDraw() {
         if (mode == Mode.INACTIVE) {
+            return false
+        }
+
+        if (!pathFollowing.hasNext()) {
             return false
         }
 
@@ -116,11 +109,11 @@ abstract class Enemy implements Asset {
         true
     }
 
-    void deploy(int x, int y) {
+    void deploy() {
         mode = Mode.ACTIVE
         animation = animationNormal
         animationStateTime = 0.0f
-        position.set x, y, c_an.spriteWith, c_an.spriteHeight
+        pathFollowing.reset()
     }
 
     enum Mode {

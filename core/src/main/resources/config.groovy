@@ -294,6 +294,7 @@ pathFollowing {
     bazier {
         distanceMargin = 5
         skippPixels = 3
+        minVectorLength = 50
     }
 }
 

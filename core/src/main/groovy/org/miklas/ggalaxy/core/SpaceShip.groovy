@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.TimeUtils
 import groovy.transform.PackageScope
@@ -25,7 +24,7 @@ class SpaceShip extends Actor implements Asset {
     @Autowired
     Cannon mainCannon
 
-    final Rectangle position
+    final Point position
     final AssetType type = AssetType.SPACE_SHIP
     Animation<Sprite> animation
     final AssetName assetNormal = AssetName.SHIP_INTERCEPTOR_BLUE//TODO get from config
@@ -40,7 +39,7 @@ class SpaceShip extends Actor implements Asset {
         c_an = Conf.asset assetNormal
         c_sh = Conf.spaceShip()
 
-        position = [SCR_WIDTH / 2f - c_an.spriteWith / 2f as float, 20, c_an.spriteWith, c_an.spriteHeight]
+        position = [SCR_WIDTH / 2f - c_an.spriteWith / 2f as int, 20, c_an.spriteWith, c_an.spriteHeight]
         animation = AnimationFactory.create(assetNormal, Animation.PlayMode.LOOP, type)
 
 
@@ -80,7 +79,6 @@ class SpaceShip extends Actor implements Asset {
         Sprite sprite = animation.getKeyFrame animationStartTime
         sprite.setPosition position.x, position.y
         sprite.draw batch
-        true
     }
 
     void processUserInput() {

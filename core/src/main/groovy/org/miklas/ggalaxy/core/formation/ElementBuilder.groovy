@@ -14,13 +14,13 @@ class ElementBuilder {
 
         def cmd = [:]
         cmd.bazier = { int x, int y -> setBazier(x, y) }
-        cmd
+        return cmd
     }
 
     def setBazier(int x, int y) {
         assert bazier == null: "Bazier already set for formation: " + formationKey
         bazier = new BazierBuilder()
-        bazier.start(x, y)
+        return bazier.start(x, y)
     }
 
     SyncPointBuilder syncPoint(String key) {

@@ -19,6 +19,6 @@ class SpriteFactory {
         sprite.setSize c_sp.spriteWith, c_sp.spriteHeight
 
         CACHE.put(asset, sprite)
-        sprite
+        return sprite
     }
 }

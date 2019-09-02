@@ -22,7 +22,7 @@ class FormationBuilder {
         formation.paths << elementBuilders.values().collect {
             new BezierPathFollowing(it.bazier.start, *it.bazier.elements)
         }
-        formation
+        return formation
     }
 
     FormationBuilder(String scriptPath) {
@@ -39,7 +39,7 @@ class FormationBuilder {
     ElementBuilder element(String key) {
         def builder = new ElementBuilder(formationKey: key)
         elementBuilders.put key, builder
-        builder
+        return builder
     }
 
     def formation(String... keys) {

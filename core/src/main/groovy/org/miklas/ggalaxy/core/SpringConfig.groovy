@@ -1,7 +1,7 @@
 package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.scenes.scene2d.Stage
-import org.miklas.ggalaxy.core.common.Point2D
+import org.miklas.ggalaxy.core.common.Point
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 
@@ -9,8 +9,8 @@ import javax.annotation.PostConstruct
 
 @Configuration
 @ComponentScan('org.miklas')
-//@PackageScope
 class SpringConfig {
+    static boolean initialized = false;
 
     @PostConstruct
     void init() {
@@ -18,13 +18,17 @@ class SpringConfig {
     }
 
     static void initMeta() {
+        if (initialized) {
+            return
+        }
         Stage.metaClass.leftShift = { delegate.addActor it; delegate }
         Number.metaClass {
             getPow2 = { delegate * delegate }
             getPow3 = { delegate * delegate * delegate }
             getMs = { delegate }
             getSec = { delegate * 1000 }
-            multiply = { Point2D p -> new Point2D(x: p.x * delegate, y: p.y * delegate) }
+            multiply = { Point p -> new Point(x: p.x * delegate, y: p.y * delegate) }
         }
+        initialized = true
     }
 }

@@ -2,8 +2,8 @@ package org.miklas.ggalaxy.core
 
 import groovy.transform.PackageScope
 import groovyx.gpars.GParsPool
-import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.common.Asset
+import org.miklas.ggalaxy.core.common.Conf
 import org.miklas.ggalaxy.core.event.EventBus
 import org.miklas.ggalaxy.core.event.EventType
 import org.springframework.stereotype.Component
@@ -84,7 +84,7 @@ class CollisionDetection {
         split[3].addAll split[2].findAll {
             filter3 it.position.x + it.position.width, it.position.y + it.position.height
         }
-        split
+        return split
     }
 
     boolean filter3(def x, def y) {

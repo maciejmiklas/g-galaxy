@@ -3,7 +3,7 @@ package org.miklas.ggalaxy.core.path
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.common.Point2D
+import org.miklas.ggalaxy.core.common.Point
 
 @Slf4j
 @ToString(includeNames = true, includePackage = false)
@@ -14,12 +14,12 @@ class BezierPathFollowing implements PathFollowing {
     final def conf
     double ti, tv
 
-    final Point2D startPoint = []
-    final Point2D currentPoint = []
+    final Point startPoint = []
+    final Point currentPoint = []
     BezierElement currentEl
     int currentElIdx = -1
 
-    BezierPathFollowing(Point2D start, BezierElement... elements) {
+    BezierPathFollowing(Point start, BezierElement... elements) {
         conf = Conf.cfg.pathFollowing.bazier
         currentPoint << start
         path.addAll elements
@@ -37,6 +37,12 @@ class BezierPathFollowing implements PathFollowing {
         ti = 1 / startPoint.distance(currentEl.end) * conf.skippPixels
         tv = 0
         true
+    }
+
+    @Override
+    Optional<Vector> getVector() {
+        conf.minVectorLength
+        return Optional.empty()
     }
 
     boolean goCloser() {
@@ -67,7 +73,7 @@ class BezierPathFollowing implements PathFollowing {
     }
 
     @Override
-    final Point2D next() {
+    final Point next() {
         return currentPoint
     }
 

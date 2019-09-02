@@ -3,7 +3,6 @@ package org.miklas.ggalaxy.core.cannon
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.math.Rectangle
 import groovy.transform.PackageScope
 import org.miklas.ggalaxy.core.common.*
 import org.miklas.ggalaxy.core.event.EventBus
@@ -13,7 +12,7 @@ import org.miklas.ggalaxy.core.event.EventType
 class Shot implements Asset, Cannon {
 
     Mode mode = Mode.ACTIVE
-    Rectangle position = []
+    Point position = []
     final AssetType type = AssetType.SHOT
     int moveSpeed
 

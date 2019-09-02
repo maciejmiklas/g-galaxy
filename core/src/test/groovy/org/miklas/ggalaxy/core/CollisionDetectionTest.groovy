@@ -1,17 +1,16 @@
 package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.math.Rectangle
 import org.miklas.ggalaxy.core.common.Asset
 import org.miklas.ggalaxy.core.common.AssetType
-import spock.lang.Specification
+import org.miklas.ggalaxy.core.common.Point
 import spock.lang.Unroll
 
 import static org.miklas.ggalaxy.core.common.AssetType.*
 
-class CollisionDetectionTest extends Specification {
+class CollisionDetectionTest extends AbstractTest {
 
-    def "Split - Should be able to remove from list"() {
+    def "Test split - Should be able to remove from list"() {
         given:
         def list = [1, 2, 3, 4]
 
@@ -22,7 +21,7 @@ class CollisionDetectionTest extends Specification {
         list == [2, 3, 4]
     }
 
-    def "Split - Rocks in Region 0"() {
+    def "Test split - Rocks in Region 0"() {
 
         given:
         CollisionDetection detection = []
@@ -39,7 +38,7 @@ class CollisionDetectionTest extends Specification {
         splits[0]*.position.width == [20, 20]
     }
 
-    def "Split - Rocks in Region 1"() {
+    def "Test split - Rocks in Region 1"() {
 
         given:
         CollisionDetection detection = []
@@ -56,7 +55,7 @@ class CollisionDetectionTest extends Specification {
         splits[1]*.position.width == [21, 21]
     }
 
-    def "Split - Rock in Region 2"() {
+    def "Test split - Rock in Region 2"() {
 
         given:
         CollisionDetection detection = []
@@ -73,7 +72,7 @@ class CollisionDetectionTest extends Specification {
         splits[2]*.position.width == [22]
     }
 
-    def "Split - Rock in Region 3"() {
+    def "Test split - Rock in Region 3"() {
 
         given:
         CollisionDetection detection = []
@@ -90,7 +89,7 @@ class CollisionDetectionTest extends Specification {
         splits[3]*.position.width == [23]
     }
 
-    def "Split - Rocks in all Regions"() {
+    def "Test split - Rocks in all Regions"() {
 
         given:
         CollisionDetection detection = []
@@ -118,7 +117,7 @@ class CollisionDetectionTest extends Specification {
 
 
     @Unroll
-    def "Split - Rock on border between #b1 and #b2"(int b1, int b2, int x, int y, int notInA, int notInB, int notInC, int inZone) {
+    def "Test split - Rock on border between #b1 and #b2"(int b1, int b2, int x, int y, int notInA, int notInB, int notInC, int inZone) {
         CollisionDetection detection = []
         detection << new Rock(position: [x, y, 12, 12])
         List<Asset>[] splits = detection.split()
@@ -138,7 +137,7 @@ class CollisionDetectionTest extends Specification {
         1  | 3  | 640 | 380 | 0      | 1      | 2      | 3
     }
 
-    def "Split - Rock on border between 2 and 3"() {
+    def "Test split - Rock on border between 2 and 3"() {
         given:
         CollisionDetection detection = []
 
@@ -158,7 +157,7 @@ class CollisionDetectionTest extends Specification {
     }
 
     @Unroll
-    def "Split - Rock crossing border #b1 and #b2"(int b1, int b2, float x, float y, int notInA, int notInB, int inY, int inZ) {
+    def "Test split - Rock crossing border #b1 and #b2"(int b1, int b2, int x, int y, int notInA, int notInB, int inY, int inZ) {
 
         CollisionDetection detection = []
         detection << new Rock(position: [x, y, 20, 20])
@@ -182,7 +181,7 @@ class CollisionDetectionTest extends Specification {
         1  | 3  | 700 | 370 || 0      | 2      | 1   | 3
     }
 
-    def "Process - rock detection"() {
+    def "Test process - rock detection"() {
         given:
         List<Rock> rocks = createTestRocks()
         CollisionDetection detection = []
@@ -231,7 +230,7 @@ class CollisionDetectionTest extends Specification {
     }
 
     class Rock implements Asset {
-        Rectangle position = []
+        Point position = []
         AssetType type = ASTEROID
         List<Asset> hits = []
 
