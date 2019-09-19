@@ -37,11 +37,11 @@ class Point {
     }
 
     Point plus(Point val) {
-        new Point(x: x + val.x, y: y + val.y)
+        new Point(x: x + val.x, y: y + val.y, width: width, height: height)
     }
 
     Point multiply(Number val) {
-        new Point(x: x * val.x, y: y * val.y)
+        new Point(x: x * val, y: y * val, width: width, height: height)
     }
 
     Point leftShift(Point val) {
