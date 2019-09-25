@@ -3,25 +3,45 @@ package org.miklas.ggalaxy.core.common
 import org.miklas.ggalaxy.core.AbstractTest
 import spock.lang.Unroll
 
-import static org.miklas.ggalaxy.core.common.VectorEl.Orientation.*
+import static org.miklas.ggalaxy.core.common.VectorEl.Direction.*
 
 class VectorElTest extends AbstractTest {
 
+    // see angle.jpg
     @Unroll
-    def "Test orientation"(int x1, int y1, int x2, int y2, VectorEl.Orientation orientation) {
+    def "Test angle"(int sx, int sy, int ex, int ey, int angle, VectorEl.Direction orientation) {
         given:
-        Point p1 = [x1, y1]
-        Point p2 = [x2, y2]
-        VectorEl vector = [p1, p2]
+        VectorEl vector = [new Point(sx, sy), new Point(ex, ey)]
+
+        expect:
+        vector.orientation == orientation
+        vector.angle == angle
+
+        where:
+        sx | sy | ex | ey | angle | orientation
+        40 | 80 | 20 | 60 | 45    | RIGHT_DOWN
+        20 | 60 | 40 | 80 | 45    | LEFT_UP
+        40 | 60 | 20 | 80 | 45    | RIGHT_UP
+        20 | 80 | 40 | 60 | 45    | LEFT_DOWN
+        20 | 80 | 30 | 60 | 63    | LEFT_DOWN
+        20 | 80 | 50 | 60 | 33    | LEFT_DOWN
+    }
+
+    // see orientation.jpg
+    @Unroll
+    def "Test orientation"(int sx, int sy, int ex, int ey, VectorEl.Direction orientation) {
+        given:
+        VectorEl vector = [new Point(sx, sy), new Point(ex, ey)]
+
         expect:
         vector.orientation == orientation
 
         where:
-        x1  | y1  | x2  | y2  | orientation
-        100 | 700 | 150 | 650 | LEFT_DOWN
-        100 | 120 | 150 | 200 | LEFT_UP
-        900 | 800 | 700 | 650 | RIGHT_DOWN
-        900 | 50  | 700 | 200 | RIGHT_UP
+        sx | sy  | ex | ey  | orientation
+        20 | 400 | 40 | 300 | LEFT_DOWN
+        20 | 100 | 40 | 200 | LEFT_UP
+        80 | 400 | 60 | 300 | RIGHT_DOWN
+        80 | 100 | 60 | 200 | RIGHT_UP
     }
 
     @Unroll
