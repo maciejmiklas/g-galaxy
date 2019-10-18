@@ -24,7 +24,7 @@ class SpaceShip extends Actor implements Asset {
     @Autowired
     Cannon mainCannon
 
-    final Point position
+    final PointG position
     final AssetType type = AssetType.SPACE_SHIP
     Animation<Sprite> animation
     final AssetName assetNormal = AssetName.SHIP_INTERCEPTOR_BLUE//TODO get from config

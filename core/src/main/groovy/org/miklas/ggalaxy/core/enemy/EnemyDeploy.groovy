@@ -19,7 +19,7 @@ class EnemyDeploy extends Actor {
     @PostConstruct
     void init() {
         formation = new FormationBuilder('/formation_001.groovy').build()
-        fighter = [AssetName.SHIP_FALCON, formation.paths.get(0).get(0)]
+        fighter = [AssetName.SHIP_FALCON, formation.paths[0][0]]
         fighter.deploy()
     }
 

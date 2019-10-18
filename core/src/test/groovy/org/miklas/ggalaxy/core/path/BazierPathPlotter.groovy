@@ -37,7 +37,7 @@ SwingUtilities.invokeLater {
             dataset.addSeries(xy)
 
             XYSeries points = new XYSeries("Points")
-            points.add(path.startPoint.x, path.startPoint.y)
+            points.add(path.currentStart.x, path.currentStart.y)
             path.path.each { points.add(it.end.x, it.end.y) }
             dataset.addSeries(points)
 

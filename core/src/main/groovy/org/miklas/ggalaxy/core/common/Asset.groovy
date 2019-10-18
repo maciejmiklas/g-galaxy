@@ -1,7 +1,6 @@
 package org.miklas.ggalaxy.core.common
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import javafx.scene.shape.Rectangle
 
 interface Asset {
 
@@ -11,7 +10,7 @@ interface Asset {
 
     AssetType getType()
 
-    Point getPosition()
+    PointG getPosition()
 
     void draw(Batch batch, float parentAlpha)
 

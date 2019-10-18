@@ -14,7 +14,7 @@ import org.miklas.ggalaxy.core.path.PathFollowing
 @PackageScope
 abstract class Enemy implements Asset {
     Mode mode = Mode.INACTIVE
-    Point position = []
+    PointG position = []
 
     final def c_an
     final def c_ea
@@ -73,16 +73,17 @@ abstract class Enemy implements Asset {
 
         Sprite sprite = animation.getKeyFrame animationStateTime
         sprite.setPosition position.x, position.y
-        sprite.setOrigin sprite.width / 2 as float, sprite.height / 2 as float
-        sprite.rotation = 90
+        sprite.setOriginCenter()
 
+        VectorG direction = pathFollowing.moveDirection
+        int newAngle = direction.angle
+        if (newAngle > 0) {
+            sprite.rotation = newAngle
+        }
         preDraw sprite, batch, parentAlpha
-
         sprite.draw batch
-
         animationStateTime += Gdx.graphics.getDeltaTime()
     }
-
 
     int random(int min, int max) {
         (int) (Math.random() * (max - min)) + min

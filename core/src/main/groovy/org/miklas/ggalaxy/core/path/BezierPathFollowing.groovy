@@ -3,7 +3,8 @@ package org.miklas.ggalaxy.core.path
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.miklas.ggalaxy.core.common.Conf
-import org.miklas.ggalaxy.core.common.Point
+import org.miklas.ggalaxy.core.common.PointG
+import org.miklas.ggalaxy.core.common.VectorG
 
 @Slf4j
 @ToString(includeNames = true, includePackage = false)
@@ -14,48 +15,65 @@ class BezierPathFollowing implements PathFollowing {
     final def conf
     double ti, tv
 
-    final Point startPoint = []
-    final Point currentPoint = []
+    final PointG start
+    final PointG currentStart = []
+    final PointG currentPos = []
     BezierElement currentEl
     int currentElIdx = -1
+    VectorG moveDirection = []
 
-    BezierPathFollowing(Point start, BezierElement... elements) {
+    BezierPathFollowing(PointG start, BezierElement... elements) {
         conf = Conf.cfg.pathFollowing.bazier
-        currentPoint << start
+        currentPos << start
         path.addAll elements
-
+        this.start = start
         nextElement()
     }
 
     boolean nextElement() {
         currentElIdx++
-        if (currentElIdx == path.size()) {
+        if (currentElIdx >= path.size()) {
+           // sleep(300000)
             return false
         }
-        startPoint << currentPoint
+        currentStart << currentPos
         currentEl = path.get currentElIdx
-        ti = 1 / startPoint.distance(currentEl.end) * conf.skippPixels
+        ti = 1 / currentStart.distance(currentEl.end) * conf.density
         tv = 0
-        true
+        return true
     }
 
     @Override
-    Optional<Vector> getVector() {
-        conf.minVectorLength
-        return Optional.empty()
+    VectorG getMoveDirection() {
+        PointG startPos = currentPos.clone()
+        double startTv = tv
+
+        VectorG vector = [startPos, currentPos]
+        while (vector.length < conf.directionVectorLength && goCloser());
+
+        if (vector.length >= conf.minDirectionVectorLength) {
+            moveDirection << vector
+        }
+
+        println ">>> ${moveDirection}"
+        tv = startTv
+        currentPos << startPos
+        return moveDirection
     }
 
     boolean goCloser() {
-        int distance = currentPoint.distance currentEl.end
+        sleep(10)
+        int distance = currentPos.distance currentEl.end
         if (distance < conf.distanceMargin) {
             return false
         }
 
         // P = (1−t)ˆ3*P1 + 3(1−t)ˆ2*t*P2 +3*(1−t)*t^2* P3 + t^3*P4
-        currentPoint << (1 - tv).pow3 * startPoint + 3 * (1 - tv).pow2 * tv * currentEl.cp1 + 3 * (1 - tv) * tv.pow2 * currentEl.cp2 + tv.pow3 * currentEl.end
+        currentPos << (1 - tv).pow3 * currentStart + 3 * (1 - tv).pow2 * tv * currentEl.cp1 + 3 * (1 - tv) *
+                tv.pow2 * currentEl.cp2 + tv.pow3 * currentEl.end
         tv += ti
         if (tv > 1) {
-            log.debug("t > 1 - break Bazier Path")
+            log.debug("tv({}) > 1 - break Bazier Path", tv)
             return false
         }
         return true
@@ -63,7 +81,7 @@ class BezierPathFollowing implements PathFollowing {
 
     @Override
     void reset() {
-        currentPoint << startPoint
+        currentPos << start
         currentElIdx = -1
     }
 
@@ -73,8 +91,8 @@ class BezierPathFollowing implements PathFollowing {
     }
 
     @Override
-    final Point next() {
-        return currentPoint
+    final PointG next() {
+        currentPos
     }
 
     @Override

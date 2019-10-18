@@ -3,15 +3,32 @@ package org.miklas.ggalaxy.core.common
 import org.miklas.ggalaxy.core.AbstractTest
 import spock.lang.Unroll
 
-class PointTest extends AbstractTest {
+class PointGTest extends AbstractTest {
+
+    @Unroll
+    def "Test clone"() {
+        given:
+        PointG point = [10, 20, 200, 300]
+        PointG np = point.clone()
+        point.x = 200
+        point.y = 400
+        point.width = 500
+        point.height = 600
+
+        expect:
+        np.x == 10
+        np.y == 20
+        np.width == 200
+        np.height == 300
+    }
 
     @Unroll
     def "Test leftShift"(int x, int y, int width, int height, int ox, int oy, int owidth, int oheight) {
         given:
-        Point point = [10, 20, 200, 300]
+        PointG point = [10, 20, 200, 300]
 
         expect:
-        Point res = point << new Point(x, y, width, height)
+        PointG res = point << new PointG(x, y, width, height)
         res.x == ox
         res.y == oy
         res.width == owidth
@@ -30,10 +47,10 @@ class PointTest extends AbstractTest {
     @Unroll
     def "Test multiply"(int num, int ox, int oy) {
         given:
-        Point point = [10, 20, 200, 300]
+        PointG point = [10, 20, 200, 300]
 
         expect:
-        Point res = point * num
+        PointG res = point * num
         res.x == ox
         res.y == oy
         res.width == 200
@@ -48,10 +65,10 @@ class PointTest extends AbstractTest {
     @Unroll
     def "Test plus"(int x, int y, int ox, int oy) {
         given:
-        Point point = [10, 20, 200, 300]
+        PointG point = [10, 20, 200, 300]
 
         expect:
-        Point res = point + new Point(x, y, 5, 5)
+        PointG res = point + new PointG(x, y, 5, 5)
         res.x == ox
         res.y == oy
         res.width == 200
@@ -66,8 +83,8 @@ class PointTest extends AbstractTest {
     @Unroll
     def "Test distance"(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2, int distance) {
         given:
-        Point p1 = [x1, y1, w1, h1]
-        Point p2 = [x2, y2, w2, h2]
+        PointG p1 = [x1, y1, w1, h1]
+        PointG p2 = [x2, y2, w2, h2]
 
         expect:
         p1.distance(p2) == distance
@@ -89,8 +106,8 @@ class PointTest extends AbstractTest {
     @Unroll
     def "Test overlaps"(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2, boolean overlaps) {
         given:
-        Point p1 = [x1, y1, w1, h1]
-        Point p2 = [x2, y2, w2, h2]
+        PointG p1 = [x1, y1, w1, h1]
+        PointG p2 = [x2, y2, w2, h2]
 
         expect:
         p1.overlaps(p2) == overlaps

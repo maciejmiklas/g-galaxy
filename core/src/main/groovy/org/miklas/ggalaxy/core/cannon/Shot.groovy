@@ -12,7 +12,7 @@ import org.miklas.ggalaxy.core.event.EventType
 class Shot implements Asset, Cannon {
 
     Mode mode = Mode.ACTIVE
-    Point position = []
+    PointG position = []
     final AssetType type = AssetType.SHOT
     int moveSpeed
 

@@ -1,7 +1,7 @@
 package org.miklas.ggalaxy.core
 
 import com.badlogic.gdx.scenes.scene2d.Stage
-import org.miklas.ggalaxy.core.common.Point
+import org.miklas.ggalaxy.core.common.PointG
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 
@@ -27,7 +27,7 @@ class SpringConfig {
             getPow3 = { delegate * delegate * delegate }
             getMs = { delegate }
             getSec = { delegate * 1000 }
-            multiply = { Point p -> new Point(x: p.x * delegate, y: p.y * delegate) }
+            multiply = { PointG p -> new PointG(x: p.x * delegate, y: p.y * delegate) }
         }
         initialized = true
     }

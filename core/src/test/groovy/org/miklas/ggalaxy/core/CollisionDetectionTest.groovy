@@ -3,7 +3,7 @@ package org.miklas.ggalaxy.core
 import com.badlogic.gdx.graphics.g2d.Batch
 import org.miklas.ggalaxy.core.common.Asset
 import org.miklas.ggalaxy.core.common.AssetType
-import org.miklas.ggalaxy.core.common.Point
+import org.miklas.ggalaxy.core.common.PointG
 import spock.lang.Unroll
 
 import static org.miklas.ggalaxy.core.common.AssetType.*
@@ -230,7 +230,7 @@ class CollisionDetectionTest extends AbstractTest {
     }
 
     class Rock implements Asset {
-        Point position = []
+        PointG position = []
         AssetType type = ASTEROID
         List<Asset> hits = []
 

@@ -413,7 +413,6 @@ function LineSegment(pt, prev) {
                 y = Math.round(my.pt.yNorm());
             }
 
-            // new BezierElement(cp1: [1200, 100], cp2: [200, 600], end: [600, 600])
             return 'flyto ' + ctrlPt1x + ', ' + ctrlPt1y + ', ' + ctrlPt2x + ', ' + ctrlPt2y + ', ' + x + ', ' + y;
         }
     };

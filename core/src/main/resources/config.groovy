@@ -293,8 +293,9 @@ pathFollowing {
     }
     bazier {
         distanceMargin = 5
-        skippPixels = 3
-        minVectorLength = 50
+        density = 10
+        directionVectorLength = 15
+        minDirectionVectorLength = 10
     }
 }
 

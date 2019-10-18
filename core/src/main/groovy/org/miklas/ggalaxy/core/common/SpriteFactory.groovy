@@ -10,7 +10,7 @@ class SpriteFactory {
 
     static Sprite create(AssetName asset) {
         if (CACHE.containsKey(asset)) {
-            return CACHE.get(asset)
+            return CACHE[asset]
         }
 
         def c_sp = Conf.sprite asset

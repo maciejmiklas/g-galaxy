@@ -2,8 +2,8 @@ package org.miklas.ggalaxy.core.common
 
 import groovy.transform.ToString
 
-@ToString(includeNames = true, includePackage = false)
-class Point {
+@ToString(includeNames = false, includePackage = false)
+class PointG {
     public final static int EMPTY_POINT = -1
 
     int x = EMPTY_POINT
@@ -11,23 +11,29 @@ class Point {
     int width = EMPTY_POINT
     int height = EMPTY_POINT
 
-    Point(int x, int y) {
+    PointG(int x, int y) {
         this.x = x
         this.y = y
     }
 
-    Point(int x, int y, int width, int height) {
+    PointG(int x, int y, int width, int height) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
     }
 
-    Point() {
+    PointG() {
 
     }
 
-    boolean overlaps(Point point) {
+    PointG clone() {
+        PointG np = []
+        np << this
+        return np
+    }
+
+    boolean overlaps(PointG point) {
         return x < point.x + point.width && x + width > point.x && y < point.y + point.height && y + height > point.y;
     }
 
@@ -36,15 +42,15 @@ class Point {
         y = EMPTY_POINT
     }
 
-    Point plus(Point val) {
-        new Point(x: x + val.x, y: y + val.y, width: width, height: height)
+    PointG plus(PointG val) {
+        new PointG(x: x + val.x, y: y + val.y, width: width, height: height)
     }
 
-    Point multiply(Number val) {
-        new Point(x: x * val, y: y * val, width: width, height: height)
+    PointG multiply(Number val) {
+        new PointG(x: x * val, y: y * val, width: width, height: height)
     }
 
-    Point leftShift(Point val) {
+    PointG leftShift(PointG val) {
         if (val.x != EMPTY_POINT) {
             x = val.x
         }
@@ -64,7 +70,7 @@ class Point {
         return this
     }
 
-    int distance(Point to) {
+    int distance(PointG to) {
         Math.sqrt((to.x - x).pow2 + (to.y - y).pow2)
     }
 }
